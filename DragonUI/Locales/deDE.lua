@@ -746,6 +746,7 @@ L["Weighted score of your equipped gear."] = "Gewichtete Wertung deiner angelegt
 L["Reset stat order"] = "Reihenfolge zurücksetzen"
 L["Restore the stat categories to their default order?"] = "Die Wertekategorien auf ihre Standardreihenfolge zurücksetzen?"
 
+<<<<<<< HEAD
 -- ============================================================================
 -- DAMAGE METER SKIN (DETAILS!)
 -- ============================================================================
@@ -756,10 +757,16 @@ L["Details! skin applied."] = "Details!-Skin angewendet."
 L["Could not apply the skin - Details! is not ready yet."] = "Der Skin konnte nicht angewendet werden - Details! ist noch nicht bereit."
 L["Details! is not installed."] = "Details! ist nicht installiert."
 
+=======
+>>>>>>> 71963e6 (feat(merchant): retail-style vendor window chrome)
 -- MERCHANT MODULE
 L["Merchant"] = "Händler"
 L["Retail-style vendor window chrome"] = "Retail-Style Vendor-Fenster-Rahmen"
 L["Sell all junk items"] = "Alle Schrottgegenstände verkaufen"
+<<<<<<< HEAD
+=======
+L["You are about to sell all junk items and will not be able to buy them back.\n\nAre you sure you want to proceed?"] = "Du bist dabei, alle Schrottgegenstände zu verkaufen und kannst sie danach nicht mehr zurückkaufen.\n\nMöchtest du wirklich fortfahren?"
+>>>>>>> 71963e6 (feat(merchant): retail-style vendor window chrome)
 L["Sell all of your junk (gray) items?"] = "Alle deine Schrottgegenstände (grau) verkaufen?"
 L["Sold %d junk item(s)."] = "%d Schrottgegenstand(e) verkauft."
 

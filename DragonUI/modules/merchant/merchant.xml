@@ -1,4 +1,5 @@
 <Ui xmlns="http://www.blizzard.com/wow/ui/">
+<<<<<<< HEAD
     <!-- Merchant module — retail-style vendor window reskin.
          Paths are relative to THIS file's directory (modules/merchant/). -->
 
@@ -12,5 +13,9 @@
     <Script file="SellAllJunk.lua"/>
 
     <!-- 4. Buyback Undo arrow -->
+=======
+    <Script file="MerchantFrame.lua"/>
+    <Script file="SellAllJunk.lua"/>
+>>>>>>> 71963e6 (feat(merchant): retail-style vendor window chrome)
     <Script file="BuybackUndo.lua"/>
 </Ui>

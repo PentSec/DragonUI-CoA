@@ -923,6 +923,9 @@ local defaults = {
             merchant = {
                 enabled = true -- Retail-style vendor window chrome, sell-all-junk button, and buyback undo arrow
             },
+            merchant = {
+                enabled = true -- Retail-style vendor window chrome, sell-all-junk button, and buyback undo arrow
+            },
             minimap = {
                 enabled = true -- Apply DragonUI minimap enhancements including custom styling, positioning, tracking icons, and calendar
             },
