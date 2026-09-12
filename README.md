@@ -1,5 +1,5 @@
-# 🐉 DragonUI for Asencion Wow, Conquest of Azeroth - Bronzebeard
-## 📥 Download for Ascension Server
+# 🐉 DragonUI for Conquest Of AzerothCore servers
+
 
 ### Join Discord: ⬎
 
@@ -9,10 +9,12 @@
   <img src="https://svgl.app/library/paypal-wordmark.svg" alt="paypal" width="200" />
 </a>
 
+## 📥 Download
+
 | Method | Link |
 |--------|------|
-| **Latest stable release** | [Download](https://github.com/PentSec/DragonUI/releases/latest/download/DragonUI.zip) |
-| **Cutting-edge (main branch)** | [Download](https://github.com/PentSec/DragonUI/archive/refs/heads/main.zip) |
+| **Latest stable release** | [Download](https://github.com/PentSec/DragonUI-CoA/releases/latest/download/DragonUI-CoA.zip) |
+| **Cutting-edge (main branch)** | [Download](https://github.com/PentSec/DragonUI-CoA/archive/refs/heads/main.zip) |
 
 
 <div align="center">
@@ -24,7 +26,7 @@
 ![Downloads](https://img.shields.io/github/downloads/PentSec/DragonUI/total?label=Downloads&color=%23a400ff)
 
 <img width="1917" height="1042" alt="image" src="https://github.com/user-attachments/assets/bd79945d-6b50-40df-a5fa-f3662b42dcc4" />
-**A modular, retail-inspired UI addon for Ascension Wow, Conquest of Azeroth.**
+**A modular, retail-inspired UI addon for Conquest of AzerothCore Servers, Conquest of Azeroth.**
 
 Found a bug? [Open an issue](https://github.com/PentSec/DragonUI/issues).
 
@@ -172,10 +174,4 @@ DragonUI is released under the [MIT License](LICENSE). Bundled third-party compo
 ## 📎 Disclaimer
 
 DragonUI is a free, fan-made addon. No content is sold and no in-game advantages are provided. Donations are entirely voluntary. Not affiliated with or endorsed by Blizzard Entertainment.
-
-## ☕ Support The Project
-
-[![ko-fi](https://ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/neticsoul)
-
-🪙 Bitcoin: `bc1q8yavz8857lzdfttas584892gf82y0u3wdfjz0a`
 
