@@ -21,14 +21,14 @@
 
 ![Interface Version](https://img.shields.io/badge/Interface-30300-blue)
 ![WoW Version](https://img.shields.io/badge/WoW-3.3.5a-orange)
-[![Version](https://img.shields.io/badge/Version-2.5-green)](https://github.com/PentSec/DragonUI/releases/tag/v0.3)
+[![Version](https://img.shields.io/badge/Version-v3.+-green)](https://github.com/PentSec/DragonUI-CoA/releases/tag/v3.0.1)
 [![License](https://img.shields.io/badge/License-MIT-yellow)](LICENSE)
-![Downloads](https://img.shields.io/github/downloads/PentSec/DragonUI/total?label=Downloads&color=%23a400ff)
+![Downloads](https://img.shields.io/github/downloads/PentSec/DragonUI-CoA/total?label=Downloads&color=%23a400ff)
 
 <img width="1917" height="1042" alt="image" src="https://github.com/user-attachments/assets/bd79945d-6b50-40df-a5fa-f3662b42dcc4" />
 **A modular, retail-inspired UI addon for Conquest of AzerothCore Servers, Conquest of Azeroth.**
 
-Found a bug? [Open an issue](https://github.com/PentSec/DragonUI/issues).
+Found a bug? [Open an issue](https://github.com/PentSec/DragonUI-CoA/issues).
 
 </div>
 
@@ -134,7 +134,7 @@ Extensive customization available directly in-game through the configuration pan
 - Single-line tooltips show text overlapping the health bar.
 - Party and raid scenarios require further edge-case testing.
 - Some third-party addon setups may require manual module disabling.
-- Found a bug? [Open an issue](https://github.com/NeticSoul/DragonUI/issues).
+
 
 ## 🙏 Credits And References
 
@@ -159,7 +159,6 @@ DragonUI builds on original work and adapted ideas from these addon authors and 
 | [Raz0r](https://github.com/Raz0r1337) | Raz0r | German localization |
 | [nadugi](https://github.com/nadugi) | nadugi | Korean localization |
 
-Missing from the list? [Let me know](https://github.com/NeticSoul/DragonUI/issues).
 
 ## 💛 Special Thanks
 
