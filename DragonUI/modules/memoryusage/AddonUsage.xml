@@ -1,0 +1,278 @@
+<Ui>
+	<Button name="AddonUsageListTemplate" virtual="true">
+		<Size x="212" y="16"/>
+		<Layers>
+			<Layer level="BACKGROUND">
+				<FontString name="$parentName" font="GameFontHighlightSmall" justifyH="LEFT" text="Addon Name">
+					<Size x="88" y="16"/>
+					<Anchors>
+						<Anchor point="TOPLEFT">
+							<Offset x="2" y="0"/>
+						</Anchor>
+					</Anchors>
+				</FontString>
+				<FontString name="$parentMem" font="GameFontHighlightSmall" justifyH="RIGHT" text="1234.56">
+					<Size x="56" y="16"/>
+					<Anchors>
+						<Anchor point="TOPLEFT" relativeTo="$parentName" relativePoint="TOPRIGHT"/>
+					</Anchors>
+				</FontString>
+				<FontString name="$parentMemPercent" font="GameFontHighlightSmall" justifyH="RIGHT" text="100%">
+					<Size x="30" y="16"/>
+					<Anchors>
+						<Anchor point="TOPLEFT" relativeTo="$parentMem" relativePoint="TOPRIGHT"/>
+					</Anchors>
+				</FontString>
+				<FontString name="$parentCPU" font="GameFontHighlightSmall" justifyH="RIGHT" text="100%">
+					<Size x="30" y="16"/>
+					<Anchors>
+						<Anchor point="TOPLEFT" relativeTo="$parentMemPercent" relativePoint="TOPRIGHT">
+							<Offset x="2" y="0"/>
+						</Anchor>
+					</Anchors>
+				</FontString>
+			</Layer>
+		</Layers>
+		<Scripts>
+			<OnMouseDown>
+				self:GetParent():StartMoving()
+			</OnMouseDown>
+			<OnMouseUp>
+				self:GetParent():StopMovingOrSizing()
+			</OnMouseUp>
+		</Scripts>
+	</Button>
+	<Frame name="AddonUsageFrame" movable="true" enableMouse="true" parent="UIParent" hidden="true">
+		<Size x="250" y="246"/>
+		<Anchors>
+			<Anchor point="CENTER"/>
+		</Anchors>
+		<Backdrop bgFile="Interface\DialogFrame\UI-DialogBox-Background" edgeFile="Interface\Tooltips\UI-Tooltip-Border" tile="true">
+			<BackgroundInsets>
+				<AbsInset left="4" right="4" top="4" bottom="4" />
+			</BackgroundInsets>
+			<TileSize>
+				<AbsValue val="16" />
+			</TileSize>
+			<EdgeSize>
+				<AbsValue val="16" />
+			</EdgeSize>
+			<BorderColor r=".5" g=".5" b=".5"/>
+		</Backdrop>
+		<Frames>
+			<Button name="AddonUsageCloseButton">
+				<Size x="28" y="28"/>
+				<Anchors>
+					<Anchor point="TOPRIGHT"/>
+				</Anchors>
+				<NormalTexture file="Interface\Buttons\UI-Panel-MinimizeButton-Up"/>
+				<PushedTexture file="Interface\Buttons\UI-Panel-MinimizeButton-Down"/>
+				<HighlightTexture file="Interface\Buttons\UI-Panel-MinimizeButton-Highlight" alphaMode="ADD"/>
+				<Scripts>
+					<OnClick>
+						AddonUsageFrame:Hide()
+					</OnClick>
+				</Scripts>
+			</Button>
+			<Button name="AddonUsageResetButton" inherits="UIPanelButtonTemplate2" text="Reset">
+				<Size x="64" y="24"/>
+				<Anchors>
+					<Anchor point="BOTTOMLEFT">
+						<Offset x="6" y="6"/>
+					</Anchor>
+				</Anchors>
+				<NormalFont style="GameFontNormalSmall"/>
+				<HighlightFont style="GameFontHighlightSmall"/>
+				<Scripts>
+					<OnClick>
+						ResetCPUUsage()
+						AddonUsage.UpdateData()
+					</OnClick>
+				</Scripts>
+			</Button>
+			<Button name="AddonUsageUpdateButton" inherits="UIPanelButtonTemplate2" text="Update">
+				<Size x="80" y="24"/>
+				<Anchors>
+					<Anchor point="BOTTOMLEFT" relativeTo="AddonUsageResetButton" relativePoint="BOTTOMRIGHT">
+						<Offset x="4" y="0"/>
+					</Anchor>
+				</Anchors>
+				<NormalFont style="GameFontNormalSmall"/>
+				<HighlightFont style="GameFontHighlightSmall"/>
+				<Scripts>
+					<OnClick>
+						AddonUsage.UpdateData()
+					</OnClick>
+				</Scripts>
+			</Button>
+			<Button name="AddonUsageList1" inherits="AddonUsageListTemplate" id="1">
+				<Anchors>
+					<Anchor point="TOPLEFT">
+						<Offset x="8" y="-22"/>
+					</Anchor>
+				</Anchors>
+			</Button>
+			<Button name="AddonUsageList2" inherits="AddonUsageListTemplate" id="2">
+				<Anchors>
+					<Anchor point="TOPLEFT" relativeTo="AddonUsageList1" relativePoint="BOTTOMLEFT"/>
+				</Anchors>
+			</Button>
+			<Button name="AddonUsageList3" inherits="AddonUsageListTemplate" id="3">
+				<Anchors>
+					<Anchor point="TOPLEFT" relativeTo="AddonUsageList2" relativePoint="BOTTOMLEFT"/>
+				</Anchors>
+			</Button>
+			<Button name="AddonUsageList4" inherits="AddonUsageListTemplate" id="4">
+				<Anchors>
+					<Anchor point="TOPLEFT" relativeTo="AddonUsageList3" relativePoint="BOTTOMLEFT"/>
+				</Anchors>
+			</Button>
+			<Button name="AddonUsageList5" inherits="AddonUsageListTemplate" id="5">
+				<Anchors>
+					<Anchor point="TOPLEFT" relativeTo="AddonUsageList4" relativePoint="BOTTOMLEFT"/>
+				</Anchors>
+			</Button>
+			<Button name="AddonUsageList6" inherits="AddonUsageListTemplate" id="6">
+				<Anchors>
+					<Anchor point="TOPLEFT" relativeTo="AddonUsageList5" relativePoint="BOTTOMLEFT"/>
+				</Anchors>
+			</Button>
+			<Button name="AddonUsageList7" inherits="AddonUsageListTemplate" id="7">
+				<Anchors>
+					<Anchor point="TOPLEFT" relativeTo="AddonUsageList6" relativePoint="BOTTOMLEFT"/>
+				</Anchors>
+			</Button>
+			<Button name="AddonUsageList8" inherits="AddonUsageListTemplate" id="8">
+				<Anchors>
+					<Anchor point="TOPLEFT" relativeTo="AddonUsageList7" relativePoint="BOTTOMLEFT"/>
+				</Anchors>
+			</Button>
+			<Button name="AddonUsageList9" inherits="AddonUsageListTemplate" id="9">
+				<Anchors>
+					<Anchor point="TOPLEFT" relativeTo="AddonUsageList8" relativePoint="BOTTOMLEFT"/>
+				</Anchors>
+			</Button>
+			<Button name="AddonUsageList10" inherits="AddonUsageListTemplate" id="10">
+				<Anchors>
+					<Anchor point="TOPLEFT" relativeTo="AddonUsageList9" relativePoint="BOTTOMLEFT"/>
+				</Anchors>
+			</Button>
+			<Button name="AddonUsageList11" inherits="AddonUsageListTemplate" id="11">
+				<Anchors>
+					<Anchor point="TOPLEFT" relativeTo="AddonUsageList10" relativePoint="BOTTOMLEFT"/>
+				</Anchors>
+			</Button>
+			<Button name="AddonUsageList12" inherits="AddonUsageListTemplate" id="12">
+				<Anchors>
+					<Anchor point="TOPLEFT" relativeTo="AddonUsageList11" relativePoint="BOTTOMLEFT"/>
+				</Anchors>
+			</Button>
+			<Button name="AddonUsageHeaderName" text="AddOn">
+				<Size x="40" y="16"/>
+				<Anchors>
+					<Anchor point="BOTTOMLEFT" relativeTo="AddonUsageList1Name" relativePoint="TOPLEFT">
+						<Offset x="24" y="0"/>
+					</Anchor>
+				</Anchors>
+				<NormalFont style="GameFontNormalSmall"/>
+				<HighlightFont style="GameFontHighlightSmall"/>
+				<PushedFont style="GameFontNormalSmall"/>
+				<Scripts>
+					<OnClick>
+						AddonUsage.HeaderOnClick("Name")
+					</OnClick>
+				</Scripts>
+			</Button>
+			<Button name="AddonUsageHeaderMem" text="Memory">
+				<Size x="50" y="16"/>
+				<Anchors>
+					<Anchor point="BOTTOMLEFT" relativeTo="AddonUsageList1Mem" relativePoint="TOPLEFT">
+						<Offset x="32" y="0"/>
+					</Anchor>
+				</Anchors>
+				<NormalFont style="GameFontNormalSmall"/>
+				<HighlightFont style="GameFontHighlightSmall"/>
+				<PushedFont style="GameFontNormalSmall"/>
+				<Scripts>
+					<OnClick>
+						AddonUsage.HeaderOnClick("Mem")
+					</OnClick>
+				</Scripts>
+			</Button>
+			<Button name="AddonUsageHeaderCPU" text="CPU">
+				<Size x="32" y="16"/>
+				<Anchors>
+					<Anchor point="BOTTOMLEFT" relativeTo="AddonUsageList1CPU" relativePoint="TOPLEFT">
+						<Offset x="0" y="0"/>
+					</Anchor>
+				</Anchors>
+				<NormalFont style="GameFontNormalSmall"/>
+				<HighlightFont style="GameFontHighlightSmall"/>
+				<PushedFont style="GameFontNormalSmall"/>
+				<Scripts>
+					<OnClick>
+						AddonUsage.HeaderOnClick("CPU")
+					</OnClick>
+				</Scripts>
+			</Button>
+
+			<ScrollFrame name="AddonUsageScrollFrame" inherits="FauxScrollFrameTemplate">
+				<Anchors>
+					<Anchor point="TOPLEFT" relativeTo="AddonUsageList1">
+						<Offset>
+							<AbsDimension x="0" y="-2"/>
+						</Offset>
+					</Anchor>
+					<Anchor point="BOTTOMRIGHT" relativeTo="AddonUsageList12">
+						<Offset>
+							<AbsDimension x="-2" y="1"/>
+						</Offset>
+					</Anchor>
+				</Anchors>
+				<Layers>
+					<Layer level="BACKGROUND">
+						<Texture file="Interface\ChatFrame\ChatFrameBackground">
+							<Anchors>
+								<Anchor point="TOPLEFT" relativePoint="TOPRIGHT">
+									<Offset>
+										<AbsDimension x="6" y="0"/>
+									</Offset>
+								</Anchor>
+								<Anchor point="BOTTOMRIGHT" relativePoint="BOTTOMRIGHT">
+									<Offset>
+										<AbsDimension x="22" y="0"/>
+									</Offset>
+								</Anchor>
+							</Anchors>
+							<Gradient>
+								<MinColor r="0" g="0" b="0" a="0"/>
+								<MaxColor r="0" g="0" b="0" a="1"/>
+							</Gradient>
+						</Texture>
+					</Layer>
+				</Layers>
+				<Scripts>
+					<OnVerticalScroll>
+						FauxScrollFrame_OnVerticalScroll(self, offset, 16, AddonUsage.ScrollFrameUpdate)
+					</OnVerticalScroll>
+				</Scripts>
+			</ScrollFrame>
+		</Frames>
+		<Scripts>
+			<OnMouseDown>
+				self:StartMoving()
+			</OnMouseDown>
+			<OnMouseUp>
+				self:StopMovingOrSizing()
+			</OnMouseUp>
+		</Scripts>
+	</Frame>
+	<Frame name="AddonUsageDelayedInit" parent="UIParent" hidden="false">
+		<Scripts>
+			<OnUpdate>
+				AddonUsage.Initialize()
+				self:Hide()
+			</OnUpdate>
+		</Scripts>
+	</Frame>
+</Ui>

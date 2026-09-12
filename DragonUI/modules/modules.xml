@@ -1,0 +1,142 @@
+<Ui xmlns="http://www.blizzard.com/wow/ui/">
+    <!-- Conflict Detection module (loaded early) -->
+    <Script file="compatibility.lua"/>
+
+    <!-- Actionbar modules -->
+    <Script file="noop.lua"/>
+    <Script file="buttons.lua"/>
+    <Script file="rage_indicator.lua"/>
+    <Script file="cooldowns.lua"/>
+    <Script file="auracooldowns.lua"/>
+    <Script file="mainbars.lua"/>
+
+    <!-- Attack Bar (swing timer for main/off hand, ranged, and enemy) -->
+    <Script file="Attackbar.lua"/>
+
+    <!-- Action Bar Sub-modules (stance, vehicle, petbar, multicast) -->
+    <Include file="actionbars\actionbars.xml"/>
+
+    <!-- Pets & Mounts window (its micro button must exist before micromenu.lua loads) -->
+    <Script file="..\data\companion_traits.lua"/>
+    <Include file="collections\collections.xml"/>
+
+    <!-- Micro Menu & Bag module -->
+    <Script file="micromenu.lua"/>
+
+    <!-- KeyBinding module -->
+    <Script file="keybinding.lua"/>
+
+    <!-- Key Press module (fire actions on key down instead of key release) -->
+    <Script file="keypress.lua"/>
+    <!-- Buffs, Minimap & Quest Tracker modules -->
+    <Script file="buff_frame.lua"/>
+    <Script file="auraborders.lua"/>
+    <Script file="minimap_collector.lua"/>
+    <Script file="minimap.lua"/>
+    <Script file="minimap_decorations.lua"/>
+    <Script file="objectivetracker.lua"/>   
+    <Script file="lootroll.lua"/>
+
+    <!-- Blizzard loot window skin (the paginated LootFrame, not the roll popup above) -->
+    <Script file="loot_skin.lua"/>
+
+    <!-- UnitFrames -->
+    <Include file="unitframes\unitframes.xml"/>
+    <Script file="hp_low_alert.lua"/>
+    <Script file="compactframes.lua"/>
+
+    <!-- Cast Bar module -->
+    <Script file="castbar.lua"/>
+
+    <!-- Game Menu module -->
+    <Script file="gamemenu.lua"/>
+
+    <!-- Editor Mode module -->
+    <Script file="editor_mode.lua"/>
+
+    <!-- Extra Action Button movability widget -->
+    <Script file="extra_action_button.lua"/>
+
+    <!-- Player Primary Stat movability widget -->
+    <Script file="player_primary_stat.lua"/>
+
+    <!-- DurabilityFrame movability widget -->
+    <Script file="durabilityframe.lua"/>
+
+    <!-- Dark Mode module -->
+    <Script file="darkmode.lua"/>
+
+    <!-- Tooltip Enhancement module -->
+    <Script file="tooltip.lua"/>
+
+    <!-- Nameplates (custom stack on 30300 Blizzard plates) -->
+    <Script file="..\data\npc_rare_ranks.lua"/>
+    <Script file="..\data\aura_durations.lua"/>
+    <Include file="nameplates\nameplates.xml"/>
+
+    <!-- Item Quality Borders module -->
+    <Script file="itemquality.lua"/>
+
+    <!-- Item Level on gear icons -->
+    <Script file="itemlevel.lua"/>
+
+    <!-- Retail-style character window reskin -->
+    <Include file="characterpanel\characterpanel.xml"/>
+
+    <!-- Chat Mods module -->
+    <Script file="chatmods.lua"/>
+
+    <!-- Profile Sync module (AceComm-based profile sharing) -->
+    <Script file="profilesync.lua"/>
+
+    <!-- BNet Toast module (friend online/offline notifications) -->
+    <Script file="BNetToast.lua"/>
+
+    <!-- Bag Skin module -->
+    <Script file="bags_skin.lua"/>
+
+    <!-- Bag item usability tint (shared by bagster and bags_skin; must load before both) -->
+    <Script file="bags_usability.lua"/>
+
+    <!-- Bagster bag replacement module -->
+    <Include file="bagster\bagster.xml"/>
+
+    <!-- Bag Sort module (sort buttons for bags and bank) -->
+    <Script file="bagsort.lua"/>
+
+    <!-- memory usage -->
+    <Script file="memoryusage\AddonUsage.lua"/>
+    <Include file="memoryusage\AddonUsage.xml"/>
+
+    <!-- Transmog Collector (Ascension: auto-collect appearances on loot) -->
+    <Script file="transmog_collector.lua"/>
+
+    <!-- Level Up Enhance (animated level-up notification) -->
+    <Script file="levelupenhance.lua"/>
+    <!-- Alt Gold module (other characters' money on the bag coin tooltip) -->
+    <Script file="altmoney.lua"/>
+
+    <!-- Retail-style world map -->
+    <Include file="worldmap\worldmap.xml"/>
+
+    <!-- Version Check module (cross-player version broadcast) -->
+    <Script file="versioncheck.lua"/>
+
+    <!-- Performance Warmup module (pre-loads panels to avoid first-use freezes) -->
+    <Script file="performance_warmup.lua"/>
+
+    <!-- Talent Inspector module (CoA talent tree viewer in inspect) -->
+    <Script file="inspector.lua"/>
+
+    <!-- Ascension WildCard Dice movability widget -->
+    <Script file="wildcarddice.lua"/>
+
+    <!-- Details! Damage Meter skin (inert until applied; requires the Details! addon) -->
+    <Script file="detailsskin.lua"/>
+
+    <!-- World Map — retail-styled chrome, breadcrumb, pins, quest panel, fog reveal -->
+    <!-- <Include file="worldmap\worldmap.xml"/> -->
+
+    <!-- Merchant — retail-style vendor window chrome (uses worldmap's PanelChrome/NineSlice libs) -->
+    <Include file="merchant\merchant.xml"/>
+</Ui>

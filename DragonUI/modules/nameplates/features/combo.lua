@@ -1,0 +1,577 @@
+local addon = select(2, ...)
+local NP = addon.Nameplates
+local C = NP.const
+
+-- Nameplates combo points widget.
+-- Native Rogue/Druid combo points (GetComboPoints) plus Ascension custom-class
+-- "stack" resources (Felsworm/Demonhunter Fellfury, Pyromancer Embers, Reaper
+-- Souls, etc.) reusing the same widget on the target nameplate.
+
+-- Per custom-class stack resource definition (mirror of Ascension's
+-- ClassResources.lua / CoAResourceSegmentBar templates, but minimal: only the
+-- atlas names + spell info we need to render segments on a nameplate).
+--   spellID      : aura spell id to read stacks from (filter by MatchesSpellID).
+--   source       : "buff" (AuraUtil.GetBuff "player") or "debuff" (GetDebuff).
+--   maxStacks    : segment count (overrides per-class default if present).
+--   emptyAtlas   : atlas name drawn for i > current stacks (segment "off").
+--   fillAtlas    : atlas name drawn for i <= current stacks (segment "on").
+--   segSize      : square edge length for each segment.
+--   segSpacing   : horizontal gap between segments.
+--   knownSpellID : optional; if set, segments only render when this spell is
+--                  known (gates talents like Ranger 802036 or Prophet 4053).
+--   Reaper extra states (optional; all or none):
+--     shardSpellID : aura holding partial fill of the NEXT free soul slot.
+--     shard1Atlas / shard2Atlas : atlas for 1 / 2+ shards on that slot.
+--     infusedSpellID : aura active when every soul is full.
+--     infusedAtlas   : fill recolor used while infused.
+--   Tinker scaled fill (optional; replaces shard/empty rendering): the resource
+--   aura holds every stack and each segment represents `stackScale` of them:
+--     stackScale    : stacks per full segment (full segments = cur / scale).
+--     partialPrefix : atlas base; the next free slot draws "<prefix><diff>"
+--                     where diff = cur % scale (e.g. ScrapFill1..9). Unspent
+--                     slots have no background and stay hidden.
+--   iconW/iconH  : optional host backing size (defaults derived from segSize).
+--   scale        : optional per-class render scale multiplier for the whole
+--                  widget (multiplies the player's global comboScale); handy
+--                  for resources whose segments are tiny (e.g. Tinker 7px).
+local CLASS_STACKS = {
+    DEMONHUNTER = { -- "Felsworm" in-game; native token is DEMONHUNTER.
+        spellID     = 800058, -- Fellfury
+        source      = "buff",
+        overlayFill = true, -- keep empty bg visible, draw fill on top.
+        emptyAtlas  = "DemonHunterSegmentBg",
+        fillAtlas   = "DemonHunterSegmentFill",
+        segSize     = 16,
+        segSpacing  = 2,
+    },
+    REAPER = {
+        spellID       = 500363, -- Soul shards (stacks); see Ascension_ReaperResource.lua.
+        source        = "buff",
+        maxStacks     = 3,
+        emptyAtlas    = "ReaperSoulBG",
+        fillAtlas     = "ReaperSoulFull",
+        shardSpellID  = 805077, -- partial fill progress toward next soul.
+        shard1Atlas   = "ReaperSoul1Shard",
+        shard2Atlas   = "ReaperSoul2Shards",
+        infusedSpellID = 803031, -- recolor once all souls are full.
+        infusedAtlas  = "ReaperSoulInfused",
+        segSize       = 32,
+        segSpacing    = 2,
+    },
+    PYROMANCER = {
+        spellID    = 807533, -- Embers (debuff on the player).
+        source     = "debuff",
+        emptyAtlas = "PyroEmber",
+        fillAtlas  = "PyroEmberGlow",
+        segSize    = 18,
+        segSpacing = 2,
+    },
+    RANGER = {
+        spellID      = 804329, -- Ranger combo points.
+        source       = "buff",
+        knownSpellID = 802036, -- only when the combo talent is known.
+        overlayFill  = true,   -- keep empty bg visible, draw fill on top.
+        emptyAtlas   = "RangerBarSegmentBg",
+        fillAtlas    = "RangerBarSegmentFill",
+        segSize      = 13,
+        segSpacing   = 2,
+    },
+    PROPHET = { -- Venomancer kit on Prophet.
+        spellID      = 804972,
+        source       = "buff",
+        knownSpellID = 4053, -- C_CharacterAdvancement.IsKnownID gating.
+        emptyAtlas   = "VenomancerEmpty",
+        fillAtlas    = "VenomancerFilled",
+        segSize      = 16,
+        segSpacing   = 2,
+    },
+    FLESHWARDEN = { -- Knight of Xoroth; FleshOrbs template.
+        spellID    = 500906,
+        source     = "buff",
+        emptyAtlas = "KoXBarSegmentBg",
+        fillAtlas  = "KoXBarSegmentFill",
+        segSize    = 22,
+        segSpacing = 2,
+    },
+    TINKER = { -- Scrap resource; each segment holds 10 scrap stacks.
+        spellID       = 801816, -- Scrap.
+        source        = "buff",
+        maxStacks     = 10,   -- fallback when GetSpellMaxStack is unavailable.
+        stackScale    = 10,   -- one segment per 10 stacks.
+        fillAtlas     = "ScrapFill10",
+        partialPrefix = "ScrapFill", -- ScrapFill1..9 for the partial slot.
+        segSize       = 7,
+        segSpacing    = 2,
+        scale         = 2, -- 7px segments are tiny; render the widget at 2x.
+    },
+}
+
+local NATIVE_MAX = 5
+
+-- Ascension-only API guards: the custom-class path must be inert on a vanilla
+-- client. We resolve the symbols lazily and cache nil on first miss.
+local _ascension_class_cache = {} -- ["<token>"] = token | false | nil-unknown-yet
+
+local function IsAscensionClassPresent()
+    if _ascension_class_cache.present ~= nil then
+        return _ascension_class_cache.present
+    end
+    local ok = pcall(function()
+        return _G.IsCustomClass and _G.IsCustomClass()
+    end)
+    _ascension_class_cache.present = (ok == true) and true or false
+    return _ascension_class_cache.present
+end
+
+local function GetPlayerCustomClass()
+    if not IsAscensionClassPresent() then return nil end
+    local ok, token = pcall(function()
+        return _G.C_Player and _G.C_Player.GetClass and _G.C_Player:GetClass()
+    end)
+    if not ok or type(token) ~= "string" or token == "" then return nil end
+    -- C_Player:GetClass() case varies by client build (e.g. "tinker" vs
+    -- "TINKER"); normalize so callers can rely on the CLASS_STACKS casing.
+    return token:upper()
+end
+
+local function AuraStacks(spellID, source)
+    local getter = (source == "debuff") and _G.AuraUtil and _G.AuraUtil.GetDebuff
+        or _G.AuraUtil and _G.AuraUtil.GetBuff
+    if not getter then return 0 end
+    local ok, stacks = pcall(function()
+        return select(4, getter("player", spellID, true, _G.AuraUtil.Predicate.MatchesSpellID))
+    end)
+    if not ok then return 0 end
+    return tonumber(stacks) or 0
+end
+
+local function IsSpellKnown(spellID)
+    if not spellID then return true end
+    if _G.IsSpellIDKnown then
+        local ok, known = pcall(_G.IsSpellIDKnown, spellID)
+        if ok then return known and true or false end
+    end
+    if _G.C_CharacterAdvancement and _G.C_CharacterAdvancement.IsKnownID then
+        local ok, known = pcall(_G.C_CharacterAdvancement.IsKnownID, spellID)
+        if ok then return known and true or false end
+    end
+    return true
+end
+
+local function GetSpellMaxStacks(spellID, fallback)
+    if _G.GetSpellMaxStack then
+        local ok, n = pcall(_G.GetSpellMaxStack, spellID)
+        if ok and tonumber(n) then return tonumber(n) end
+    end
+    return fallback
+end
+
+-- Resolve which combo provider is active for the player right now.
+-- Returns:
+--   "native",  5, currentStacks   -- Rogue/Druid combo points (or 0 native)
+--   "class",   maxStacks, cur     -- Ascension custom-class resource
+--   "none",    0, 0
+local function ResolveComboProvider()
+    if UnitExists("target") then
+        local ok, n = pcall(_G.GetComboPoints, "player")
+        if ok then
+            local pts = tonumber(n) or 0
+            if pts > 0 then
+                return "native", NATIVE_MAX, pts
+            end
+        end
+    end
+    local token = GetPlayerCustomClass()
+    if not token then return "none", 0, 0 end
+    local entry = CLASS_STACKS[token]
+    if not entry then return "none", 0, 0 end
+    if entry.knownSpellID and not IsSpellKnown(entry.knownSpellID) then
+        return "none", 0, 0
+    end
+    local maxStacks = GetSpellMaxStacks(entry.spellID, nil)
+    if entry.stackScale and maxStacks then
+        maxStacks = math.floor(maxStacks / entry.stackScale)
+    end
+    if not maxStacks or maxStacks <= 0 then maxStacks = entry.maxStacks or NATIVE_MAX end
+    if not maxStacks or maxStacks <= 0 then return "none", 0, 0 end
+    local cur = AuraStacks(entry.spellID, entry.source)
+    return "class", maxStacks, cur
+end
+
+-- Cheap cached check: is the player an Ascension custom class with a stack
+-- resource entry? Used to gate UNIT_AURA-driven combo refreshes on vanilla
+-- clients / classes without a custom resource (avoids per-aura work).
+function NP.widgets.HasCustomClassCombo()
+    local token = GetPlayerCustomClass()
+    if not token then return false end
+    return CLASS_STACKS[token] ~= nil
+end
+
+function NP.widgets.GetPlayerComboPoints()
+    local kind, _max, cur = ResolveComboProvider()
+    return (kind == "none") and 0 or (tonumber(cur) or 0)
+end
+
+-- Returns the provider kind ("native" | "class" | "none") plus the active
+-- class entry's segment atlas info when kind == "class"; nil otherwise.
+local function GetComboRender()
+    local kind, maxStacks, cur = ResolveComboProvider()
+    if kind == "none" then return "none", 0, 0, nil end
+    if kind == "native" then
+        return "native", NATIVE_MAX, cur, nil
+    end
+    local token = GetPlayerCustomClass()
+    return "class", maxStacks, cur, CLASS_STACKS[token]
+end
+
+function NP.widgets.UpdateComboTargetPlate()
+    if not UnitExists("target") then
+        NP.module.comboTargetPlate = nil
+        return
+    end
+    -- Keyed by target GUID; GetTargetPlate() caches UpdateTargetContext's scan.
+    local plate = NP.identity.GetTargetPlate()
+    if not plate then
+        local targetGUID = UnitGUID("target")
+        if targetGUID then
+            plate = NP.state.GUIDToPlate[targetGUID]
+        end
+    end
+    NP.module.comboTargetPlate = plate
+end
+
+function NP.widgets.IsPlateComboTarget(plateData)
+    if not plateData or not UnitExists("target") then
+        return false
+    end
+    if NP.identity.PlateHasUniqueUnitMatch(plateData, "target") then
+        return true
+    end
+    local targetGUID = UnitGUID("target")
+    if targetGUID then
+        local plateGUID = NP.state.GetPlateGUID(plateData)
+        if plateGUID and plateGUID == targetGUID then
+            return true
+        end
+    end
+    return NP.module.comboTargetPlate ~= nil
+        and plateData == NP.module.comboTargetPlate
+end
+
+-- Host + N segment textures created lazily. We keep the historical _comboHost
+-- name (engine.lua inspects it) but the host now owns a pool of segment frames
+-- rather than a single textured icon. For the native path the original single
+-- `combo-<points>` icon is preserved via host.icon.
+function NP.widgets.EnsureComboWidget(plateData)
+    if plateData._comboHost then return plateData._comboHost end
+    local plate = plateData.plate
+    if not plate then return nil end
+    local host = CreateFrame("Frame", nil, plate)
+    host:SetSize(C.COMBO_ICON_W or 64, C.COMBO_ICON_H or 32)
+    host:Hide()
+    host.segments = {}
+    plateData._comboHost = host
+    -- Native-path icon: single texture covering the host (original behavior).
+    -- Segmented class resources use host.segments instead; icon stays hidden.
+    local icon = host:CreateTexture(nil, "OVERLAY")
+    icon:SetAllPoints(host)
+    icon:Hide()
+    host.icon = icon
+    plateData._depthDirty = true
+    return host
+end
+
+local function AcquireSegment(host, i)
+    local seg = host.segments[i]
+    if seg then return seg end
+    seg = CreateFrame("Frame", nil, host)
+    local bg = seg:CreateTexture(nil, "ARTWORK")
+    bg:SetAllPoints(seg)
+    seg.bg = bg
+    -- Overlay fill used by templates whose Background must stay visible while
+    -- the Fill draws on top (e.g. RangerCombo).
+    local fill = seg:CreateTexture(nil, "OVERLAY")
+    fill:SetAllPoints(seg)
+    fill:Hide()
+    seg.fill = fill
+    host.segments[i] = seg
+    return seg
+end
+
+local function ApplySegmentAtlas(seg, atlasName)
+    if not seg or not atlasName then return end
+    -- SetAtlas falls back gracefully on vanilla; if AtlasUtil is present we
+    -- probe to avoid SetAtlas log noise for unknown names.
+    if _G.AtlasUtil and _G.AtlasUtil.AtlasExists and not _G.AtlasUtil:AtlasExists(atlasName) then
+        seg.bg:SetTexture(0, 0, 0, 0)
+        return
+    end
+    seg.bg:SetAtlas(atlasName, true)
+end
+
+local function ApplyOverlayAtlas(tex, atlasName)
+    if not tex or not atlasName then return end
+    if _G.AtlasUtil and _G.AtlasUtil.AtlasExists and not _G.AtlasUtil:AtlasExists(atlasName) then
+        tex:SetTexture(0, 0, 0, 0)
+        return
+    end
+    tex:SetAtlas(atlasName, true)
+end
+
+-- Resolve the combo widget's anchor point against the target health bar and
+-- return the final SetPoint arguments, already folded with the player's
+-- screen-space X/Y offsets.
+-- Returns: (hostPoint, hpPoint, baseOffsetX, baseOffsetY)
+--   hostPoint = the point on the host frame that touches the health bar.
+--   hpPoint   = the corresponding point on the health bar.
+-- The offsets always push the widget AWAY from the bar edge:
+--   TOP    -> host BOTTOM on hp TOP,    default +gap up    (historical layout)
+--   BOTTOM -> host TOP    on hp BOTTOM, default -gap down
+--   LEFT   -> host RIGHT  on hp LEFT,   default -gap left
+--   RIGHT  -> host LEFT   on hp RIGHT,  default +gap right
+-- Slider semantics stay screen-space for every anchor: positive X = right,
+-- positive Y = up. At 0/0 the widget keeps the historical gap so untouched
+-- profiles render byte-identical to before this change.
+local function ResolveComboAnchor(cfg, kind)
+    local anchor = (cfg and cfg.comboAnchor) or "TOP"
+    local defaultY = (kind == "native") and 3 or (C.COMBO_CLASS_OFFSET_Y or 6)
+    local offX = tonumber(cfg and cfg.comboOffsetX) or 0
+    local offY = tonumber(cfg and cfg.comboOffsetY) or 0
+    if anchor == "BOTTOM" then
+        return "TOP", "BOTTOM", offX, -(defaultY + offY)
+    elseif anchor == "LEFT" then
+        return "RIGHT", "LEFT", -(defaultY + offX), offY
+    elseif anchor == "RIGHT" then
+        return "LEFT", "RIGHT", defaultY + offX, offY
+    end
+    -- TOP (default): widget sits above the health bar.
+    return "BOTTOM", "TOP", offX, defaultY + offY
+end
+
+-- Apply anchor, offset, and scale to the host frame using the player's combo
+-- config. Both the native and class paths share this so the options panel
+-- drives them uniformly.
+local function ApplyComboPlacement(host, hp, cfg, kind, entry)
+    local hostPoint, hpPoint, baseX, baseY = ResolveComboAnchor(cfg, kind)
+    host:ClearAllPoints()
+    host:SetPoint(hostPoint, hp, hpPoint, baseX, baseY)
+    local scale = tonumber(cfg and cfg.comboScale)
+    if not scale or scale <= 0 then scale = 1.0 end
+    -- Per-class extra scale (e.g. Tinker's 7px segments are tiny); multiplies
+    -- the player's global comboScale so both compose.
+    if entry and entry.scale then
+        scale = scale * (tonumber(entry.scale) or 1)
+    end
+    host:SetScale(scale)
+end
+
+-- Lay out the widget. Native combo keeps the original single 64x32 icon;
+-- custom-class resources lay out N square segments, wrapping into multiple
+-- rows when the player caps `comboPerRow` below maxStacks.
+function NP.widgets.LayoutComboWidget(plateData)
+    local host = plateData._comboHost
+    local hp = plateData.minaHp
+    local plate = plateData.plate
+    if not host or not hp or not plate then return false end
+    local cfg = NP.config.GetCfg()
+    local kind, maxStacks, _cur, entry = GetComboRender()
+    if kind == "none" then return false end
+
+    if kind == "native" then
+        host:SetSize(C.COMBO_ICON_W or 64, C.COMBO_ICON_H or 32)
+        ApplyComboPlacement(host, hp, cfg, "native", nil)
+        return true
+    end
+
+    local segSize = (entry and entry.segSize) or 16
+    local spacing = (entry and entry.segSpacing) or 2
+    local count = tonumber(maxStacks) or NATIVE_MAX
+    -- comboPerRow <= 0 (or unset) means "as many as the class needs" -> a single
+    -- row. A cap >= count also collapses to one row; anything below wraps across
+    -- ceil(count / cap) rows. count is always >= 1 here (SyncComboPoints guards
+    -- maxStacks <= 0 before laying out), so the division is safe.
+    local perRow = tonumber(cfg and cfg.comboPerRow) or 0
+    if perRow < 0 then perRow = 0 end
+    if perRow == 0 or perRow >= count then
+        perRow = count
+    end
+
+    local rows = math.ceil(count / perRow)
+    local rowW = perRow * segSize + math.max(0, perRow - 1) * spacing
+    local totalH = rows * segSize + math.max(0, rows - 1) * spacing
+    host:SetSize(rowW, totalH)
+
+    -- Lay out square segments row-by-row, centered on the host horizontally
+    -- and stacked vertically. Row 0 is the top row so the widget grows
+    -- downward when the player wraps (matches anchor TOP sitting above the hp).
+    for i = 1, count do
+        local row = math.floor((i - 1) / perRow) -- 0-based row index
+        local col = (i - 1) % perRow             -- 0-based column within row
+        local seg = AcquireSegment(host, i)
+        seg:SetSize(segSize, segSize)
+        seg:ClearAllPoints()
+        local xOffset = col * (segSize + spacing) - (rowW - segSize) / 2
+        local yOffset = -row * (segSize + spacing) + (totalH - segSize) / 2
+        seg:SetPoint("CENTER", host, "CENTER", xOffset, yOffset)
+    end
+    -- Trim leftover segments if max shrank.
+    for i = count + 1, #host.segments do
+        host.segments[i]:Hide()
+    end
+
+    ApplyComboPlacement(host, hp, cfg, "class", entry)
+    return true
+end
+
+function NP.widgets.SyncComboPoints(plateData)
+    local cfg = NP.config.GetCfg()
+    local host = plateData._comboHost
+    if cfg.showComboPoints == false then
+        if host then host:Hide() end
+        if NP.widgets and NP.widgets.ReflowTopOverlays then
+            NP.widgets.ReflowTopOverlays(plateData)
+        end
+        return
+    end
+    if not NP.widgets.IsPlateComboTarget(plateData) then
+        if host then host:Hide() end
+        if NP.widgets and NP.widgets.ReflowTopOverlays then
+            NP.widgets.ReflowTopOverlays(plateData)
+        end
+        return
+    end
+
+    local kind, maxStacks, cur, entry = GetComboRender()
+
+    -- Reaper-style extra state, resolved up front: a shard-only fill (0 souls
+    -- but shards > 0) must still render, and the infused recolor triggers once
+    -- every soul is full (cur >= maxStacks) or the infused aura is present.
+    local shards = 0
+    local infused = false
+    if kind == "class" and entry then
+        if entry.shardSpellID then
+            shards = AuraStacks(entry.shardSpellID, entry.source)
+        end
+        if entry.infusedSpellID then
+            infused = AuraStacks(entry.infusedSpellID, entry.source) > 0
+        end
+        if not infused and entry.infusedAtlas and maxStacks > 0 and cur >= maxStacks then
+            infused = true
+        end
+    end
+
+    if kind == "none" or maxStacks <= 0 or (cur <= 0 and shards <= 0) then
+        if host then host:Hide() end
+        if NP.widgets and NP.widgets.ReflowTopOverlays then
+            NP.widgets.ReflowTopOverlays(plateData)
+        end
+        return
+    end
+    local count = maxStacks
+
+    host = NP.widgets.EnsureComboWidget(plateData)
+    if not host or not NP.widgets.LayoutComboWidget(plateData) then
+        if host then host:Hide() end
+        return
+    end
+
+    local pts = math.min(cur, count)
+    if kind == "native" then
+        -- Original behavior: a single combo-<points> icon already draws the
+        -- 1..5 pips; do NOT split into per-pip segments.
+        host.icon:SetTexture(C.COMBO_TEX .. pts)
+        host.icon:SetVertexColor(1, 1, 1, 1)
+        host.icon:Show()
+        for _, seg in ipairs(host.segments) do
+            seg:Hide()
+        end
+    else
+        host.icon:Hide()
+        for i = 1, count do
+            local seg = host.segments[i]
+            if seg then
+                seg.bg:SetVertexColor(1, 1, 1, 1)
+                if entry.stackScale then
+                    -- Tinker-style scaled resource: each segment is stackScale
+                    -- stacks. Full slots draw fillAtlas, the next free slot
+                    -- draws a partial "<prefix><diff>" fill, and unspent slots
+                    -- stay hidden (the template has no empty background).
+                    local full = math.floor(cur / entry.stackScale)
+                    local diff = cur % entry.stackScale
+                    if i <= full then
+                        ApplySegmentAtlas(seg, entry.fillAtlas)
+                        seg:Show()
+                    elseif i == full + 1 and diff > 0 and entry.partialPrefix then
+                        ApplySegmentAtlas(seg, entry.partialPrefix .. diff)
+                        seg:Show()
+                    else
+                        seg:Hide()
+                    end
+                elseif entry.overlayFill then
+                    -- Background always visible; Fill draws on top for filled slots.
+                    ApplySegmentAtlas(seg, entry.emptyAtlas)
+                    if i <= pts then
+                        seg.fill:SetVertexColor(1, 1, 1, 1)
+                        ApplyOverlayAtlas(seg.fill, entry.fillAtlas)
+                        seg.fill:Show()
+                    else
+                        seg.fill:Hide()
+                    end
+                elseif i <= pts then
+                    -- Filled soul: ReaperSoulFull, or ReaperSoulInfused once all full.
+                    if infused and entry.infusedAtlas then
+                        ApplySegmentAtlas(seg, entry.infusedAtlas)
+                    else
+                        ApplySegmentAtlas(seg, entry.fillAtlas)
+                    end
+                elseif i == pts + 1 and shards > 0 and entry.shard1Atlas then
+                    -- Next free slot shows the partial fill: 1 or 2 shards.
+                    if shards >= 2 and entry.shard2Atlas then
+                        ApplySegmentAtlas(seg, entry.shard2Atlas)
+                    else
+                        ApplySegmentAtlas(seg, entry.shard1Atlas)
+                    end
+                else
+                    ApplySegmentAtlas(seg, entry.emptyAtlas)
+                end
+                seg:Show()
+            end
+        end
+    end
+
+    host:Show()
+    if NP.widgets and NP.widgets.ReflowTopOverlays then
+        NP.widgets.ReflowTopOverlays(plateData)
+    end
+end
+
+function NP.widgets.RefreshAllComboPoints()
+    NP.widgets.UpdateComboTargetPlate()
+    local targetPlate = NP.module.comboTargetPlate
+    for _, plateData in pairs(NP.module.plates) do
+        if plateData ~= targetPlate then
+            local host = plateData._comboHost
+            if host then host:Hide() end
+        else
+            NP.widgets.SyncComboPoints(plateData)
+        end
+    end
+end
+
+NP.widgets.Register("Combo", {
+    Ensure = function(plateData)
+        return NP.widgets.EnsureComboWidget(plateData) ~= nil
+    end,
+    Layout = function(plateData)
+        return NP.widgets.LayoutComboWidget(plateData)
+    end,
+    Sync = function(plateData)
+        NP.widgets.SyncComboPoints(plateData)
+    end,
+    Hide = function(plateData)
+        local host = plateData and plateData._comboHost
+        if host then
+            host:Hide()
+        end
+    end,
+})
