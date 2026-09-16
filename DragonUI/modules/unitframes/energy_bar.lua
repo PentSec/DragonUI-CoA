@@ -2,8 +2,7 @@ local addon = select(2, ...)
 
 -- ============================================================================
 -- POWER BARS MODULE
--- DragonUI background/border + texture for player & target classless power bars
--- (PlayerFrameClassless* and TargetFrameClassless*)
+-- DragonUI background/border + texture for PlayerFrameEnergyBar & PlayerFrameRageBar
 -- ============================================================================
 
 local _G = _G
@@ -20,52 +19,25 @@ local UV_COORDS = {
     border = {0.412109375, 0.828125, 0.001953125, 0.060546875},
 }
 
--- Bar definitions: { globalName, textGlobalName, texturePath, vertical, anchorTo, anchorOffset }
+-- Bar definitions: { globalName, textGlobalName, texturePath, vertical }
 local BARS = {
     {
-        globalName = "PlayerFrameClasslessEnergyBar",
-        textGlobalName = "PlayerFrameClasslessEnergyBarText",
+        globalName = "PlayerFrameEnergyBar",
+        textGlobalName = "PlayerFrameEnergyBarText",
         texture = "Interface\\AddOns\\DragonUI\\Textures\\UnitFrames\\Bars\\UI-HUD-UnitFrame-Player-PortraitOn-Bar-Energy",
         vertical = false,
     },
     {
-        globalName = "PlayerFrameClasslessRageBar",
-        textGlobalName = "PlayerFrameClasslessRageBarText",
+        globalName = "PlayerFrameRageBar",
+        textGlobalName = "PlayerFrameRageBarText",
         texture = "Interface\\AddOns\\DragonUI\\Textures\\UnitFrames\\Bars\\UI-HUD-UnitFrame-Player-PortraitOn-Bar-Rage",
-        vertical = false,
-        anchorTo = "PlayerFrameClasslessEnergyBar",
-        anchorOffset = -1,
-    },
-    {
-        globalName = "TargetFrameClasslessEnergyBar",
-        textGlobalName = "TargetFrameClasslessEnergyBarText",
-        texture = "Interface\\AddOns\\DragonUI\\Textures\\UnitFrames\\Bars\\UI-HUD-UnitFrame-Player-PortraitOn-Bar-Energy",
-        vertical = false,
-        xOffset = 12, -- 20px right of the player pair's position
-        widthBonus = 10,
-    },
-    {
-        globalName = "TargetFrameClasslessRageBar",
-        textGlobalName = "TargetFrameClasslessRageBarText",
-        texture = "Interface\\AddOns\\DragonUI\\Textures\\UnitFrames\\Bars\\UI-HUD-UnitFrame-Player-PortraitOn-Bar-Rage",
-        vertical = false,
-        anchorTo = "TargetFrameClasslessEnergyBar",
-        anchorOffset = -1,
-        widthBonus = 10,
+        vertical = true,
     },
 }
 
 -- Module state
 local applied = false
 local barTexts = {} -- keyed by globalName
-
-local function FindBarDef(globalName)
-    for _, barDef in ipairs(BARS) do
-        if barDef.globalName == globalName then
-            return barDef
-        end
-    end
-end
 
 -- ============================================================================
 -- TEXT MANAGEMENT
@@ -131,40 +103,6 @@ local function SetupHoverBehaviorForBar(barGlobalName)
 end
 
 -- ============================================================================
--- RUNE FRAME ANCHOR
--- ============================================================================
-
-local function AnchorRuneFrame()
-    local rageDef = FindBarDef("PlayerFrameClasslessRageBar")
-    if not rageDef then return end
-
-    local rageBar = _G[rageDef.globalName]
-    if not rageBar then return end
-
-    local runeFrame = _G["RuneFrame"]
-    if not runeFrame then return end
-
-    -- Anchor the container just below the rage bar
-    runeFrame:ClearAllPoints()
-    runeFrame:SetPoint("TOP", rageBar, "BOTTOM", 0, -4)
-
-    -- Re-anchor the rune buttons as a row inside the container so they follow it.
-    -- player.lua's SetupRuneFrame anchors them to PlayerFrame; we run later in the
-    -- RefreshPlayerFrame hook so our layout wins.
-    for index = 1, 6 do
-        local button = _G["RuneButtonIndividual" .. index]
-        if button then
-            button:ClearAllPoints()
-            if index > 1 then
-                button:SetPoint("LEFT", _G["RuneButtonIndividual" .. (index - 1)], "RIGHT", 3, 0)
-            else
-                button:SetPoint("LEFT", runeFrame, "LEFT", 0, 0)
-            end
-        end
-    end
-end
-
--- ============================================================================
 -- CONFIG CHANGE HANDLING
 -- ============================================================================
 
@@ -191,41 +129,9 @@ local function HookRefresh()
         addon.PlayerFrame.RefreshPlayerFrame = function(...)
             origRefresh(...)
             RefreshAllBarTextVisibility()
-            AnchorRuneFrame()
         end
         refreshHooked = true
     end
-end
-
--- ============================================================================
--- POSITION PROTECTION
--- ============================================================================
-
--- The custom server re-anchors the classless power bars after our one-shot
--- apply, which desyncs the stack. Post-hook SetPoint so our position is
--- re-asserted in the same frame after ANY repositioning (same pattern as
--- player.lua and minimap.lua).
-local function ProtectBarPosition(barDef)
-    local bar = _G[barDef.globalName]
-    if not bar or bar.DragonUISetPointHooked then return end
-
-    hooksecurefunc(bar, "SetPoint", function()
-        if bar.DragonUI_SettingPoint then return end
-
-        bar.DragonUI_SettingPoint = true
-        bar:ClearAllPoints()
-        if barDef.anchorTo then
-            local anchorBar = _G[barDef.anchorTo]
-            if anchorBar then
-                bar:SetPoint("TOP", anchorBar, "BOTTOM", 0, barDef.anchorOffset or -4)
-            end
-        elseif bar.DragonUIAnchor then
-            bar:SetPoint(unpack(bar.DragonUIAnchor))
-        end
-        bar.DragonUI_SettingPoint = nil
-    end)
-
-    bar.DragonUISetPointHooked = true
 end
 
 -- ============================================================================
@@ -273,29 +179,14 @@ local function ApplyBarStyling(barDef)
         border:SetPoint("BOTTOMRIGHT", bar, "BOTTOMRIGHT", 2, -2)
         bar.DragonUIBorder = border
     else
-        -- Horizontal bar: resize and reposition (20px narrower than the profile
-        -- frame so it stays inside the player frame)
+        -- Horizontal bar: resize and reposition
         local origW = bar:GetWidth() or 125
         local origH = bar:GetHeight() or 8
-        bar:SetSize(((origW * 1.35) - 35) + (barDef.widthBonus or 0), origH * 0.7)
+        bar:SetSize(origW * 1.35, origH * 0.7)
 
-        if barDef.anchorTo then
-            -- Anchor below another bar (rage below energy)
-            local anchorBar = _G[barDef.anchorTo]
-            if anchorBar then
-                bar:ClearAllPoints()
-                bar:SetPoint("TOP", anchorBar, "BOTTOM", 0, barDef.anchorOffset or -4)
-            end
-        else
-            -- Capture our target anchor so ProtectBarPosition can re-assert it
-            -- after any Blizzard/custom-server repositioning
-            local point, relTo, relPoint, xOfs, yOfs = bar:GetPoint()
-            if point then
-                bar.DragonUIAnchor = { point, relTo, relPoint, (xOfs or 0) + (barDef.xOffset or -8), (yOfs or 0) - 2 }
-                bar:ClearAllPoints()
-                bar:SetPoint(unpack(bar.DragonUIAnchor))
-            end
-        end
+        local point, relTo, relPoint, xOfs, yOfs = bar:GetPoint()
+        bar:ClearAllPoints()
+        bar:SetPoint(point, relTo, relPoint, xOfs - 18, yOfs)
 
         bar:SetStatusBarTexture(barDef.texture)
         bar:SetStatusBarColor(1, 1, 1)
@@ -330,26 +221,14 @@ end
 local function ApplyAllStyling()
     if applied then return end
 
-    -- Check that at least one classless bar exists before applying
-    -- (player and target bars each have their own pair)
-    local anyExists = false
-    for _, barDef in ipairs(BARS) do
-        if _G[barDef.globalName] then
-            anyExists = true
-            break
-        end
-    end
-    if not anyExists then return end
+    -- Check if first bar exists (both should exist together for HERO class)
+    if not _G[BARS[1].globalName] then return end
 
     applied = true
 
     for _, barDef in ipairs(BARS) do
         ApplyBarStyling(barDef)
-        ProtectBarPosition(barDef)
     end
-
-    -- Anchor RuneFrame below the rage bar
-    AnchorRuneFrame()
 
     -- Configure text visibility based on config
     RefreshAllBarTextVisibility()

@@ -21,10 +21,7 @@ local Module = {
     eventsFrame = nil,
     hooks = {},
     registeredEvents = {},
-    originalStates = {},
-    -- Custom server: classless bars (PlayerFrameClassless*/TargetFrameClassless*)
-    -- already render RAGE/ENERGY, so the vanilla power bar stays MANA in druid forms.
-    keepManaInForms = true,
+    originalStates = {}
 }
 
 if addon.RegisterModule then
@@ -1179,13 +1176,7 @@ local function UpdateManaBarColor(statusBar)
         local textureSetting = config and config.manabar_texture or "dragonui"
         if textureSetting ~= "dragonui" then
             -- Override texture: use DB color if available, else fall back to DF defaults
-            local powerToken
-            if Module.keepManaInForms then
-                powerToken = "MANA"
-            else
-                local _, token = UnitPowerType('player')
-                powerToken = token
-            end
+            local _, powerToken = UnitPowerType('player')
             local dbColors = config and config.power_colors
             local color = (dbColors and dbColors[powerToken]) or DF_POWER_COLORS[powerToken] or DF_POWER_COLORS["MANA"]
             statusBar:SetStatusBarColor(color.r or 1, color.g or 1, color.b or 1)
@@ -1196,21 +1187,13 @@ local function UpdateManaBarColor(statusBar)
     statusBar:SetStatusBarColor(1, 1, 1)
 end
 
--- Update power bar texture based on current power type.
--- Custom server (keepManaInForms): the bar stays MANA even in druid forms because
--- the classless bars handle RAGE/ENERGY. Default: swaps texture to match the form.
+-- Update power bar texture based on current power type (handles druid forms)
 local function UpdatePowerBarTexture(statusBar)
     if statusBar ~= PlayerFrameManaBar then
         return
     end
 
-    local powerTypeString
-    if Module.keepManaInForms then
-        powerTypeString = "MANA"
-    else
-        local _, token = UnitPowerType('player')
-        powerTypeString = token or "MANA"
-    end
+    local powerType, powerTypeString = UnitPowerType('player')
     local powerTexture = GetPowerBarTexture(powerTypeString)
 
     --  CHANGE TEXTURE based on current power type
@@ -2179,10 +2162,10 @@ local function ChangePlayerframe()
     -- Configure mana bar (fat mode uses anchor frame, vehicle/normal use inline position)
     ApplyFatManaBar()
 
-    -- Set power bar texture based on type (respects user texture override).
-    -- Lock-aware helper: on the custom server the bar stays MANA at login/reload
-    -- even in druid forms (classless bars own RAGE/ENERGY).
-    UpdatePowerBarTexture(PlayerFrameManaBar)
+    -- Set power bar texture based on type (respects user texture override)
+    local powerType, powerTypeString = UnitPowerType('player')
+    local powerTexture = GetPowerBarTexture(powerTypeString)
+    PlayerFrameManaBar:GetStatusBarTexture():SetTexture(powerTexture)
 
     -- Configure status and flash textures 
     -- In vehicle: hide our custom glow effects (vehicle frame doesn't use them)
@@ -2532,8 +2515,7 @@ local function ApplyPlayerConfig()
             -- Initialize with dynamic unit based on vehicle state
             local initialUnit = UnitHasVehicleUI("player") and "vehicle" or "player"
             Module.textSystem = addon.TextSystem.SetupFrameTextSystem("player", initialUnit, dragonFrame,
-                PlayerFrameHealthBar, PlayerFrameManaBar, "PlayerFrame",
-                { powerTypeOverride = Module.keepManaInForms and 0 or nil })
+                PlayerFrameHealthBar, PlayerFrameManaBar, "PlayerFrame")
         end
         if Module.textSystem then
             -- Ensure we have the correct unit after setup
@@ -2811,11 +2793,6 @@ local function InitializePlayerFrame()
     if not Module._manaTypeHooked and _G.UnitFrameManaBar_UpdateType then
         hooksecurefunc("UnitFrameManaBar_UpdateType", function(manaBar)
             if manaBar == PlayerFrameManaBar then
-                if Module.keepManaInForms then
-                    -- Force the bar type back to MANA before UnitFrameManaBar_Update reads
-                    -- UnitPowerMax/UnitPower(unit, statusbar.powerType), so values stay mana too.
-                    manaBar.powerType = 0
-                end
                 UpdatePowerBarTexture(PlayerFrameManaBar)
             end
         end)
