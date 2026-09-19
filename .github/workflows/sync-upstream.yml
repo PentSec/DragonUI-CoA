@@ -1,0 +1,79 @@
+name: Sync upstream
+
+on:
+  schedule:
+    - cron: "*/30 * * * *"
+  workflow_dispatch:
+    inputs:
+      retry_sha:
+        description: "SHA (or prefix) of a previously skipped commit to try again"
+        required: false
+        default: ""
+      dry_run:
+        description: "Simulate only: no push, PR, issues or Discord messages"
+        type: boolean
+        default: false
+
+permissions:
+  contents: write
+  pull-requests: write
+  issues: write
+  actions: write
+
+# Never two runs at once (a slow run must not race the next one)
+concurrency:
+  group: sync-upstream
+  cancel-in-progress: false
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    env:
+      GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      GH_REPO: ${{ github.repository }}
+      DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
+      DEFAULT_BRANCH: ${{ github.event.repository.default_branch || 'main' }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Install Lua (syntax check)
+        run: sudo apt-get update -qq && sudo apt-get install -y -qq lua5.1
+
+      - name: Sync
+        env:
+          RETRY_SHA: ${{ inputs.retry_sha }}
+          DRY_RUN: ${{ inputs.dry_run }}
+        run: |
+          # Run from a copy: the script switches branches while it runs.
+          cp .github/scripts/sync-upstream.sh "$RUNNER_TEMP/sync-upstream.sh"
+          bash "$RUNNER_TEMP/sync-upstream.sh"
+
+      # Community workaround so GitHub doesn't auto-disable the schedule after 60 idle days.
+      - name: Keep the schedule alive
+        continue-on-error: true
+        run: gh api -X PUT "repos/${GH_REPO}/actions/workflows/sync-upstream.yml/enable"
+
+      - name: Notify recovery
+        if: success()
+        run: |
+          PREV=$(gh run list --workflow sync-upstream.yml --status completed --limit 1 \
+                   --json conclusion --jq '.[0].conclusion // ""' || true)
+          if [ "$PREV" = "failure" ] && [ -n "${DISCORD_WEBHOOK:-}" ]; then
+            jq -n --arg c "✅ **DragonUI sync** is working again." '{content: $c}' \
+              | curl -fsS -H "Content-Type: application/json" -d @- "$DISCORD_WEBHOOK" || true
+          fi
+
+      # Only alerts on the FIRST failure in a row, so a persistent problem doesn't spam every 30 min.
+      - name: Notify failure
+        if: failure()
+        run: |
+          PREV=$(gh run list --workflow sync-upstream.yml --status completed --limit 1 \
+                   --json conclusion --jq '.[0].conclusion // ""' || true)
+          if [ "$PREV" != "failure" ] && [ -n "${DISCORD_WEBHOOK:-}" ]; then
+            jq -n --arg c "🔴 **DragonUI sync failed** — ${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/actions/runs/${GITHUB_RUN_ID}" \
+                  '{content: $c}' \
+              | curl -fsS -H "Content-Type: application/json" -d @- "$DISCORD_WEBHOOK" || true
+          fi
