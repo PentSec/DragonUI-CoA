@@ -26,7 +26,7 @@ local ApplyNoopChanges
 
 -- Check if noop module is enabled
 local function IsNoopEnabled()
-    return addon.db and addon.db.profile and addon.db.profile.modules and 
+    return addon.db and addon.db.profile and addon.db.profile.modules and
            addon.db.profile.modules.noop and addon.db.profile.modules.noop.enabled
 end
 
@@ -51,8 +51,11 @@ local function ApplyNoopChangesImpl()
     if PossessBarFrame then
         PossessBarFrame:EnableMouse(false)
         PossessBarFrame:SetScale(0.001)
+    -- PossessBar_OnEvent re-Shows the event-less bonus bar on page change; keybinds then land on it.
+        PossessBarFrame:UnregisterEvent("ACTIONBAR_PAGE_CHANGED")
+
     end
-    
+
     -- Kill ExhaustionTick OnUpdate to prevent Blizzard nil crashes
     -- (GetXPExhaustion() returns nil for non-rested players, Blizzard code doesn't check)
     if ExhaustionTick then
@@ -106,7 +109,7 @@ local function ApplyNoopChangesImpl()
         element:SetAlpha(0)
     end
     elements = nil
-    
+
     -- VehicleMenuBar handling depends on whether the vehicle module is enabled.
     -- When enabled, DragonUI's vehicle module provides its own UI, so we KILL
     -- VehicleMenuBar completely. Keeping its events alive causes Blizzard's
@@ -126,7 +129,7 @@ local function ApplyNoopChangesImpl()
         -- Vehicle module disabled — keep VehicleMenuBar fully functional
         -- so Blizzard's native vehicle transitions display correctly.
     end
-    
+
     local uiManagedFrames = {
         'MultiBarLeft',
         'MultiBarRight',
@@ -158,7 +161,7 @@ local function ApplyNoopChangesImpl()
             PlayerTalentFrame:UnregisterEvent('ACTIVE_TALENT_GROUP_CHANGED')
         end)
     end
-    
+
     NoopModule.applied = true
     NoopModule.pendingApply = false
 end
@@ -178,7 +181,7 @@ ApplyNoopChanges = function()
         end
         return false
     end
-    
+
     ApplyNoopChangesImpl()
     return true
 end
