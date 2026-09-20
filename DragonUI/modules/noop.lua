@@ -41,6 +41,7 @@ local function ApplyNoopChangesImpl()
         BonusActionBarFrame:EnableMouse(false)
         BonusActionBarFrame:SetScale(0.001)
     end
+<<<<<<< HEAD
     -- PossessBarFrame: same treatment as BonusActionBarFrame. CoA classes that grant
     -- a temporary "override" bar (e.g. Prophet's Burrow — buries the player and
     -- surfaces a recast bar to exit elsewhere) drive Blizzard's PossessBarFrame.
@@ -51,6 +52,11 @@ local function ApplyNoopChangesImpl()
     if PossessBarFrame then
         PossessBarFrame:EnableMouse(false)
         PossessBarFrame:SetScale(0.001)
+=======
+    -- PossessBar_OnEvent re-Shows the event-less bonus bar on page change; keybinds then land on it.
+    if PossessBarFrame then
+        PossessBarFrame:UnregisterEvent("ACTIONBAR_PAGE_CHANGED")
+>>>>>>> f9093c9 (fix(actionbars): stop keybinds firing the form bar after a page change #465)
     end
     
     -- Kill ExhaustionTick OnUpdate to prevent Blizzard nil crashes
