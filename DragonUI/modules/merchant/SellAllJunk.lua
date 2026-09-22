@@ -10,27 +10,23 @@
 --   * Simplified: skips quest items, sells only poor-quality vendorable items
 
 local addon = select(2, ...)
-if not addon then return end
 
 local L = addon.L
 
 local POPUP = "DRAGONUI_SELL_ALL_JUNK"
+local POOR_LINK_COLOR = "|cff9d9d9d"
 
--- Poor quality, vendor takes it, and not a quest item
+-- Quality comes from the link colour because GetItemInfo is nil until the item is cached.
 local function junkAt(bag, slot)
-    local link = GetContainerItemLink and GetContainerItemLink(bag, slot)
-    if not link then return nil end
-    local _, _, quality, _, _, itemType, _, _, _, _, sellPrice = GetItemInfo(link)
-    if quality ~= 0 then return nil end
-    if not sellPrice or sellPrice <= 0 then return nil end
-    if itemType == "Quest" then return nil end
-    return true
+    local link = GetContainerItemLink(bag, slot)
+    if not link or link:sub(1, 10) ~= POOR_LINK_COLOR then return false end
+    local sellPrice = select(11, GetItemInfo(link))
+    return sellPrice ~= 0
 end
 
 local function forEachBagSlot(fn)
-    for bag = 0, (NUM_BAG_SLOTS or 4) do
-        local slots = (GetContainerNumSlots and GetContainerNumSlots(bag)) or 0
-        for slot = 1, slots do
+    for bag = 0, NUM_BAG_SLOTS or 4 do
+        for slot = 1, GetContainerNumSlots(bag) or 0 do
             fn(bag, slot)
         end
     end
@@ -50,13 +46,13 @@ local function sellAllJunk()
 
     local sold = 0
     forEachBagSlot(function(bag, slot)
-        if junkAt(bag, slot) then
-            if pcall(UseContainerItem, bag, slot) then sold = sold + 1 end
+        if junkAt(bag, slot) and pcall(UseContainerItem, bag, slot) then
+            sold = sold + 1
         end
     end)
 
-    if sold > 0 and DEFAULT_CHAT_FRAME then
-        DEFAULT_CHAT_FRAME:AddMessage(string.format(L["Sold %d junk item(s)."], sold))
+    if sold > 0 then
+        addon:Print(string.format(L["Sold %d junk item(s)."], sold))
     end
 end
 
@@ -67,20 +63,18 @@ end
 local refreshPending
 local function refreshState()
     local btn = _G.DragonUI_MerchantSellAllJunkButton
-    if not btn then return end
-    if not btn:IsVisible() then return end
-    if refreshPending then return end
+    if not btn or not btn:IsVisible() or refreshPending then return end
     refreshPending = true
     C_Timer.After(0, function()
         refreshPending = false
         if not btn:IsVisible() then return end
         local has = countJunkItems() > 0
-        if btn.Icon then SetDesaturation(btn.Icon, not has) end
+        SetDesaturation(btn.Icon, not has)
         if has then btn:Enable() else btn:Disable() end
     end)
 end
 
-local function onClick(self)
+local function onClick()
     GameTooltip:Hide()
     StaticPopup_Show(POPUP)
 end
@@ -92,8 +86,7 @@ local function onEnter(self)
 end
 
 function addon.MerchantSellAllJunkBuild()
-    if _G.DragonUI_MerchantSellAllJunkButton then return end
-    if not _G.MerchantFrame then return end
+    if _G.DragonUI_MerchantSellAllJunkButton or not _G.MerchantFrame then return end
 
     StaticPopupDialogs[POPUP] = StaticPopupDialogs[POPUP] or {
         text         = L["Sell all of your junk (gray) items?"],
@@ -109,22 +102,29 @@ function addon.MerchantSellAllJunkBuild()
     btn:SetSize(36, 36)
     btn:SetPoint("BOTTOMRIGHT", _G.MerchantFrame, "BOTTOMLEFT", 160, 33)
 
+<<<<<<< HEAD
     local NE = DragonUIWorldMapHost
     local icon = btn:CreateTexture(nil, "BORDER")
     if NE and NE.tex and NE.tex.SetAtlas then
         NE.tex.SetAtlas(icon, "spellicon-256x256-selljunk", false)
     end
+=======
+    local icon = btn:CreateTexture(nil, "BORDER")
+    icon:set_atlas("spellicon-256x256-selljunk", false)
+>>>>>>> 816de23 (fix(merchant): retail-accurate vendor window on top of #459)
     icon:SetAllPoints(btn)
     btn.Icon = icon
 
     btn:SetPushedTexture("Interface\\Buttons\\UI-Quickslot-Depress")
-    btn:SetHighlightTexture("Interface\\Buttons\\ButtonHilight-Square")
-    local hl = btn:GetHighlightTexture()
-    if hl then hl:SetBlendMode("ADD") end
+    local hl = btn:CreateTexture(nil, "HIGHLIGHT")
+    hl:SetTexture("Interface\\Buttons\\ButtonHilight-Square")
+    hl:SetBlendMode("ADD")
+    hl:SetAllPoints(btn)
+    btn:SetHighlightTexture(hl)
 
     btn:SetScript("OnClick", onClick)
     btn:SetScript("OnEnter", onEnter)
-    btn:SetScript("OnLeave", function() GameTooltip:Hide() end)
+    btn:SetScript("OnLeave", GameTooltip_Hide)
 
     btn:RegisterEvent("MERCHANT_SHOW")
     btn:RegisterEvent("MERCHANT_UPDATE")

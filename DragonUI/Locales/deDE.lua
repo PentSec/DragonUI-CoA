@@ -760,7 +760,11 @@ L["Details! is not installed."] = "Details! ist nicht installiert."
 L["Merchant"] = "Händler"
 L["Retail-style vendor window chrome"] = "Retail-Style Vendor-Fenster-Rahmen"
 L["Sell all junk items"] = "Alle Schrottgegenstände verkaufen"
+<<<<<<< HEAD
 L["Sell all of your junk (gray) items?"] = "Alle deine Schrottgegenstände (grau) verkaufen?"
+=======
+L["You are about to sell all junk items and will not be able to buy them back.\n\nAre you sure you want to proceed?"] = "Du bist dabei, alle Schrottgegenstände zu verkaufen und kannst sie danach nicht mehr zurückkaufen.\n\nMöchtest du wirklich fortfahren?"
+>>>>>>> 816de23 (fix(merchant): retail-accurate vendor window on top of #459)
 L["Sold %d junk item(s)."] = "%d Schrottgegenstand(e) verkauft."
 
 -- World Map
