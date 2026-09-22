@@ -246,7 +246,13 @@ local defaults = {
             y = -255,
             show_header = true,
             collapsed = false,   -- Survives reloads; Blizzard's own tracker forgets it
+<<<<<<< HEAD
             font_size = 10,      -- Point size for quest tracker text (WoW default: 11)
+=======
+            font_size = 12,      -- Point size for quest tracker text (WoW default: 11)
+            custom_height = false, -- Off: the tracker runs down to the bags bar or the screen bottom
+            height = 400,        -- Cap used when custom_height is on (400-1000, NewEra's range)
+>>>>>>> 73ddff3 (feat(questtracker): cap the tracker height #480)
             show_on_hover = false,
             show_in_combat = false,
             hide_in_combat = false,
