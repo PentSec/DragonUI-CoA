@@ -1013,3 +1013,20 @@ L["World map module disabled: %s replaces the same map frame."] = "Module de car
 L["Cursor"] = "Curseur"
 L["Show Zone Levels"] = "Afficher les niveaux de zone"
 L["Show Map Coordinates"] = "Afficher les coordonnées"
+<<<<<<< HEAD
+=======
+
+-- Level Up Enhance Module
+L["LevelUpFrame"] = "Level Up"
+L["Level Up Enhance"] = "Survie Améliorée"
+L["Enhanced level-up notification with animated frame"] = "Notification de nivel améliorée avec cadre animé"
+L["You've Reached"] = "Tu as atteint"
+L["Level %d"] = "Niveau %d"
+
+-- ============================================================================
+-- LOW HP ALERT MODULE
+-- ============================================================================
+
+L["Low HP Alert"] = "Alerte de HP Bas"
+L["Plays a sound and flashes the screen edges when your HP drops below the threshold."] = "Émet un son et fait clignoter les bords de l'écran lorsque votre HP descend sous le seuil."
+>>>>>>> 8f804be (fix(modules): make #468's Low HP Alert and Level Up Enhance production-ready)

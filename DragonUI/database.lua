@@ -187,6 +187,7 @@ local defaults = {
                 relativePoint = "CENTER",
                 custom_position = false
             },
+<<<<<<< HEAD
             attackbarPlayer = {
                 anchor = "BOTTOM",
                 posX = 0,
@@ -238,6 +239,13 @@ local defaults = {
                 posY = -32,
                 custom_position = false,
             },
+=======
+            levelupenhance = {
+                anchor = "TOP",
+                posX = 0,
+                posY = -180
+            }
+>>>>>>> 8f804be (fix(modules): make #468's Low HP Alert and Level Up Enhance production-ready)
         },
         -- Quest Tracker
         questtracker = {
@@ -949,6 +957,12 @@ local defaults = {
             keypress = {
                 enabled = false -- Fire action-bar abilities on key down instead of key release (SnowfallKeyPress-style)
             },
+<<<<<<< HEAD
+=======
+            levelupenhance = {
+                enabled = true, -- Enhanced level-up notification with animated frame
+            },
+>>>>>>> 8f804be (fix(modules): make #468's Low HP Alert and Level Up Enhance production-ready)
             darkmode = {
                 enabled = false, -- Apply darker tinted textures to UI chrome
                 intensity_preset = 3, -- 1 = Light, 2 = Medium, 3 = Dark
