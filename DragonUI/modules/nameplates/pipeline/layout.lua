@@ -779,18 +779,65 @@ function NP.layout.ApplyNameplateFonts(plateData)
     end
 
     local cfg = NP.config.GetCfg()
+<<<<<<< HEAD
     local hpNumSize = 7 + (cfg.healthNumberFontSize or 2)
     applyFont(plateData.minaName, nameSize)
     applyFont(plateData.minaHpPct, nameSize)
     applyFont(plateData.minaSubTitle, math.max(8, nameSize - 2))
     applyFont(plateData.minaHpNum, hpNumSize)
     applyFont(plateData.minaHpBarPct, hpNumSize)
+=======
+    -- Modern health text is sized like the name; the outline is chosen per name position.
+    local modern = NP.config.IsRetailSkin()
+    local hpNumSize = modern and nameSize or (7 + (cfg.healthNumberFontSize or 2))
+    -- The client matches "OUTLINE" inside the flag string, so NewEra's THINOUTLINE draws a plain outline here.
+    local outline
+    if NP.config.IsNameOverlayBar() then
+        outline = cfg.retailTextOutlineInside ~= false
+    else
+        outline = cfg.retailTextOutlineAbove == true
+    end
+    local textFlags = (modern and outline) and "THINOUTLINE" or ""
+    -- NewEra rounds retail's fractional heights to whole screen pixels so the outline stays crisp.
+    local pixelsPerUnit
+    if modern then
+        -- The UI is 768 units tall; the plate's own scale is left out so a target zoom can't bake in.
+        local res = GetCVar("gxResolution")
+        local screenH = res and tonumber(res:match("%d+x(%d+)"))
+        local plateScale = plateData.plate and plateData.plate:GetScale() or 1
+        if screenH and screenH > 0 and plateScale > 0 then
+            pixelsPerUnit = screenH / 768 / plateScale
+        end
+    end
+    local function snap(fs, px)
+        local parent = pixelsPerUnit and fs and fs:GetParent()
+        local eff = parent and parent:GetEffectiveScale()
+        if not eff or eff <= 0 then
+            return px
+        end
+        local unit = eff * pixelsPerUnit
+        return math.max(1, math.floor(px * unit + 0.5)) / unit
+    end
+    applyFont(plateData.minaName, snap(plateData.minaName, nameSize), textFlags)
+    applyFont(plateData.minaHpPct, snap(plateData.minaHpPct, nameSize), textFlags)
+    applyFont(plateData.minaSubTitle, math.max(8, nameSize - 2))
+    applyFont(plateData.minaHpNum, snap(plateData.minaHpNum, hpNumSize), textFlags)
+    applyFont(plateData.minaHpBarPct, snap(plateData.minaHpBarPct, hpNumSize), textFlags)
+>>>>>>> e00daaa (feat(nameplates): editable Modern fonts, text outline toggle and full translations)
     applyFont(plateData.minaPoCur, powerSize)
     applyFont(plateData.minaPoPct, powerSize)
     local cast = plateData.minaCast
     if cast and cast.minaCastSpellName then
         local fs = cast.minaCastSpellName
+<<<<<<< HEAD
         SafeSetFont(fs, fontPath, cfg.castBarSpellNameFontSize or 9, "OUTLINE")
+=======
+        SafeSetFont(fs, fontPath, snap(fs, cfg.castBarSpellNameFontSize or 9), "OUTLINE")
+        if modern then
+            fs:SetShadowColor(0, 0, 0, 0)
+            fs:SetShadowOffset(0, 0)
+        end
+>>>>>>> e00daaa (feat(nameplates): editable Modern fonts, text outline toggle and full translations)
         local offX = cfg.castBarSpellNameOffsetX or 0
         local offY = cfg.castBarSpellNameOffsetY or 0
         fs:ClearAllPoints()
