@@ -735,6 +735,7 @@ L["Merchant"] = "商人"
 L["Retail-style vendor window chrome"] = "商人窗口现代风格"
 L["Sell all junk items"] = "出售所有垃圾物品"
 L["Sell all of your junk (gray) items?"] = "出售你所有的垃圾(灰色)物品？"
+L["You are about to sell all junk items and will not be able to buy them back.\n\nAre you sure you want to proceed?"] = "您即将出售所有垃圾物品，且无法再购买回来。\n\n确定要继续吗？"
 L["Sold %d junk item(s)."] = "已售出 %d 件垃圾物品。"
 
 -- World Map
@@ -764,3 +765,18 @@ L["World map module disabled: %s replaces the same map frame."] = "世界地图�
 L["Cursor"] = "光标"
 L["Show Zone Levels"] = "显示区域等级"
 L["Show Map Coordinates"] = "显示地图坐标"
+
+-- Level Up Enhance Module
+L["LevelUpFrame"] = "Level Up"
+L["Enhanced tooltip styling with class colors and health bars"] = "带有职业颜色和生命条的增强提示样式"
+L["Level Up Enhance"] = "升级增强"
+L["Enhanced level-up notification with animated frame"] = "带有动画边框的增强升级通知"
+L["You've Reached"] = "你已达到"
+L["Level %d"] = "等级 %d"
+
+-- ============================================================================
+-- LOW HP ALERT MODULE
+-- ============================================================================
+
+L["Low HP Alert"] = "低HP警报"
+L["Plays a sound and flashes the screen edges when your HP drops below the threshold."] = "当你的HP低于设定的临界值时，发出声音并闪烁屏幕边缘。"

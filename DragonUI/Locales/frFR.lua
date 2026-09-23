@@ -986,6 +986,7 @@ L["Merchant"] = "Marchand"
 L["Retail-style vendor window chrome"] = "Cadre de fenêtre de vendeur style Retail"
 L["Sell all junk items"] = "Vendre tous les objets poubelle"
 L["Sell all of your junk (gray) items?"] = "Vendre tous vos objets poubelle (gris) ?"
+L["You are about to sell all junk items and will not be able to buy them back.\n\nAre you sure you want to proceed?"] = "Vous êtes sur le point de vendre tous les objets poubelle et vous ne pourrez pas les racheter.\n\nÊtes-vous sûr de vouloir continuer ?"
 L["Sold %d junk item(s)."] = "%d objet(s) poubelle vendu(s)."
 
 -- World Map
@@ -1015,3 +1016,18 @@ L["World map module disabled: %s replaces the same map frame."] = "Module de car
 L["Cursor"] = "Curseur"
 L["Show Zone Levels"] = "Afficher les niveaux de zone"
 L["Show Map Coordinates"] = "Afficher les coordonnées"
+
+-- Level Up Enhance Module
+L["LevelUpFrame"] = "Level Up"
+L["Enhanced tooltip styling with class colors and health bars"] = "Style d'infobulle amélioré avec couleurs de classe et barres de vie"
+L["Level Up Enhance"] = "Survie Améliorée"
+L["Enhanced level-up notification with animated frame"] = "Notification de nivel améliorée avec cadre animé"
+L["You've Reached"] = "Tu as atteint"
+L["Level %d"] = "Niveau %d"
+
+-- ============================================================================
+-- LOW HP ALERT MODULE
+-- ============================================================================
+
+L["Low HP Alert"] = "Alerte de HP Bas"
+L["Plays a sound and flashes the screen edges when your HP drops below the threshold."] = "Émet un son et fait clignoter les bords de l'écran lorsque votre HP descend sous le seuil."

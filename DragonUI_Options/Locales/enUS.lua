@@ -1072,6 +1072,9 @@ L["Horizontal position offset"] = true
 L["Vertical position offset"] = true
 L["Reset quest tracker to default position"] = true
 L["Font size for quest tracker text"] = true
+L["Custom Height"] = true
+L["Limit the tracker to a fixed height. When off, it stops above the bags. Quests that don't fit are hidden until there is room."] = true
+L["Maximum height of the quest tracker."] = true
 
 -- ============================================================================
 -- UNIT FRAMES TAB
@@ -2034,3 +2037,26 @@ L["Show Flight Points"] = true
 L["Show flight master pins on zone maps."] = true
 L["Show Inns"] = true
 L["Show innkeeper pins on zone maps, marking the inn your hearthstone is set to."] = true
+
+-- ============================================================================
+-- LOW HP ALERT MODULE (added by DragonUI)
+-- ============================================================================
+
+L["Low HP Alert"] = true
+L["Plays a sound and flashes the screen edges when your HP drops below the configured threshold."] = true
+L["Enable Low HP Alert"] = true
+L["Warning Sound (every 3 sec)"] = true
+L["Plays a warning sound every 3 seconds while HP is below threshold."] = true
+L["Screen Edge Flash"] = true
+L["Flashes red at the edges of the screen while HP is below threshold."] = true
+L["Flash Color"] = true
+L["Use Class Color"] = true
+L["Use your class color (e.g. orange for Druid, yellow for Rogue) instead of the custom color."] = true
+L["Flash Opacity"] = true
+L["Maximum opacity of the flash effect."] = true
+L["Flash Extent"] = true
+L["How far the flash extends from the screen edges toward the center, in pixels."] = true
+L["HP Warning Threshold"] = true
+L["Percentage of HP at which the warning triggers."] = true
+L["Test Warning (3 sec)"] = true
+L["Triggers a 3-second preview of the warning state to help you adjust the threshold."] = true

@@ -308,8 +308,16 @@ local function BuildGeneralSubTab(scroll)
                 C:SetDBValue(DB .. ".barWidth", modern and 148 or 150)
                 C:SetDBValue(DB .. ".barHeight", modern and 16 or 9)
                 C:SetDBValue(DB .. ".castBarHeight", modern and 8 or 9)
-                -- The modern cast bar is drawn around its spell name, so the skin needs it on.
+                -- Modern starts from NewEra's font and text sizes; all stay editable afterwards.
+                C:SetDBValue(DB .. ".fontSize", 2)
+                C:SetDBValue(DB .. ".castBarSpellNameFontSize", modern and 8 or 9)
+                -- NewEra's timer is 0.55 of the icon; Modern scales it up again on enlarged icons.
+                local iconSize = C:GetDBValue(DB .. ".debuffIconSize") or 24
+                C:SetDBValue(DB .. ".debuffCooldownFontSize",
+                    modern and math.min(16, math.max(8, math.floor(iconSize * 0.55 + 0.5))) or 10)
                 if modern then
+                    C:SetDBValue(DB .. ".nameFont", "primary")
+                    -- The modern cast bar is drawn around its spell name, so the skin needs it on.
                     C:SetDBValue(DB .. ".showCastBarSpellName", true)
                 end
                 -- NewEra ships its aggro flare off, while the legacy glow is part of that art.

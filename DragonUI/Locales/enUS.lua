@@ -724,6 +724,12 @@ L["A retail-styled theme for the Details! Damage Meter: gold-titled header bar, 
 L["Details! skin applied."] = true
 L["Could not apply the skin - Details! is not ready yet."] = true
 L["Details! is not installed."] = true
+--MERCHANT MODULE
+L["Merchant"] = true
+L["Retail-style vendor window chrome"] = true
+L["Sell all junk items"] = true
+L["You are about to sell all junk items and will not be able to buy them back.\n\nAre you sure you want to proceed?"] = true
+L["Sold %d junk item(s)."] = true
 
 -- World Map
 L["World Map"] = true
@@ -752,3 +758,18 @@ L["World map module disabled: %s replaces the same map frame."] = true
 L["Cursor"] = true
 L["Show Zone Levels"] = true
 L["Show Map Coordinates"] = true
+
+-- Level Up Enhance Module
+L["LevelUpFrame"] = "Level Up"
+L["Enhanced tooltip styling with class colors and health bars"] = true
+L["Level Up Enhance"] = true
+L["Enhanced level-up notification with animated frame"] = true
+L["You've Reached"] = true
+L["Level %d"] = true
+
+-- ============================================================================
+-- LOW HP ALERT MODULE
+-- ============================================================================
+
+L["Low HP Alert"] = true
+L["Plays a sound and flashes the screen edges when your HP drops below the threshold."] = true

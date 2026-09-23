@@ -766,6 +766,7 @@ L["Merchant"] = "Торговец"
 L["Retail-style vendor window chrome"] = "Современный интерфейс окна торговца"
 L["Sell all junk items"] = "Продать весь хлам"
 L["Sell all of your junk (gray) items?"] = "Продать весь твой хлам (серый)?"
+L["You are about to sell all junk items and will not be able to buy them back.\n\nAre you sure you want to proceed?"] = "Вы собираетесь продать весь хлам и не сможете купить его обратно.\n\nВы уверены, что хотите продолжить?"
 L["Sold %d junk item(s)."] = "Продано %d предмет(а/ов) хлама."
 
 -- World Map
@@ -795,3 +796,18 @@ L["World map module disabled: %s replaces the same map frame."] = "Модуль 
 L["Cursor"] = "Курсор"
 L["Show Zone Levels"] = "Показывать уровни зон"
 L["Show Map Coordinates"] = "Показывать координаты карты"
+
+-- Level Up Enhance Module
+L["LevelUpFrame"] = "Level Up"
+L["Enhanced tooltip styling with class colors and health bars"] = "Улучшенный стиль подсказки с цветами классов и полосами здоровья"
+L["Level Up Enhance"] = "Уровень Повышен"
+L["Enhanced level-up notification with animated frame"] = "Расширенное уведомление о повышении уровня с анимированной рамкой"
+L["You've Reached"] = "Ты достиг"
+L["Level %d"] = "Уровень %d"
+
+-- ============================================================================
+-- LOW HP ALERT MODULE
+-- ============================================================================
+
+L["Low HP Alert"] = "Низкий HP — Оповещение"
+L["Plays a sound and flashes the screen edges when your HP drops below the threshold."] = "Играет звук и мигает краями экрана, когда ваш HP падает ниже порога."
