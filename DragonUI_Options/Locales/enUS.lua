@@ -379,6 +379,7 @@ L["Choose where the number appears:"] = true
 L["Guild Bank"] = true
 L["Inspect"] = true
 L["Merchant"] = true
+L["Retail-style vendor window chrome"] = true
 L["Trade"] = true
 L["Loot"] = true
 L["Mail"] = true
@@ -400,7 +401,10 @@ L["Restyle the tooltip health bar with class/reaction colors and slimmer look."]
 L["Anchor to Cursor"] = true
 L["Make the tooltip follow the cursor position instead of the default anchor."] = true
 L["Show Aura Source"] = true
-L["Show the caster's name (class-colored) and spell ID on buff and debuff tooltips."] = true
+L["Show the caster's name (class-colored) on buff and debuff tooltips."] = true
+L["Aura Tooltips"] = true
+L["Show Aura Spell ID"] = true
+L["Show the spell ID on buff and debuff tooltips. Requires the Tooltip module."] = true
 
 -- Chat Mods
 L["Enable Chat Mods"] = true
@@ -1068,6 +1072,9 @@ L["Horizontal position offset"] = true
 L["Vertical position offset"] = true
 L["Reset quest tracker to default position"] = true
 L["Font size for quest tracker text"] = true
+L["Custom Height"] = true
+L["Limit the tracker to a fixed height. When off, it stops above the bags. Quests that don't fit are hidden until there is room."] = true
+L["Maximum height of the quest tracker."] = true
 
 -- ============================================================================
 -- UNIT FRAMES TAB
@@ -1474,6 +1481,44 @@ L["Health Number Font Size"] = true
 L["Health number font scale (1-10)."] = true
 L["Center Name Only"] = true
 L["Centers the unit name and hides the health percent."] = true
+L["Health Text"] = true
+L["What the health text shows. With both, the value comes first."] = true
+L["Percent"] = true
+L["Value"] = true
+L["Value and Percent"] = true
+L["After the name, the name is shortened so the two never overlap. With the name inside the health bar, the text always sits at the bar's right end."] = true
+L["After the Name"] = true
+L["Inside the Bar, Centered"] = true
+L["Inside the Bar, Right"] = true
+L["Inside the Bar, Value Left and Percent Right"] = true
+L["Center Name"] = true
+L["Center the name in the space the health text leaves free."] = true
+L["Font size of the name, and of the health text when it follows the name (1-10, default 2)."] = true
+L["Inset the name, level, and health text from the left and right edges of the health bar. Does not affect the elite icon."] = true
+L["Show"] = true
+L["Always (anyone's)"] = true
+L["Follow 'Only My Debuffs'"] = true
+L["Only Mine"] = true
+L["Each listed spell can decide whose casts it shows, whatever 'Only My Debuffs' says."] = true
+L["Click an entry to select it."] = true
+L["Click to select."] = true
+L["Remove Spell"] = true
+L["Select a spell above to choose whose casts it shows."] = true
+L["Name & Health"] = true
+L["Name"] = true
+L["Level"] = true
+L["Name Position"] = true
+L["Above the Health Bar"] = true
+L["Inside the Health Bar"] = true
+L["Moves the name up or down while it sits inside the health bar."] = true
+L["The name is inside the health bar, so the health text sits at the bar's right end, after the name."] = true
+L["The Modern style draws its own bar background."] = true
+L["Name Text"] = true
+L["Color friendly player names by class. Needs Party Class Colors or Friendly Class Colors."] = true
+L["Color enemy player names by class. Needs Enemy Player Class Colors."] = true
+L["Font size of the health text inside the bar (1-10). After the name, or in the Modern style, it matches the name."] = true
+L["Text Outline"] = true
+L["Black outline on the name and health text."] = true
 L["Hides level text and health percent, and centers the unit name on the nameplate."] = true
 L["Gray Tapped Units"] = true
 L["Grays the health bar when a unit is tapped by another player or group."] = true
@@ -2007,3 +2052,28 @@ L["Show Graveyards"] = true
 L["Show graveyard pins on zone maps."] = true
 L["Show Flight Points"] = true
 L["Show flight master pins on zone maps."] = true
+L["Show Inns"] = true
+L["Show innkeeper pins on zone maps, marking the inn your hearthstone is set to."] = true
+
+-- ============================================================================
+-- LOW HP ALERT MODULE (added by DragonUI)
+-- ============================================================================
+
+L["Low HP Alert"] = true
+L["Plays a sound and flashes the screen edges when your HP drops below the configured threshold."] = true
+L["Enable Low HP Alert"] = true
+L["Warning Sound (every 3 sec)"] = true
+L["Plays a warning sound every 3 seconds while HP is below threshold."] = true
+L["Screen Edge Flash"] = true
+L["Flashes red at the edges of the screen while HP is below threshold."] = true
+L["Flash Color"] = true
+L["Use Class Color"] = true
+L["Use your class color (e.g. orange for Druid, yellow for Rogue) instead of the custom color."] = true
+L["Flash Opacity"] = true
+L["Maximum opacity of the flash effect."] = true
+L["Flash Extent"] = true
+L["How far the flash extends from the screen edges toward the center, in pixels."] = true
+L["HP Warning Threshold"] = true
+L["Percentage of HP at which the warning triggers."] = true
+L["Test Warning (3 sec)"] = true
+L["Triggers a 3-second preview of the warning state to help you adjust the threshold."] = true

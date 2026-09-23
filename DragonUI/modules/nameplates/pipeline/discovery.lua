@@ -226,8 +226,13 @@ function NP.discovery.ClipBarFill(bar, cur, maxVal)
     end
 end
 
+-- Every health tick lands here; the sliced fill turns one recolor into ten widget calls.
 function NP.discovery.SetBarColor(bar, r, g, b)
-    local sliced = bar._retailFillOn
+    local sliced = bar._retailFillOn and true or false
+    if bar._colorR == r and bar._colorG == g and bar._colorB == b and bar._colorSliced == sliced then
+        return
+    end
+    bar._colorR, bar._colorG, bar._colorB, bar._colorSliced = r, g, b, sliced
     bar:SetStatusBarColor(r, g, b, sliced and 0 or 1)
     if sliced then
         NP.atlas.SetSliceVertexColor(bar._retailFill, r, g, b, 1)
@@ -332,27 +337,28 @@ local function RestoreNativeFontString(fs, _parent)
     end
 end
 
+local function ReassertNativeFontString(fs)
+    if not fs or not fs._duiChromeActive then
+        return
+    end
+    if fs.SetWidth and (not fs.GetWidth or fs:GetWidth() > 0.01) then
+        fs:SetWidth(0.001)
+    end
+    if fs.SetAlpha and (not fs.GetAlpha or fs:GetAlpha() ~= 0) then
+        fs:SetAlpha(0)
+    end
+    if not fs._duiAlphaOnly and fs.Hide and fs.IsShown and fs:IsShown() then
+        fs:Hide()
+    end
+end
+
 -- Cheap per-frame stomp; client undoes Hide/alpha/width on hover without a reliable event.
 function NP.discovery.ReassertNativeFontChrome(plateData)
     if not plateData then
         return
     end
-    local function reassert(fs)
-        if not fs or not fs._duiChromeActive then
-            return
-        end
-        if fs.SetWidth and (not fs.GetWidth or fs:GetWidth() > 0.01) then
-            fs:SetWidth(0.001)
-        end
-        if fs.SetAlpha and (not fs.GetAlpha or fs:GetAlpha() ~= 0) then
-            fs:SetAlpha(0)
-        end
-        if not fs._duiAlphaOnly and fs.Hide and fs.IsShown and fs:IsShown() then
-            fs:Hide()
-        end
-    end
-    reassert(plateData.ogNameText)
-    reassert(plateData.levelText)
+    ReassertNativeFontString(plateData.ogNameText)
+    ReassertNativeFontString(plateData.levelText)
 end
 
 function NP.discovery.HideCastChrome(plateData)

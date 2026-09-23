@@ -1,8 +1,4 @@
--- DragonUI/modules/merchant/BuybackUndo.lua — retail's buyback undo arrow.
---
--- DOWNPORT of NewEra/MerchantFrame/BuybackUndo.lua, adapted for DragonUI.
--- Retail nests an UndoFrame inside the merchant tab's buyback slot with a
--- `common-icon-undo` arrow at CENTER, desaturated while GetNumBuybackItems() == 0.
+-- Buyback undo arrow on the vendor window's buyback slot.
 
 local addon = select(2, ...)
 if not addon then return end
@@ -13,7 +9,7 @@ local function refreshDesaturation()
     if not arrowTex then return end
     SetDesaturation(arrowTex, ((GetNumBuybackItems and GetNumBuybackItems()) or 0) == 0)
 end
-
+ 
 function addon.MerchantBuybackUndoBuild()
     local itemBtn = _G.MerchantBuyBackItemItemButton
     if not itemBtn or itemBtn._duiUndoBuilt then return end
@@ -22,9 +18,9 @@ function addon.MerchantBuybackUndoBuild()
     undo:SetAllPoints(itemBtn)
     undo:SetFrameLevel((itemBtn:GetFrameLevel() or 0) + 2)
 
-    local NE = DragonUIWorldMapHost
     local tex = undo:CreateTexture(nil, "ARTWORK")
-    if NE and NE.tex and NE.tex.SetAtlas and NE.tex.SetAtlas(tex, "common-icon-undo", false) then
+    if addon.atlasinfo and addon.atlasinfo["common-icon-undo"] then
+        tex:set_atlas("common-icon-undo", false)
         tex:SetSize(20, 20)
         tex:SetPoint("CENTER", 0, -1)
         arrowTex = tex

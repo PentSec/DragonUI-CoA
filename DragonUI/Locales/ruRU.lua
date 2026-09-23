@@ -766,6 +766,7 @@ L["Merchant"] = "Торговец"
 L["Retail-style vendor window chrome"] = "Современный интерфейс окна торговца"
 L["Sell all junk items"] = "Продать весь хлам"
 L["Sell all of your junk (gray) items?"] = "Продать весь твой хлам (серый)?"
+L["You are about to sell all junk items and will not be able to buy them back.\n\nAre you sure you want to proceed?"] = "Вы собираетесь продать весь хлам и не сможете купить его обратно.\n\nВы уверены, что хотите продолжить?"
 L["Sold %d junk item(s)."] = "Продано %d предмет(а/ов) хлама."
 
 -- World Map
@@ -787,6 +788,8 @@ L["Show Graveyards"] = "Показывать кладбища"
 L["Graveyard"] = "Кладбище"
 L["Show Flight Points"] = "Показывать точки полета"
 L["Flight Master"] = "Распорядитель полетов"
+L["Show Inns"] = "Показывать таверны"
+L["Hearthstone"] = "Камень возвращения"
 L["Click to view on Map"] = "Щелкните, чтобы показать на карте"
 L["Search Quest Log"] = "Поиск в журнале заданий"
 L["World map module disabled: %s replaces the same map frame."] = "Модуль карты мира отключен: %s заменяет тот же фрейм карты."
@@ -796,6 +799,7 @@ L["Show Map Coordinates"] = "Показывать координаты карт�
 
 -- Level Up Enhance Module
 L["LevelUpFrame"] = "Level Up"
+L["Enhanced tooltip styling with class colors and health bars"] = "Улучшенный стиль подсказки с цветами классов и полосами здоровья"
 L["Level Up Enhance"] = "Уровень Повышен"
 L["Enhanced level-up notification with animated frame"] = "Расширенное уведомление о повышении уровня с анимированной рамкой"
 L["You've Reached"] = "Ты достиг"

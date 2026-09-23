@@ -35,12 +35,11 @@
     <Script file="minimap_collector.lua"/>
     <Script file="minimap.lua"/>
     <Script file="minimap_decorations.lua"/>
-    <Script file="objectivetracker.lua"/>   
+    <Script file="objectivetracker.lua"/>
     <Script file="lootroll.lua"/>
 
     <!-- Blizzard loot window skin (the paginated LootFrame, not the roll popup above) -->
     <Script file="loot_skin.lua"/>
-
  
     <!-- UnitFrames -->
     <Include file="unitframes\unitframes.xml"/>
@@ -91,6 +90,9 @@
     <!-- Retail-style character window reskin -->
     <Include file="characterpanel\characterpanel.xml"/>
 
+    <!-- Retail-style vendor window reskin -->
+    <Include file="merchant\merchant.xml"/>
+
     <!-- Chat Mods module -->
     <Script file="chatmods.lua"/>
     
@@ -113,8 +115,6 @@
     <!-- Transmog Collector (Ascension: auto-collect appearances on loot) -->
     <Script file="transmog_collector.lua"/>
 
-    <!-- Level Up Enhance (animated level-up notification) -->
-    <Script file="levelupenhance.lua"/>
     <!-- Alt Gold module (other characters' money on the bag coin tooltip) -->
     <Script file="altmoney.lua"/>
 
@@ -135,9 +135,6 @@
 
     <!-- Details! Damage Meter skin (inert until applied; requires the Details! addon) -->
     <Script file="detailsskin.lua"/>
-
-    <!-- World Map — retail-styled chrome, breadcrumb, pins, quest panel, fog reveal -->
-    <!-- <Include file="worldmap\worldmap.xml"/> -->
 
     <!-- Merchant — retail-style vendor window chrome (uses worldmap's PanelChrome/NineSlice libs) -->
     <Include file="merchant\merchant.xml"/>
