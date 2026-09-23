@@ -2065,8 +2065,6 @@ L["Show Graveyards"] = "묘지 표시"
 L["Show graveyard pins on zone maps."] = "지역 지도에 묘지를 표시합니다."
 L["Show Flight Points"] = "비행 지점 표시"
 L["Show flight master pins on zone maps."] = "지역 지도에 비행 조련사를 표시합니다."
-<<<<<<< HEAD
-=======
 L["Show Inns"] = "여관 표시"
 L["Show innkeeper pins on zone maps, marking the inn your hearthstone is set to."] = "지역 지도에 여관주인을 표시하고 귀환석이 설정된 여관을 강조합니다."
 
@@ -2092,4 +2090,3 @@ L["HP Warning Threshold"] = "HP 경고 임계값"
 L["Percentage of HP at which the warning triggers."] = "경고가 트리거되는 HP 비율."
 L["Test Warning (3 sec)"] = "경고 테스트 (3초)"
 L["Triggers a 3-second preview of the warning state to help you adjust the threshold."] = "임계값을 조정하는 데 도움이 되는 3초 미리보기 경고 상태를 트리거합니다."
->>>>>>> 6d92c9d (feat(modules): add Low HP Alert and Level Up Enhance with i18n & database defaults)

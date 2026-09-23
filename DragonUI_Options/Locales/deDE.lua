@@ -2066,8 +2066,6 @@ L["Show Graveyards"] = "Friedhöfe anzeigen"
 L["Show graveyard pins on zone maps."] = "Zeigt Friedhöfe auf Gebietskarten."
 L["Show Flight Points"] = "Flugpunkte anzeigen"
 L["Show flight master pins on zone maps."] = "Zeigt Flugmeister auf Gebietskarten."
-<<<<<<< HEAD
-=======
 L["Show Inns"] = "Gasthäuser anzeigen"
 L["Show innkeeper pins on zone maps, marking the inn your hearthstone is set to."] = "Zeigt Gastwirte auf Gebietskarten und hebt das Gasthaus deines Ruhesteins hervor."
 
@@ -2093,4 +2091,3 @@ L["HP Warning Threshold"] = "HP-Warnschwellenwert"
 L["Percentage of HP at which the warning triggers."] = "Prozentsatz der HP, bei dem die Warnung ausgelöst wird."
 L["Test Warning (3 sec)"] = "Warnung testen (3 Sek.)"
 L["Triggers a 3-second preview of the warning state to help you adjust the threshold."] = "Löst eine 3-Sekunden-Vorschau des Warnzustands aus, damit du den Schwellenwert anpassen kannst."
->>>>>>> 6d92c9d (feat(modules): add Low HP Alert and Level Up Enhance with i18n & database defaults)

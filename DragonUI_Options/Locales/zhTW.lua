@@ -2082,8 +2082,6 @@ L["Show Graveyards"] = "顯示墓地"
 L["Show graveyard pins on zone maps."] = "在區域地圖上顯示墓地。"
 L["Show Flight Points"] = "顯示飛行點"
 L["Show flight master pins on zone maps."] = "在區域地圖上顯示飛行管理員。"
-<<<<<<< HEAD
-=======
 L["Show Inns"] = "顯示旅店"
 L["Show innkeeper pins on zone maps, marking the inn your hearthstone is set to."] = "在區域地圖上顯示旅店老闆，並標出你的爐石所綁定的旅店。"
 
@@ -2109,4 +2107,3 @@ L["HP Warning Threshold"] = "HP警告臨界值"
 L["Percentage of HP at which the warning triggers."] = "HP觸發警告的百分比。"
 L["Test Warning (3 sec)"] = "測試警告（3秒）"
 L["Triggers a 3-second preview of the warning state to help you adjust the threshold."] = "觸發3秒的警告狀態預覽，以幫助你調整臨界值。"
->>>>>>> 6d92c9d (feat(modules): add Low HP Alert and Level Up Enhance with i18n & database defaults)

@@ -256,11 +256,7 @@ function addon.RefreshHpLowAlertSystem()
 end
 
 -- -----------------------------------------------
-<<<<<<< HEAD
--- Self-initialization (required by Guia_NewModules)
-=======
 -- Self-initialization
->>>>>>> 6d92c9d (feat(modules): add Low HP Alert and Level Up Enhance with i18n & database defaults)
 -- -----------------------------------------------
 local initFrame = CreateFrame("Frame")
 initFrame:RegisterEvent("ADDON_LOADED")

@@ -2007,8 +2007,6 @@ L["Show Graveyards"] = true
 L["Show graveyard pins on zone maps."] = true
 L["Show Flight Points"] = true
 L["Show flight master pins on zone maps."] = true
-<<<<<<< HEAD
-=======
 L["Show Inns"] = true
 L["Show innkeeper pins on zone maps, marking the inn your hearthstone is set to."] = true
 
@@ -2034,4 +2032,3 @@ L["HP Warning Threshold"] = true
 L["Percentage of HP at which the warning triggers."] = true
 L["Test Warning (3 sec)"] = true
 L["Triggers a 3-second preview of the warning state to help you adjust the threshold."] = true
->>>>>>> 6d92c9d (feat(modules): add Low HP Alert and Level Up Enhance with i18n & database defaults)

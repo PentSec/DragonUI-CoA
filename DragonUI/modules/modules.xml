@@ -10,12 +10,9 @@
     <Script file="auracooldowns.lua"/>
     <Script file="mainbars.lua"/>
 
-<<<<<<< HEAD
     <!-- Attack Bar (swing timer for main/off hand, ranged, and enemy) -->
     <Script file="Attackbar.lua"/>
 
-=======
->>>>>>> 6d92c9d (feat(modules): add Low HP Alert and Level Up Enhance with i18n & database defaults)
     <!-- Action Bar Sub-modules (stance, vehicle, petbar, multicast) -->
     <Include file="actionbars\actionbars.xml"/>
 
@@ -31,10 +28,6 @@
 
     <!-- Key Press module (fire actions on key down instead of key release) -->
     <Script file="keypress.lua"/>
-<<<<<<< HEAD
-=======
-
->>>>>>> 6d92c9d (feat(modules): add Low HP Alert and Level Up Enhance with i18n & database defaults)
     <!-- Buffs, Minimap & Quest Tracker modules -->
     <Script file="buff_frame.lua"/>
     <Script file="auraborders.lua"/>
@@ -47,16 +40,10 @@
     <!-- Blizzard loot window skin (the paginated LootFrame, not the roll popup above) -->
     <Script file="loot_skin.lua"/>
 
-<<<<<<< HEAD
-    <!-- UnitFrames -->
-    <Include file="unitframes\unitframes.xml"/>
-    <Script file="hp_low_alert.lua"/>
     <Script file="compactframes.lua"/>
-=======
 
     <!-- UnitFrames -->
     <Include file="unitframes\unitframes.xml"/>
->>>>>>> 6d92c9d (feat(modules): add Low HP Alert and Level Up Enhance with i18n & database defaults)
 
     <!-- Cast Bar module -->
     <Script file="castbar.lua"/>
@@ -67,7 +54,6 @@
     <!-- Editor Mode module -->
     <Script file="editor_mode.lua"/>
 
-<<<<<<< HEAD
     <!-- Extra Action Button movability widget -->
     <Script file="extra_action_button.lua"/>
 
@@ -77,8 +63,6 @@
     <!-- DurabilityFrame movability widget -->
     <Script file="durabilityframe.lua"/>
 
-=======
->>>>>>> 6d92c9d (feat(modules): add Low HP Alert and Level Up Enhance with i18n & database defaults)
     <!-- Dark Mode module -->
     <Script file="darkmode.lua"/>
 
@@ -102,30 +86,21 @@
     <!-- Chat Mods module -->
     <Script file="chatmods.lua"/>
 
-<<<<<<< HEAD
     <!-- Profile Sync module (AceComm-based profile sharing) -->
     <Script file="profilesync.lua"/>
 
     <!-- BNet Toast module (friend online/offline notifications) -->
     <Script file="BNetToast.lua"/>
 
-    <!-- Bag Skin module -->
-    <Script file="bags_skin.lua"/>
-
-=======
->>>>>>> 6d92c9d (feat(modules): add Low HP Alert and Level Up Enhance with i18n & database defaults)
     <!-- Bag item usability tint (shared by bagster and bags_skin; must load before both) -->
     <Script file="bags_usability.lua"/>
 
     <!-- Bagster bag replacement module -->
     <Include file="bagster\bagster.xml"/>
 
-<<<<<<< HEAD
-=======
     <!-- Blizzard bag window skin -->
     <Script file="bags_skin.lua"/>
 
->>>>>>> 6d92c9d (feat(modules): add Low HP Alert and Level Up Enhance with i18n & database defaults)
     <!-- Bag Sort module (sort buttons for bags and bank) -->
     <Script file="bagsort.lua"/>
 
@@ -136,8 +111,6 @@
     <!-- Transmog Collector (Ascension: auto-collect appearances on loot) -->
     <Script file="transmog_collector.lua"/>
 
-    <!-- Level Up Enhance (animated level-up notification) -->
-    <Script file="levelupenhance.lua"/>
     <!-- Alt Gold module (other characters' money on the bag coin tooltip) -->
     <Script file="altmoney.lua"/>
 
@@ -147,7 +120,6 @@
     <!-- Version Check module (cross-player version broadcast) -->
     <Script file="versioncheck.lua"/>
 
-<<<<<<< HEAD
     <!-- Performance Warmup module (pre-loads panels to avoid first-use freezes) -->
     <Script file="performance_warmup.lua"/>
 
@@ -165,11 +137,9 @@
 
     <!-- Merchant — retail-style vendor window chrome (uses worldmap's PanelChrome/NineSlice libs) -->
     <Include file="merchant\merchant.xml"/>
-=======
     <!-- Level Up Enhance (level-up notification banner) -->
     <Script file="levelupenhance.lua"/>
 
     <!-- hp_low_alert (hp low alert when players is under 30% hp alow config) -->
     <Script file="hp_low_alert.lua"/>
->>>>>>> 6d92c9d (feat(modules): add Low HP Alert and Level Up Enhance with i18n & database defaults)
 </Ui>
