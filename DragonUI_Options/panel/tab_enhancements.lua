@@ -579,6 +579,8 @@ local function BuildEnhancementsTab(scroll)
         setFunc = function(val)
             EnsureModuleTable("hp_low_alert")
             addon.db.profile.modules.hp_low_alert.enabled = val
+            if addon.RefreshHpLowAlertSystem then addon.RefreshHpLowAlertSystem() end
+            Panel:SelectTab("enhancements")
         end,
     })
 
@@ -630,6 +632,7 @@ local function BuildEnhancementsTab(scroll)
         setFunc = function(val)
             EnsureModuleTable("hp_low_alert").useClassColor = val
             if addon.RefreshHpLowAlertFlash then addon.RefreshHpLowAlertFlash() end
+            Panel:SelectTab("enhancements")
         end,
         disabled = function() return not IsEnabled("hp_low_alert") end,
     })
@@ -670,6 +673,7 @@ local function BuildEnhancementsTab(scroll)
         setFunc = function(val)
             EnsureModuleTable("hp_low_alert")
             addon.db.profile.modules.hp_low_alert.threshold = val
+            if addon.RefreshHpLowAlertSystem then addon.RefreshHpLowAlertSystem() end
         end,
         disabled = function() return not IsEnabled("hp_low_alert") end,
         min = 5,

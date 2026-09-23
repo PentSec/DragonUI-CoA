@@ -202,11 +202,6 @@ local defaults = {
                 posX = 0,
                 posY = 295,
             },
-            levelupenhance = {
-                anchor = "TOP",
-                posX = 0,
-                posY = -128,
-            },
             bnToast = {
                 anchor = "CENTER",
                 posX = 0,
@@ -238,6 +233,11 @@ local defaults = {
                 posY = -32,
                 custom_position = false,
             },
+            levelupenhance = {
+                anchor = "TOP",
+                posX = 0,
+                posY = -180
+            }
         },
         -- Quest Tracker
         questtracker = {
@@ -956,9 +956,6 @@ local defaults = {
             },
             levelupenhance = {
                 enabled = true, -- Enhanced level-up notification with animated frame
-                anchor = "TOP",
-                posX = 0,
-                posY = -128
             },
             darkmode = {
                 enabled = false, -- Apply darker tinted textures to UI chrome
@@ -1285,9 +1282,6 @@ local defaults = {
             },
             transmog_collector = {
                 enabled = false, -- Auto-collect transmog appearances on loot (Ascension)
-            },
-            levelupenhance = {
-                enabled = true, -- Enhanced level-up notification with animated frame
             },
             attackbar = {
                 enabled = false, -- Attack bar swing timer (opt-in module)
