@@ -1326,7 +1326,6 @@ L["Horizontal offset for the nameplate stack."] = "Горизонтальное 
 L["Stack Offset Y"] = "Смещение стопки Y"
 L["Vertical offset for the nameplate stack."] = "Вертикальное смещение стопки индикаторов."
 L["Display"] = "Отображение"
-<<<<<<< HEAD
 L["Show Health Percent"] = "Показывать % здоровья"
 L["Show Health Number"] = "Показывать число ХП"
 L["Shows HP as a number (e.g. 22k) and percent on the health bar."] = "Показывает ХП числом (напр. 22k) и процент на полоске здоровья."
@@ -1334,7 +1333,6 @@ L["Health Number Font Size"] = "Размер шрифта числа ХП"
 L["Health number font scale (1-10)."] = "Масштаб шрифта числа ХП (1–10)."
 L["Center Name Only"] = "Только имя по центру"
 L["Centers the unit name and hides the health percent."] = "Центрирует имя и скрывает процент здоровья."
-=======
 L["Health Text"] = "Текст здоровья"
 L["What the health text shows. With both, the value comes first."] = "Что показывает текст здоровья. Если выбраны оба, сначала идёт значение."
 L["Percent"] = "Процент"
@@ -1373,7 +1371,6 @@ L["Color enemy player names by class. Needs Enemy Player Class Colors."] = "Ок
 L["Font size of the health text inside the bar (1-10). After the name, or in the Modern style, it matches the name."] = "Размер шрифта текста здоровья внутри полосы (1-10). После имени или в современном стиле он равен размеру имени."
 L["Text Outline"] = "Обводка текста"
 L["Black outline on the name and health text."] = "Чёрная обводка имени и текста здоровья."
->>>>>>> e00daaa (feat(nameplates): editable Modern fonts, text outline toggle and full translations)
 L["Hides level text and health percent, and centers the unit name on the nameplate."] = "Скрывает уровень и % здоровья, центрирует имя на индикаторе."
 L["Gray Tapped Units"] = "Серые занятые цели"
 L["Grays the health bar when a unit is tapped by another player or group."] = "Делает полосу здоровья серой, если цель занята другим игроком или группой."

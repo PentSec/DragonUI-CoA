@@ -418,7 +418,6 @@ L["Horizontal offset for the nameplate stack."] = "Deslocamento horizontal para 
 L["Stack Offset Y"] = "Deslocamento Y da pilha"
 L["Vertical offset for the nameplate stack."] = "Deslocamento vertical para a pilha de placas."
 L["Display"] = "Exibicao"
-<<<<<<< HEAD
 L["Show Health Percent"] = "Mostrar % de vida"
 L["Show Health Number"] = "Mostrar número de vida"
 L["Shows HP as a number (e.g. 22k) and percent on the health bar."] = "Exibe o HP como número (ex.: 22k) e o percentual na barra de vida."
@@ -426,7 +425,6 @@ L["Health Number Font Size"] = "Tamanho da fonte do número de vida"
 L["Health number font scale (1-10)."] = "Escala de fonte do número de vida (1-10)."
 L["Center Name Only"] = "Apenas nome centralizado"
 L["Centers the unit name and hides the health percent."] = "Centraliza o nome e oculta o percentual de vida."
-=======
 L["Health Text"] = "Texto de vida"
 L["What the health text shows. With both, the value comes first."] = "O que o texto de vida mostra. Com ambos, o valor vem primeiro."
 L["Percent"] = "Porcentagem"
@@ -465,7 +463,6 @@ L["Color enemy player names by class. Needs Enemy Player Class Colors."] = "Colo
 L["Font size of the health text inside the bar (1-10). After the name, or in the Modern style, it matches the name."] = "Tamanho da fonte do texto de vida dentro da barra (1-10). Após o nome, ou no estilo Moderno, acompanha o nome."
 L["Text Outline"] = "Contorno do texto"
 L["Black outline on the name and health text."] = "Contorno preto no nome e no texto de vida."
->>>>>>> e00daaa (feat(nameplates): editable Modern fonts, text outline toggle and full translations)
 L["Hides level text and health percent, and centers the unit name on the nameplate."] = "Oculta nivel e % de vida e centraliza o nome na placa."
 L["Gray Tapped Units"] = "Unidades tagueadas em cinza"
 L["Grays the health bar when a unit is tapped by another player or group."] = "Deixa a barra de vida cinza quando uma unidade está tagueada por outro jogador ou grupo."

@@ -726,9 +726,6 @@ local function BuildHealthSubTab(scroll)
 
     local health = C:AddSection(scroll, LO["Health Bar"])
 
-<<<<<<< HEAD
-    C:AddDropdown(health, {
-=======
     -- Controls that grey out with another setting, refreshed in place so the panel keeps its scroll.
     local dependents = {}
     local function Depends(widget, isDisabled)
@@ -958,7 +955,6 @@ local function BuildHealthSubTab(scroll)
         C:AddDescription(barSection, LO["The Modern style draws its own bar background."])
     end
     C:AddDropdown(barSection, {
->>>>>>> e00daaa (feat(nameplates): editable Modern fonts, text outline toggle and full translations)
         label = LO["Health Bar Background"],
         desc = LO["Choose the background texture used behind the health bar fill."],
         dbPath = DB .. ".healthBarBackground",

@@ -1471,7 +1471,6 @@ L["Horizontal offset for the nameplate stack."] = true
 L["Stack Offset Y"] = true
 L["Vertical offset for the nameplate stack."] = true
 L["Display"] = true
-<<<<<<< HEAD
 L["Show Health Percent"] = true
 L["Show Health Number"] = true
 L["Shows HP as a number (e.g. 22k) and percent on the health bar."] = true
@@ -1479,7 +1478,6 @@ L["Health Number Font Size"] = true
 L["Health number font scale (1-10)."] = true
 L["Center Name Only"] = true
 L["Centers the unit name and hides the health percent."] = true
-=======
 L["Health Text"] = true
 L["What the health text shows. With both, the value comes first."] = true
 L["Percent"] = true
@@ -1518,7 +1516,6 @@ L["Color enemy player names by class. Needs Enemy Player Class Colors."] = true
 L["Font size of the health text inside the bar (1-10). After the name, or in the Modern style, it matches the name."] = true
 L["Text Outline"] = true
 L["Black outline on the name and health text."] = true
->>>>>>> e00daaa (feat(nameplates): editable Modern fonts, text outline toggle and full translations)
 L["Hides level text and health percent, and centers the unit name on the nameplate."] = true
 L["Gray Tapped Units"] = true
 L["Grays the health bar when a unit is tapped by another player or group."] = true

@@ -1333,8 +1333,6 @@ function NP.auras.RenderDebuffWidgets(host, cachedAuras, maxIcons, cfg)
         icon.expiration = aura.expiration
         ApplyPriorityHighlight(icon, aura, cfg)
         ApplySwipeCooldown(icon, aura, cfg)
-<<<<<<< HEAD
-=======
         local cdFontSize, countFontSize = cooldownFontSize, 9
         if modernText then
             -- NewEra scales the timer and the stack count with the icon, so enlarged auras grow theirs.
@@ -1342,7 +1340,6 @@ function NP.auras.RenderDebuffWidgets(host, cachedAuras, maxIcons, cfg)
             countFontSize = max(7, floor(size * 0.5 + 0.5))
         end
         icon._cdFontSize = cdFontSize
->>>>>>> e00daaa (feat(nameplates): editable Modern fonts, text outline toggle and full translations)
         -- Re-apply SetFont only on size change.
         if icon._appliedCdFontSize ~= cooldownFontSize then
             icon.cooldownText:SetFont("Fonts\\FRIZQT__.TTF", cooldownFontSize, "OUTLINE")

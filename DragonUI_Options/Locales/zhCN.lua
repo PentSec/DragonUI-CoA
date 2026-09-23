@@ -1286,7 +1286,6 @@ L["Horizontal offset for the nameplate stack."] = "姓名板堆叠的水平偏�
 L["Stack Offset Y"] = "堆叠 Y 偏移"
 L["Vertical offset for the nameplate stack."] = "姓名板堆叠的垂直偏移。"
 L["Display"] = "显示"
-<<<<<<< HEAD
 L["Show Health Percent"] = "显示生命百分比"
 L["Show Health Number"] = "显示血量数值"
 L["Shows HP as a number (e.g. 22k) and percent on the health bar."] = "在血量条上以数值（如22k）和百分比显示当前血量。"
@@ -1294,7 +1293,6 @@ L["Health Number Font Size"] = "血量数值字体大小"
 L["Health number font scale (1-10)."] = "血量数值字体大小（1-10）。"
 L["Center Name Only"] = "仅居中显示名称"
 L["Centers the unit name and hides the health percent."] = "居中显示名称并隐藏血量百分比。"
-=======
 L["Health Text"] = "生命值文字"
 L["What the health text shows. With both, the value comes first."] = "生命值文字显示的内容。两者都显示时，数值在前。"
 L["Percent"] = "百分比"
@@ -1333,7 +1331,6 @@ L["Color enemy player names by class. Needs Enemy Player Class Colors."] = "按�
 L["Font size of the health text inside the bar (1-10). After the name, or in the Modern style, it matches the name."] = "生命条内生命值文字的字体大小（1-10）。在名称后面或使用现代样式时，与名称一致。"
 L["Text Outline"] = "文字描边"
 L["Black outline on the name and health text."] = "为名称和生命值文字添加黑色描边。"
->>>>>>> e00daaa (feat(nameplates): editable Modern fonts, text outline toggle and full translations)
 L["Hides level text and health percent, and centers the unit name on the nameplate."] = "隐藏等级和生命百分比，并在姓名板上居中显示单位名称。"
 L["Gray Tapped Units"] = "已被他人占领时变灰"
 L["Grays the health bar when a unit is tapped by another player or group."] = "当单位被其他玩家或队伍占领时，将生命条显示为灰色。"

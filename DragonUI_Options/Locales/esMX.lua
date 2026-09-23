@@ -1357,7 +1357,6 @@ L["Horizontal offset for the nameplate stack."] = "Desplazamiento horizontal par
 L["Stack Offset Y"] = "Desplazamiento Y del grupo"
 L["Vertical offset for the nameplate stack."] = "Desplazamiento vertical para el grupo de placas."
 L["Display"] = "Visualización"
-<<<<<<< HEAD
 L["Show Health Percent"] = "Mostrar % de vida"
 L["Show Health Number"] = "Mostrar número de vida"
 L["Shows HP as a number (e.g. 22k) and percent on the health bar."] = "Muestra los PV como número (p. ej. 22k) y el porcentaje en la barra de vida."
@@ -1365,7 +1364,6 @@ L["Health Number Font Size"] = "Tamaño de fuente del número de vida"
 L["Health number font scale (1-10)."] = "Escala de fuente del número de vida (1-10)."
 L["Center Name Only"] = "Solo nombre centrado"
 L["Centers the unit name and hides the health percent."] = "Centra el nombre y oculta el porcentaje de vida."
-=======
 L["Health Text"] = "Texto de vida"
 L["What the health text shows. With both, the value comes first."] = "Qué muestra el texto de vida. Con ambos, primero va el valor."
 L["Percent"] = "Porcentaje"
@@ -1404,7 +1402,6 @@ L["Color enemy player names by class. Needs Enemy Player Class Colors."] = "Colo
 L["Font size of the health text inside the bar (1-10). After the name, or in the Modern style, it matches the name."] = "Tamaño de fuente del texto de vida dentro de la barra (1-10). Junto al nombre, o en el estilo Moderno, usa el tamaño del nombre."
 L["Text Outline"] = "Contorno del texto"
 L["Black outline on the name and health text."] = "Contorno negro en el nombre y el texto de vida."
->>>>>>> e00daaa (feat(nameplates): editable Modern fonts, text outline toggle and full translations)
 L["Hides level text and health percent, and centers the unit name on the nameplate."] = "Oculta el nivel y el % de vida, y centra el nombre en la placa."
 L["Gray Tapped Units"] = "Unidades tagueadas en gris"
 L["Grays the health bar when a unit is tapped by another player or group."] = "Pone la barra de vida en gris cuando una unidad está tagueada por otro jugador o grupo."

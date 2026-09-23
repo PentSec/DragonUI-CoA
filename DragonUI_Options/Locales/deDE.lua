@@ -1326,7 +1326,6 @@ L["Horizontal offset for the nameplate stack."] = "Horizontaler Versatz für den
 L["Stack Offset Y"] = "Stapelversatz Y"
 L["Vertical offset for the nameplate stack."] = "Vertikaler Versatz für den Namensplaketten-Stapel."
 L["Display"] = "Anzeige"
-<<<<<<< HEAD
 L["Show Health Percent"] = "Gesundheit in % anzeigen"
 L["Show Health Number"] = "Lebenspunktanzahl anzeigen"
 L["Shows HP as a number (e.g. 22k) and percent on the health bar."] = "Zeigt LP als Zahl (z. B. 22k) und Prozent auf der Lebensleiste."
@@ -1334,7 +1333,6 @@ L["Health Number Font Size"] = "Schriftgröße der Lebenspunktanzahl"
 L["Health number font scale (1-10)."] = "Schriftskala für die Lebenspunktanzahl (1–10)."
 L["Center Name Only"] = "Nur Name zentrieren"
 L["Centers the unit name and hides the health percent."] = "Zentriert den Namen und blendet den Lebens-% aus."
-=======
 L["Health Text"] = "Gesundheitstext"
 L["What the health text shows. With both, the value comes first."] = "Was der Gesundheitstext anzeigt. Bei beidem steht der Wert zuerst."
 L["Percent"] = "Prozent"
@@ -1373,7 +1371,6 @@ L["Color enemy player names by class. Needs Enemy Player Class Colors."] = "Fär
 L["Font size of the health text inside the bar (1-10). After the name, or in the Modern style, it matches the name."] = "Schriftgröße des Gesundheitstexts im Balken (1-10). Nach dem Namen oder im Stil Modern entspricht sie dem Namen."
 L["Text Outline"] = "Textkontur"
 L["Black outline on the name and health text."] = "Schwarze Kontur um Name und Gesundheitstext."
->>>>>>> e00daaa (feat(nameplates): editable Modern fonts, text outline toggle and full translations)
 L["Hides level text and health percent, and centers the unit name on the nameplate."] = "Blendet Level und Lebens-% aus und zentriert den Namen auf der Namensplakette."
 L["Gray Tapped Units"] = "Getappte Einheiten grau"
 L["Grays the health bar when a unit is tapped by another player or group."] = "Färbt den Lebensbalken grau, wenn eine Einheit von einem anderen Spieler oder einer anderen Gruppe getappt ist."

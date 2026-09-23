@@ -1329,7 +1329,6 @@ L["Horizontal offset for the nameplate stack."] = "이름표 스택의 수평 �
 L["Stack Offset Y"] = "스택 Y 오프셋"
 L["Vertical offset for the nameplate stack."] = "이름표 스택의 수직 오프셋."
 L["Display"] = "표시"
-<<<<<<< HEAD
 L["Show Health Percent"] = "생명력 비율 표시"
 L["Show Health Number"] = "HP 숫자 표시"
 L["Shows HP as a number (e.g. 22k) and percent on the health bar."] = "HP를 숫자(예: 22k)와 퍼센트로 생명력 바에 표시합니다."
@@ -1337,7 +1336,6 @@ L["Health Number Font Size"] = "HP 숫자 글꼴 크기"
 L["Health number font scale (1-10)."] = "HP 숫자 글꼴 크기 (1-10)."
 L["Center Name Only"] = "이름만 가운데 정렬"
 L["Centers the unit name and hides the health percent."] = "이름을 가운데 정렬하고 생명력 퍼센트를 숨깁니다."
-=======
 L["Health Text"] = "생명력 텍스트"
 L["What the health text shows. With both, the value comes first."] = "생명력 텍스트에 표시할 내용입니다. 둘 다 선택하면 수치가 먼저 나옵니다."
 L["Percent"] = "백분율"
@@ -1376,7 +1374,6 @@ L["Color enemy player names by class. Needs Enemy Player Class Colors."] = "적 
 L["Font size of the health text inside the bar (1-10). After the name, or in the Modern style, it matches the name."] = "바 안쪽 생명력 텍스트의 글꼴 크기 (1-10). 이름 뒤에 있거나 모던 스타일에서는 이름 크기를 따릅니다."
 L["Text Outline"] = "텍스트 외곽선"
 L["Black outline on the name and health text."] = "이름과 생명력 텍스트에 검은 외곽선."
->>>>>>> e00daaa (feat(nameplates): editable Modern fonts, text outline toggle and full translations)
 L["Hides level text and health percent, and centers the unit name on the nameplate."] = "레벨과 생명력 %를 숨기고 이름표에서 유닛 이름을 가운데 정렬합니다."
 L["Gray Tapped Units"] = "선점된 대상 회색 표시"
 L["Grays the health bar when a unit is tapped by another player or group."] = "다른 플레이어나 파티가 선점한 대상의 생명력 바를 회색으로 표시합니다."

@@ -77,11 +77,8 @@ NP.const = {
     RAID_MARKER_OFFSET_Y_WITH_COMBO = 53,
     RAID_MARKER_SIDE_GAP = 3, -- gap past bar edge when marker sits beside the bar
     RAID_MARKER_OFFSET_Y_WITH_DEBUFFS = 8.5,
-<<<<<<< HEAD
-=======
     BAR_TEXT_INSET = 4, -- text drawn over a bar keeps this clear of its rim
     NAME_TEXT_GAP = 2, -- space between the name and the health text sharing its line
->>>>>>> e00daaa (feat(nameplates): editable Modern fonts, text outline toggle and full translations)
     DEBUFF_HOST_OFFSET_Y = 2,
     DEBUFF_HOST_OFFSET_Y_WITH_COMBO = 12,
     COMBO_TEX = "Interface\\AddOns\\DragonUI\\Textures\\Nameplates\\combo-",

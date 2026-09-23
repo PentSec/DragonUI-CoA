@@ -779,14 +779,6 @@ function NP.layout.ApplyNameplateFonts(plateData)
     end
 
     local cfg = NP.config.GetCfg()
-<<<<<<< HEAD
-    local hpNumSize = 7 + (cfg.healthNumberFontSize or 2)
-    applyFont(plateData.minaName, nameSize)
-    applyFont(plateData.minaHpPct, nameSize)
-    applyFont(plateData.minaSubTitle, math.max(8, nameSize - 2))
-    applyFont(plateData.minaHpNum, hpNumSize)
-    applyFont(plateData.minaHpBarPct, hpNumSize)
-=======
     -- Modern health text is sized like the name; the outline is chosen per name position.
     local modern = NP.config.IsRetailSkin()
     local hpNumSize = modern and nameSize or (7 + (cfg.healthNumberFontSize or 2))
@@ -823,21 +815,16 @@ function NP.layout.ApplyNameplateFonts(plateData)
     applyFont(plateData.minaSubTitle, math.max(8, nameSize - 2))
     applyFont(plateData.minaHpNum, snap(plateData.minaHpNum, hpNumSize), textFlags)
     applyFont(plateData.minaHpBarPct, snap(plateData.minaHpBarPct, hpNumSize), textFlags)
->>>>>>> e00daaa (feat(nameplates): editable Modern fonts, text outline toggle and full translations)
     applyFont(plateData.minaPoCur, powerSize)
     applyFont(plateData.minaPoPct, powerSize)
     local cast = plateData.minaCast
     if cast and cast.minaCastSpellName then
         local fs = cast.minaCastSpellName
-<<<<<<< HEAD
-        SafeSetFont(fs, fontPath, cfg.castBarSpellNameFontSize or 9, "OUTLINE")
-=======
         SafeSetFont(fs, fontPath, snap(fs, cfg.castBarSpellNameFontSize or 9), "OUTLINE")
         if modern then
             fs:SetShadowColor(0, 0, 0, 0)
             fs:SetShadowOffset(0, 0)
         end
->>>>>>> e00daaa (feat(nameplates): editable Modern fonts, text outline toggle and full translations)
         local offX = cfg.castBarSpellNameOffsetX or 0
         local offY = cfg.castBarSpellNameOffsetY or 0
         fs:ClearAllPoints()
