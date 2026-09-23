@@ -108,6 +108,13 @@ local mouseoverLit
 local activeFlares = setmetatable({}, { __mode = "k" })
 local activeFlashes = setmetatable({}, { __mode = "k" })
 
+local function SetFlarePieceShown(tex, shown)
+    if tex._flareShown ~= shown then
+        tex._flareShown = shown
+        if shown then tex:Show() else tex:Hide() end
+    end
+end
+
 -- NewEra clips the flare with a MaskTexture the width of the bar. With no mask API we
 -- clip by hand: two pieces per layer, split at the wrap seam, never wider than the bar.
 local function PlaceFlareLayer(f, first, hp, barW, off)
@@ -115,20 +122,21 @@ local function PlaceFlareLayer(f, first, hp, barW, off)
     local head, tail = f[first], f[first + 1]
 
     if headW > 0 then
-        head:ClearAllPoints()
-        head:SetPoint("BOTTOMLEFT", hp, "TOPLEFT", 0, 0)
+        if head._flareAnchor ~= hp then
+            head._flareAnchor = hp
+            head:SetPoint("BOTTOMLEFT", hp, "TOPLEFT", 0, 0)
+        end
         head:SetWidth(headW)
         head:SetTexCoord(off / barW, 1, 0, 1)
     end
-    if f.shown and headW > 0 then head:Show() else head:Hide() end
+    SetFlarePieceShown(head, f.shown and headW > 0)
 
     if off > 0 then
-        tail:ClearAllPoints()
         tail:SetPoint("BOTTOMLEFT", hp, "TOPLEFT", headW, 0)
         tail:SetWidth(off)
         tail:SetTexCoord(0, off / barW, 0, 1)
     end
-    if f.shown and off > 0 then tail:Show() else tail:Hide() end
+    SetFlarePieceShown(tail, f.shown and off > 0)
 end
 
 local function PlaceFlare(plateData, elapsed)
@@ -170,18 +178,41 @@ local function SetFlareShown(plateData, shown)
         end
     else
         for i = 1, 4 do
-            f[i]:Hide()
+            SetFlarePieceShown(f[i], false)
         end
     end
 end
 
-local function IsPlateHovered(plateData)
-    local highlight = plateData.highlight
-    if highlight and highlight.IsShown and highlight:IsShown() then
-        return true
+local hoveredPlate
+
+-- The client highlights the plate a click would hit, but only a highlight under the cursor is live.
+local function FindHoveredPlate()
+    local best, bestDepth
+    local anyShown = false
+    local overWorld = GetMouseFocus() == WorldFrame
+    for _, plateData in pairs(NP.module.plates) do
+        local plate = plateData.plate
+        if plate and plate:IsShown() then
+            anyShown = true
+            local highlight = plateData.highlight
+            if highlight and highlight:IsShown() then
+                if plate:IsMouseOver() then
+                    local depth = plate:GetEffectiveDepth() or 0
+                    if overWorld and (not best or depth < bestDepth) then
+                        best, bestDepth = plateData, depth
+                    end
+                else
+                    -- A camera turn strands it on a plate the cursor left; the next real hover re-shows it.
+                    highlight:Hide()
+                end
+            end
+        end
     end
-    local plate = plateData.plate
-    return (plate and plate.IsMouseOver and plate:IsMouseOver()) and true or false
+    return best, anyShown
+end
+
+local function IsPlateHovered(plateData)
+    return plateData ~= nil and plateData == hoveredPlate
 end
 
 local function EnsureFlareDriver()
@@ -222,16 +253,19 @@ local function EnsureFlareDriver()
         -- Hover fires no event: poll it here rather than adding a second OnUpdate.
         -- Only transitions reach SyncMouseover, so a quiet frame costs one getter per plate.
         if NP.config.IsRetailSkin() and NP.config.GetCfg().retailMouseoverHighlight ~= false then
-            for _, plateData in pairs(NP.module.plates) do
-                local plate = plateData._retailMouseover and plateData.plate
-                -- A hidden plate cannot be hovered, and skipping it lets an empty screen park the tick.
-                if plate and plate:IsShown() then
-                    any = true
-                    local hovered = IsPlateHovered(plateData)
-                    if plateData._hoverLit ~= hovered then
-                        plateData._hoverLit = hovered
-                        NP.retail_chrome.SyncMouseover(plateData)
-                    end
+            -- An empty screen lets the tick park; only the plates entering and leaving hover resync.
+            local hovered, anyShown = FindHoveredPlate()
+            if anyShown then
+                any = true
+            end
+            if hovered ~= hoveredPlate then
+                local previous = hoveredPlate
+                hoveredPlate = hovered
+                if previous then
+                    NP.retail_chrome.SyncMouseover(previous)
+                end
+                if hovered then
+                    NP.retail_chrome.SyncMouseover(hovered)
                 end
             end
         end
@@ -399,7 +433,6 @@ local function HideChrome(plateData, restoreLegacy)
             mouseoverLit = nil
         end
     end
-    plateData._hoverLit = nil
     if plateData._retailFlash then
         plateData._retailFlash:Hide()
         plateData._retailFlash:SetAlpha(0)
@@ -478,8 +511,12 @@ local function SyncFlareInternal(plateData, cfg)
         return
     end
     plateData._hadAggro = true
-    for i = 1, 4 do
-        flare[i]:SetVertexColor(r, g, b)
+    -- Reached on every health tick of an aggroed plate; the tint only moves on threat changes.
+    if flare.r ~= r or flare.g ~= g or flare.b ~= b then
+        flare.r, flare.g, flare.b = r, g, b
+        for i = 1, 4 do
+            flare[i]:SetVertexColor(r, g, b)
+        end
     end
     SetFlareShown(plateData, true)
 end

@@ -246,7 +246,9 @@ local defaults = {
             y = -255,
             show_header = true,
             collapsed = false,   -- Survives reloads; Blizzard's own tracker forgets it
-            font_size = 10,      -- Point size for quest tracker text (WoW default: 11)
+            font_size = 12,      -- Point size for quest tracker text (WoW default: 11)
+            custom_height = false, -- Off: the tracker runs down to the bags bar or the screen bottom
+            height = 400,        -- Cap used when custom_height is on (400-1000, NewEra's range)
             show_on_hover = false,
             show_in_combat = false,
             hide_in_combat = false,
@@ -923,6 +925,9 @@ local defaults = {
             merchant = {
                 enabled = true -- Retail-style vendor window chrome, sell-all-junk button, and buyback undo arrow
             },
+            merchant = {
+                enabled = true -- Retail-style vendor window chrome, sell-all-junk button, and buyback undo arrow
+            },
             minimap = {
                 enabled = true -- Apply DragonUI minimap enhancements including custom styling, positioning, tracking icons, and calendar
             },
@@ -1125,6 +1130,8 @@ local defaults = {
                 retailDeselectedOverlay = true, -- dim overlay on every plate that is not the target
                 retailMouseoverHighlight = true, -- additive wash over the bar while the plate is hovered
                 retailThreatColors = true, -- retail yellow/orange threat colors instead of the red/orange/yellow set
+                retailTextOutlineInside = true, -- outline the name and health text while the name sits inside the bar
+                retailTextOutlineAbove = false, -- outline the name and health text while the name sits above the bar
                 retailTargetScale = 1, -- Retail behavior: target scale multiplier
                 retailFriendlyScale = 1, -- Retail behavior: friendly plate scale multiplier
                 retailStackingEnabled = false, -- Retail-like stacking behavior
@@ -1150,7 +1157,8 @@ local defaults = {
                 player_stats = true, -- Show item level / PvE-PvP power / prestige line (players only)
                 health_bar = true, -- Show health bar on tooltip
                 anchor_cursor = false, -- Anchor tooltip to cursor
-                show_aura_source = true, -- Show caster name (and spell ID) on buff/debuff tooltips
+                show_aura_source = true, -- Show caster name on buff/debuff tooltips
+                show_aura_spell_id = false, -- Show spell ID on buff/debuff tooltips
             },
             itemquality = {
                 enabled = true, -- Color item borders by quality in bags, character panel, bank, merchant
@@ -1310,6 +1318,7 @@ local defaults = {
                 entrances = true, -- Dungeon and raid entrance pins on zone maps
                 graveyards = true, -- Graveyard pins on zone maps
                 flightPoints = true, -- Flight master pins on zone maps
+                inns = true, -- Innkeeper pins on zone maps, the hearthstone's inn drawn larger
                 coordinates = true, -- Cursor and player coordinates in the canvas corner
                 zoneLevels = true, -- Recommended level ranges beside zone names and instance pins
                 fadeWhenMoving = false, -- Dim the map while you move with the cursor off it

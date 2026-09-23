@@ -724,6 +724,12 @@ L["A retail-styled theme for the Details! Damage Meter: gold-titled header bar, 
 L["Details! skin applied."] = true
 L["Could not apply the skin - Details! is not ready yet."] = true
 L["Details! is not installed."] = true
+--MERCHANT MODULE
+L["Merchant"] = true
+L["Retail-style vendor window chrome"] = true
+L["Sell all junk items"] = true
+L["You are about to sell all junk items and will not be able to buy them back.\n\nAre you sure you want to proceed?"] = true
+L["Sold %d junk item(s)."] = true
 
 -- World Map
 L["World Map"] = true
@@ -744,6 +750,8 @@ L["Show Graveyards"] = true
 L["Graveyard"] = true
 L["Show Flight Points"] = true
 L["Flight Master"] = true
+L["Show Inns"] = true
+L["Hearthstone"] = true
 L["Click to view on Map"] = true
 L["Search Quest Log"] = true
 L["World map module disabled: %s replaces the same map frame."] = true

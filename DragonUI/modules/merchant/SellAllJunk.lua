@@ -1,13 +1,6 @@
--- DragonUI/modules/merchant/SellAllJunk.lua — retail's one-click sell-all-junk button.
---
--- DOWNPORT of NewEra/MerchantFrame/SellAllJunk.lua, adapted for DragonUI.
--- Retail's MerchantSellAllJunkButton calls C_MerchantFrame.SellAllJunkItems; neither exists
--- on 3.3.5a, so this is a bag walk using GetContainerItemLink + GetItemInfo.
---
--- Changes from NewEra:
---   * Uses DragonUI_MerchantSellAllJunkButton global name (not NE_MerchantSellAllJunkButton)
---   * No containerframe bag-exclusion support (DragonUI doesn't have it yet)
---   * Simplified: skips quest items, sells only poor-quality vendorable items
+-- Copyright (c) 2026 NeticSoul. Licensed under the MIT License; see LICENSE.
+-- One-click sell-all-junk on the vendor window.
+-- 3.3.5a has no C_MerchantFrame.SellAllJunkItems; this walks bags with UseContainerItem.
 
 local addon = select(2, ...)
 if not addon then return end
@@ -71,7 +64,7 @@ local function refreshState()
     if not btn:IsVisible() then return end
     if refreshPending then return end
     refreshPending = true
-    C_Timer.After(0, function()
+    addon:After(0, function()
         refreshPending = false
         if not btn:IsVisible() then return end
         local has = countJunkItems() > 0
@@ -96,7 +89,7 @@ function addon.MerchantSellAllJunkBuild()
     if not _G.MerchantFrame then return end
 
     StaticPopupDialogs[POPUP] = StaticPopupDialogs[POPUP] or {
-        text         = L["Sell all of your junk (gray) items?"],
+        text         = L["You are about to sell all junk items and will not be able to buy them back.\n\nAre you sure you want to proceed?"],
         button1      = YES,
         button2      = NO,
         OnAccept     = sellAllJunk,
@@ -109,13 +102,16 @@ function addon.MerchantSellAllJunkBuild()
     btn:SetSize(36, 36)
     btn:SetPoint("BOTTOMRIGHT", _G.MerchantFrame, "BOTTOMLEFT", 160, 33)
 
-    local NE = DragonUIWorldMapHost
-    local icon = btn:CreateTexture(nil, "BORDER")
-    if NE and NE.tex and NE.tex.SetAtlas then
-        NE.tex.SetAtlas(icon, "spellicon-256x256-selljunk", false)
+    local icon = btn:CreateTexture(nil, "ARTWORK")
+    if addon.atlasinfo and addon.atlasinfo["spellicon-256x256-selljunk"] then
+        icon:set_atlas("spellicon-256x256-selljunk", false)
     end
     icon:SetAllPoints(btn)
     btn.Icon = icon
+
+    -- Use the atlas icon as the button's normal texture so it's always visible
+    btn:SetNormalTexture(icon)
+    btn:GetNormalTexture():SetAllPoints(btn)
 
     btn:SetPushedTexture("Interface\\Buttons\\UI-Quickslot-Depress")
     btn:SetHighlightTexture("Interface\\Buttons\\ButtonHilight-Square")
