@@ -971,7 +971,6 @@ L["Weighted score of your equipped gear."] = "Score pondéré de votre équipeme
 L["Reset stat order"] = "Réinitialiser l'ordre"
 L["Restore the stat categories to their default order?"] = "Rétablir l'ordre par défaut des catégories de statistiques ?"
 
-<<<<<<< HEAD
 -- ============================================================================
 -- DAMAGE METER SKIN (DETAILS!)
 -- ============================================================================
@@ -982,17 +981,12 @@ L["Details! skin applied."] = "Skin de Details! appliqué."
 L["Could not apply the skin - Details! is not ready yet."] = "Impossible d'appliquer le skin - Details! n'est pas encore prêt."
 L["Details! is not installed."] = "Details! n'est pas installé."
 
-=======
->>>>>>> 71963e6 (feat(merchant): retail-style vendor window chrome)
 -- MERCHANT MODULE
 L["Merchant"] = "Marchand"
 L["Retail-style vendor window chrome"] = "Cadre de fenêtre de vendeur style Retail"
 L["Sell all junk items"] = "Vendre tous les objets poubelle"
-<<<<<<< HEAD
 L["Sell all of your junk (gray) items?"] = "Vendre tous vos objets poubelle (gris) ?"
-=======
 L["You are about to sell all junk items and will not be able to buy them back.\n\nAre you sure you want to proceed?"] = "Vous êtes sur le point de vendre tous les objets poubelle et vous ne pourrez pas les racheter.\n\nÊtes-vous sûr de vouloir continuer ?"
->>>>>>> 71963e6 (feat(merchant): retail-style vendor window chrome)
 L["Sold %d junk item(s)."] = "%d objet(s) poubelle vendu(s)."
 
 -- World Map

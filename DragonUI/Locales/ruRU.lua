@@ -751,7 +751,6 @@ L["Weighted score of your equipped gear."] = "Взвешенная оценка 
 L["Reset stat order"] = "Сбросить порядок"
 L["Restore the stat categories to their default order?"] = "Вернуть категориям характеристик порядок по умолчанию?"
 
-<<<<<<< HEAD
 -- ============================================================================
 -- DAMAGE METER SKIN (DETAILS!)
 -- ============================================================================
@@ -762,17 +761,12 @@ L["Details! skin applied."] = "Скин Details! применён."
 L["Could not apply the skin - Details! is not ready yet."] = "Не удалось применить скин - Details! ещё не готов."
 L["Details! is not installed."] = "Details! не установлен."
 
-=======
->>>>>>> 71963e6 (feat(merchant): retail-style vendor window chrome)
 -- MERCHANT MODULE
 L["Merchant"] = "Торговец"
 L["Retail-style vendor window chrome"] = "Современный интерфейс окна торговца"
 L["Sell all junk items"] = "Продать весь хлам"
-<<<<<<< HEAD
 L["Sell all of your junk (gray) items?"] = "Продать весь твой хлам (серый)?"
-=======
 L["You are about to sell all junk items and will not be able to buy them back.\n\nAre you sure you want to proceed?"] = "Вы собираетесь продать весь хлам и не сможете купить его обратно.\n\nВы уверены, что хотите продолжить?"
->>>>>>> 71963e6 (feat(merchant): retail-style vendor window chrome)
 L["Sold %d junk item(s)."] = "Продано %d предмет(а/ов) хлама."
 
 -- World Map

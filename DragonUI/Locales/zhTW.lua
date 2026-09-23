@@ -968,7 +968,6 @@ L["Weighted score of your equipped gear."] = "你已裝備物品的加權評分�
 L["Reset stat order"] = "重設排序"
 L["Restore the stat categories to their default order?"] = "將屬性分類恢復為預設順序？"
 
-<<<<<<< HEAD
 -- ============================================================================
 -- DAMAGE METER SKIN (DETAILS!)
 -- ============================================================================
@@ -979,17 +978,12 @@ L["Details! skin applied."] = "Details!外觀已套用。"
 L["Could not apply the skin - Details! is not ready yet."] = "無法套用外觀 - Details!尚未就緒。"
 L["Details! is not installed."] = "未安裝Details!。"
 
-=======
->>>>>>> 71963e6 (feat(merchant): retail-style vendor window chrome)
 -- MERCHANT MODULE
 L["Merchant"] = "商人"
 L["Retail-style vendor window chrome"] = "商人視窗現代風格"
 L["Sell all junk items"] = "出售所有垃圾物品"
-<<<<<<< HEAD
 L["Sell all of your junk (gray) items?"] = "出售你所有的垃圾(灰色)物品？"
-=======
 L["You are about to sell all junk items and will not be able to buy them back.\n\nAre you sure you want to proceed?"] = "您即將出售所有垃圾物品，且無法再購買回來。\n\n確定要繼續嗎？"
->>>>>>> 71963e6 (feat(merchant): retail-style vendor window chrome)
 L["Sold %d junk item(s)."] = "已售出 %d 件垃圾物品。"
 
 -- World Map
