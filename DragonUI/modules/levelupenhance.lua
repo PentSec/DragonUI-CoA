@@ -6,6 +6,10 @@
 local addon = select(2, ...)
 local L = addon.L
 
+local DIR = addon._dir
+local LEVEL_FRAME = DIR .. "NewLevelUp\\levelup"
+local LEVEL_FONT = "Fonts\\FRIZQT__.TTF"
+
 local LevelUpEnhance = {
     initialized = false,
     applied = false,
@@ -52,8 +56,11 @@ local DEFAULT_ANCHOR, DEFAULT_X, DEFAULT_Y = "TOP", 0, -128
 local function ApplyWidgetPosition()
     if InCombatLockdown() then return end
     if addon.EditorMode and addon.EditorMode:IsActive() then return end
+    if not anchor then return end
 
-    local cfg = addon.db.profile.widgets.levelupenhance
+    local cfg = addon.db.profile.widgets and addon.db.profile.widgets.levelupenhance
+    if not cfg then return end
+
     if not cfg then return end
 
     anchor:ClearAllPoints()
@@ -62,7 +69,7 @@ local function ApplyWidgetPosition()
 
     if newLevelFrame then
         newLevelFrame:ClearAllPoints()
-        newLevelFrame:SetPoint("TOP", anchor, "TOP", 0, 0)
+        newLevelFrame:SetPoint("TOP", anchor, "TOP", cfg.posX or DEFAULT_X, cfg.posY or DEFAULT_Y)
     end
 end
 
@@ -73,8 +80,10 @@ end
 local function ShowNewLevelFrame(level)
     if not newLevelFrame or not newLevelFrame.footer then return end
     newLevelFrame.footer:SetText(string.format(L and L["Level %d"] or "Level %d", level))
+
+    local cfg = addon.db and addon.db.profile and addon.db.profile.widgets and addon.db.profile.widgets.levelupenhance
     newLevelFrame:ClearAllPoints()
-    newLevelFrame:SetPoint("TOP", UIParent, "TOP", 0, -128)
+    newLevelFrame:SetPoint("TOP", UIParent, "TOP", (cfg and cfg.posX) or 0, (cfg and cfg.posY) or -128)
     newLevelFrame:SetFrameStrata("HIGH")
     newLevelFrame:SetAlpha(1)
     newLevelFrame:Show()
@@ -104,16 +113,16 @@ function addon.ApplyLevelUpEnhanceSystem()
     newLevelFrame:SetHeight(200)
 
     local texture = newLevelFrame:CreateTexture(nil, "BACKGROUND")
-    texture:SetTexture("Interface\\AddOns\\DragonUI\\Textures\\newlevel_frame")
+    texture:SetTexture(LEVEL_FRAME)
     texture:SetAllPoints(newLevelFrame)
 
     newLevelFrame.header = newLevelFrame:CreateFontString(nil, "ARTWORK")
-    newLevelFrame.header:SetFont("Fonts\\FRIZQT__.TTF", 18)
+    newLevelFrame.header:SetFont(LEVEL_FONT, 18)
     newLevelFrame.header:SetPoint("CENTER", 0, 20)
     newLevelFrame.header:SetText(L and L["You've Reached"] or "You've Reached")
 
     newLevelFrame.footer = newLevelFrame:CreateFontString(nil, "ARTWORK")
-    newLevelFrame.footer:SetFont("Fonts\\FRIZQT__.TTF", 30)
+    newLevelFrame.footer:SetFont(LEVEL_FONT, 30)
     newLevelFrame.footer:SetPoint("CENTER", 0, -20)
     newLevelFrame.footer:SetTextColor(207 / 255, 191 / 255, 20 / 255, 1)
 

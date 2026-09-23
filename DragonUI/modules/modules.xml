@@ -34,16 +34,16 @@
     <Script file="minimap_collector.lua"/>
     <Script file="minimap.lua"/>
     <Script file="minimap_decorations.lua"/>
-    <Script file="objectivetracker.lua"/>   
+    <Script file="objectivetracker.lua"/>
     <Script file="lootroll.lua"/>
 
     <!-- Blizzard loot window skin (the paginated LootFrame, not the roll popup above) -->
     <Script file="loot_skin.lua"/>
 
+    <Script file="compactframes.lua"/>
+
     <!-- UnitFrames -->
     <Include file="unitframes\unitframes.xml"/>
-    <Script file="hp_low_alert.lua"/>
-    <Script file="compactframes.lua"/>
 
     <!-- Cast Bar module -->
     <Script file="castbar.lua"/>
@@ -95,14 +95,14 @@
     <!-- BNet Toast module (friend online/offline notifications) -->
     <Script file="BNetToast.lua"/>
 
-    <!-- Bag Skin module -->
-    <Script file="bags_skin.lua"/>
-
     <!-- Bag item usability tint (shared by bagster and bags_skin; must load before both) -->
     <Script file="bags_usability.lua"/>
 
     <!-- Bagster bag replacement module -->
     <Include file="bagster\bagster.xml"/>
+
+    <!-- Blizzard bag window skin -->
+    <Script file="bags_skin.lua"/>
 
     <!-- Bag Sort module (sort buttons for bags and bank) -->
     <Script file="bagsort.lua"/>
@@ -114,8 +114,6 @@
     <!-- Transmog Collector (Ascension: auto-collect appearances on loot) -->
     <Script file="transmog_collector.lua"/>
 
-    <!-- Level Up Enhance (animated level-up notification) -->
-    <Script file="levelupenhance.lua"/>
     <!-- Alt Gold module (other characters' money on the bag coin tooltip) -->
     <Script file="altmoney.lua"/>
 
@@ -142,4 +140,9 @@
 
     <!-- Merchant — retail-style vendor window chrome (uses worldmap's PanelChrome/NineSlice libs) -->
     <Include file="merchant\merchant.xml"/>
+    <!-- Level Up Enhance (level-up notification banner) -->
+    <Script file="levelupenhance.lua"/>
+
+    <!-- hp_low_alert (hp low alert when players is under 30% hp alow config) -->
+    <Script file="hp_low_alert.lua"/>
 </Ui>

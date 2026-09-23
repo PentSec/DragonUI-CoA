@@ -256,7 +256,7 @@ function addon.RefreshHpLowAlertSystem()
 end
 
 -- -----------------------------------------------
--- Self-initialization (required by Guia_NewModules)
+-- Self-initialization
 -- -----------------------------------------------
 local initFrame = CreateFrame("Frame")
 initFrame:RegisterEvent("ADDON_LOADED")
