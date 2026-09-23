@@ -305,8 +305,16 @@ local function BuildGeneralSubTab(scroll)
                 C:SetDBValue(DB .. ".barWidth", modern and 148 or 150)
                 C:SetDBValue(DB .. ".barHeight", modern and 16 or 9)
                 C:SetDBValue(DB .. ".castBarHeight", modern and 8 or 9)
-                -- The modern cast bar is drawn around its spell name, so the skin needs it on.
+                -- Modern starts from NewEra's font and text sizes; all stay editable afterwards.
+                C:SetDBValue(DB .. ".fontSize", 2)
+                C:SetDBValue(DB .. ".castBarSpellNameFontSize", modern and 8 or 9)
+                -- NewEra's timer is 0.55 of the icon; Modern scales it up again on enlarged icons.
+                local iconSize = C:GetDBValue(DB .. ".debuffIconSize") or 24
+                C:SetDBValue(DB .. ".debuffCooldownFontSize",
+                    modern and math.min(16, math.max(8, math.floor(iconSize * 0.55 + 0.5))) or 10)
                 if modern then
+                    C:SetDBValue(DB .. ".nameFont", "primary")
+                    -- The modern cast bar is drawn around its spell name, so the skin needs it on.
                     C:SetDBValue(DB .. ".showCastBarSpellName", true)
                 end
                 -- NewEra ships its aggro flare off, while the legacy glow is part of that art.
@@ -718,7 +726,239 @@ local function BuildHealthSubTab(scroll)
 
     local health = C:AddSection(scroll, LO["Health Bar"])
 
+<<<<<<< HEAD
     C:AddDropdown(health, {
+=======
+    -- Controls that grey out with another setting, refreshed in place so the panel keeps its scroll.
+    local dependents = {}
+    local function Depends(widget, isDisabled)
+        dependents[widget] = isDisabled
+        return widget
+    end
+    local function RefreshDependents()
+        for widget, isDisabled in pairs(dependents) do
+            if widget.SetDisabled then
+                widget:SetDisabled(isDisabled())
+            end
+        end
+        RefreshNameplates()
+    end
+    -- For changes that add or remove controls.
+    local function RebuildKeepingScroll()
+        RefreshNameplates()
+        if not Panel or not Panel.SelectTab then return end
+        local savedScroll = Panel.scrollWidget and Panel.scrollWidget.scrollbar
+            and Panel.scrollWidget.scrollbar:GetValue() or 0
+        Panel:SelectTab("nameplates")
+        if savedScroll > 0 and Panel.scrollWidget and Panel.scrollWidget.scrollbar then
+            Panel.scrollWidget.scrollbar:SetValue(savedScroll)
+            Panel.scrollWidget:SetScroll(savedScroll)
+        end
+    end
+
+    local function IsNameInsideBar()
+        return GetNP().nameOverlayHealthBar == true
+    end
+    local function IsNameAboveBar()
+        return not IsNameInsideBar()
+    end
+    local function IsLevelAlwaysShown()
+        return GetNP().showLevelAlways == true
+    end
+    local function IsHealthTextOff()
+        return GetNP().healthTextFormat == "none"
+    end
+    -- A name inside the bar pins the text to the bar's right end, so there is nothing to choose.
+    local function IsHealthTextPositionLocked()
+        return IsHealthTextOff() or IsNameInsideBar()
+    end
+    local function IsHealthTextFontSizeUnused()
+        return ModernOwnsText() or IsHealthTextPositionLocked()
+            or (GetNP().healthTextPosition or "afterName") == "afterName"
+    end
+    local function HasNoFriendlyClassBars()
+        local np = GetNP()
+        return not (np.friendlyClassColors or np.partyClassColors)
+    end
+    local function HasNoEnemyClassBars()
+        return GetNP().enemyPlayerClassColors == false
+    end
+
+    local nameSection = C:AddSection(scroll, LO["Name"])
+
+    local placeRow = C:AddRow(nameSection)
+    C:AddDropdown(placeRow, {
+        label = LO["Name Position"],
+        values = {
+            above = LO["Above the Health Bar"],
+            inside = LO["Inside the Health Bar"],
+        },
+        width = 220,
+        getFunc = function()
+            return IsNameInsideBar() and "inside" or "above"
+        end,
+        setFunc = function(value)
+            C:SetDBValue(DB .. ".nameOverlayHealthBar", value == "inside")
+        end,
+        -- The health text section explains a different layout for each position.
+        callback = RebuildKeepingScroll,
+    })
+    C:AddSlider(placeRow, {
+        label = LO["Vertical Offset"],
+        desc = LO["Moves the name up or down while it sits inside the health bar."],
+        dbPath = DB .. ".nameOverlayOffsetY",
+        min = -20, max = 20, step = 1,
+        width = 200,
+        disabled = IsNameAboveBar,
+        callback = RefreshNameplates,
+    })
+
+    C:AddSlider(nameSection, {
+        label = LO["Horizontal Padding"],
+        desc = LO["Inset the name, level, and health text from the left and right edges of the health bar. Does not affect the elite icon."],
+        dbPath = DB .. ".nameRowPaddingX",
+        min = 0, max = 40, step = 1,
+        width = 200,
+        callback = RefreshNameplates,
+    })
+
+    C:AddToggle(nameSection, {
+        label = LO["Center Name"],
+        desc = LO["Center the name in the space the health text leaves free."],
+        dbPath = DB .. ".centerNameOnly",
+        callback = RefreshNameplates,
+    })
+
+    local fontRow = C:AddRow(nameSection)
+    C:AddDropdown(fontRow, {
+        label = LO["Font"],
+        dbPath = DB .. ".nameFont",
+        values = {
+            primary = LO["Primary Font"],
+            actionbar = LO["Actionbar Font"],
+            narrow = LO["Narrow Font"],
+            arial = LO["Arial Font"],
+        },
+        width = 220,
+        callback = RefreshNameplates,
+    })
+    C:AddSlider(fontRow, {
+        label = LO["Font Size"],
+        desc = LO["Font size of the name, and of the health text when it follows the name (1-10, default 2)."],
+        dbPath = DB .. ".fontSize",
+        min = 1, max = 10, step = 1,
+        width = 200,
+        callback = RefreshNameplates,
+    })
+    if ModernOwnsText() then
+        -- One setting per name position, so inside and above keep their own choice.
+        local function OutlineKey()
+            return DB .. (IsNameInsideBar() and ".retailTextOutlineInside" or ".retailTextOutlineAbove")
+        end
+        C:AddToggle(nameSection, {
+            label = LO["Text Outline"],
+            desc = LO["Black outline on the name and health text."],
+            getFunc = function()
+                local value = C:GetDBValue(OutlineKey())
+                if IsNameInsideBar() then
+                    return value ~= false
+                end
+                return value == true
+            end,
+            setFunc = function(value)
+                C:SetDBValue(OutlineKey(), value and true or false)
+            end,
+            callback = RefreshNameplates,
+        })
+    end
+
+    local levelSection = C:AddSection(scroll, LO["Level"])
+
+    C:AddToggle(levelSection, {
+        label = LO["Show Level Always"],
+        desc = LO["Always show the unit level next to the name."],
+        dbPath = DB .. ".showLevelAlways",
+        callback = RefreshDependents,
+    })
+    Depends(C:AddToggle(levelSection, {
+        label = LO["Show Level In Name When Targeted"],
+        dbPath = DB .. ".showLevelInName",
+        disabled = IsLevelAlwaysShown,
+        callback = RefreshNameplates,
+    }), IsLevelAlwaysShown)
+    Depends(C:AddToggle(levelSection, {
+        label = LO["Show Level on Hover"],
+        dbPath = DB .. ".showLevelOnHover",
+        disabled = IsLevelAlwaysShown,
+        callback = RefreshNameplates,
+    }), IsLevelAlwaysShown)
+    C:AddDropdown(levelSection, {
+        label = LO["Level Format"],
+        dbPath = DB .. ".levelTextFormat",
+        values = {
+            brackets = "[LVL]",
+            parentheses = "(LVL)",
+            plain = "LVL",
+        },
+        width = 220,
+        callback = RefreshNameplates,
+    })
+
+    local healthTextSection = C:AddSection(scroll, LO["Health Text"])
+
+    local textRow = C:AddRow(healthTextSection)
+    C:AddDropdown(textRow, {
+        label = LO["Show"],
+        desc = LO["What the health text shows. With both, the value comes first."],
+        dbPath = DB .. ".healthTextFormat",
+        values = {
+            none = LO["None"],
+            percent = LO["Percent"],
+            value = LO["Value"],
+            valuePercent = LO["Value and Percent"],
+        },
+        width = 200,
+        callback = RefreshDependents,
+    })
+    Depends(C:AddDropdown(textRow, {
+        label = LO["Position"],
+        desc = LO["After the name, the name is shortened so the two never overlap. With the name inside the health bar, the text always sits at the bar's right end."],
+        dbPath = DB .. ".healthTextPosition",
+        -- Show what the plate draws: a name inside the bar forces the text after it.
+        getFunc = function()
+            return IsNameInsideBar() and "afterName" or (GetNP().healthTextPosition or "afterName")
+        end,
+        values = {
+            afterName = LO["After the Name"],
+            barCenter = LO["Inside the Bar, Centered"],
+            barRight = LO["Inside the Bar, Right"],
+            barSplit = LO["Inside the Bar, Value Left and Percent Right"],
+        },
+        width = 260,
+        disabled = IsHealthTextPositionLocked,
+        callback = RefreshDependents,
+    }), IsHealthTextPositionLocked)
+    Depends(C:AddSlider(textRow, {
+        label = LO["Font Size"],
+        desc = LO["Font size of the health text inside the bar (1-10). After the name, or in the Modern style, it matches the name."],
+        dbPath = DB .. ".healthNumberFontSize",
+        min = 1, max = 10, step = 1,
+        width = 200,
+        disabled = IsHealthTextFontSizeUnused,
+        callback = RefreshNameplates,
+    }), IsHealthTextFontSizeUnused)
+
+    if IsNameInsideBar() then
+        C:AddDescription(healthTextSection, LO["The name is inside the health bar, so the health text sits at the bar's right end, after the name."])
+    end
+
+    local barSection = C:AddSection(scroll, LO["Health Bar"])
+
+    if RetailChromeOwnsBackground() then
+        C:AddDescription(barSection, LO["The Modern style draws its own bar background."])
+    end
+    C:AddDropdown(barSection, {
+>>>>>>> e00daaa (feat(nameplates): editable Modern fonts, text outline toggle and full translations)
         label = LO["Health Bar Background"],
         desc = LO["Choose the background texture used behind the health bar fill."],
         dbPath = DB .. ".healthBarBackground",
