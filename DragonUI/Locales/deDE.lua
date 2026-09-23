@@ -788,8 +788,6 @@ L["World map module disabled: %s replaces the same map frame."] = "Weltkarten-Mo
 L["Cursor"] = "Cursor"
 L["Show Zone Levels"] = "Gebietsstufen anzeigen"
 L["Show Map Coordinates"] = "Kartenkoordinaten anzeigen"
-<<<<<<< HEAD
-=======
 
 -- Level Up Enhance Module
 L["LevelUpFrame"] = "Level Up"
@@ -804,4 +802,3 @@ L["Level %d"] = "Level %d"
 
 L["Low HP Alert"] = "Niedriges HP-Alarm"
 L["Plays a sound and flashes the screen edges when your HP drops below the threshold."] = "Spielt einen Ton ab und lässt die Bildschirmränder blinken, wenn deine HP unter den Schwellenwert fällt."
->>>>>>> 8f804be (fix(modules): make #468's Low HP Alert and Level Up Enhance production-ready)

@@ -9,14 +9,10 @@
     <Script file="cooldowns.lua"/>
     <Script file="auracooldowns.lua"/>
     <Script file="mainbars.lua"/>
-<<<<<<< HEAD
 
     <!-- Attack Bar (swing timer for main/off hand, ranged, and enemy) -->
     <Script file="Attackbar.lua"/>
 
-=======
-    
->>>>>>> 8f804be (fix(modules): make #468's Low HP Alert and Level Up Enhance production-ready)
     <!-- Action Bar Sub-modules (stance, vehicle, petbar, multicast) -->
     <Include file="actionbars\actionbars.xml"/>
     
@@ -32,10 +28,7 @@
 
     <!-- Key Press module (fire actions on key down instead of key release) -->
     <Script file="keypress.lua"/>
-<<<<<<< HEAD
-=======
     
->>>>>>> 8f804be (fix(modules): make #468's Low HP Alert and Level Up Enhance production-ready)
     <!-- Buffs, Minimap & Quest Tracker modules -->
     <Script file="buff_frame.lua"/>
     <Script file="auraborders.lua"/>
@@ -48,18 +41,10 @@
     <!-- Blizzard loot window skin (the paginated LootFrame, not the roll popup above) -->
     <Script file="loot_skin.lua"/>
 
-<<<<<<< HEAD
-    <!-- UnitFrames -->
-    <Include file="unitframes\unitframes.xml"/>
-    <Script file="hp_low_alert.lua"/>
-    <Script file="compactframes.lua"/>
-
-=======
  
     <!-- UnitFrames -->
     <Include file="unitframes\unitframes.xml"/>
     
->>>>>>> 8f804be (fix(modules): make #468's Low HP Alert and Level Up Enhance production-ready)
     <!-- Cast Bar module -->
     <Script file="castbar.lua"/>               
     
@@ -68,7 +53,6 @@
     
     <!-- Editor Mode module -->
     <Script file="editor_mode.lua"/>
-<<<<<<< HEAD
 
     <!-- Extra Action Button movability widget -->
     <Script file="extra_action_button.lua"/>
@@ -78,10 +62,15 @@
 
     <!-- DurabilityFrame movability widget -->
     <Script file="durabilityframe.lua"/>
-
-=======
     
->>>>>>> 8f804be (fix(modules): make #468's Low HP Alert and Level Up Enhance production-ready)
+    <Script file="compactframes.lua"/>
+
+        <!-- Profile Sync module (AceComm-based profile sharing) -->
+    <Script file="profilesync.lua"/>
+
+    <!-- BNet Toast module (friend online/offline notifications) -->
+    <Script file="BNetToast.lua"/>
+    
     <!-- Dark Mode module -->
     <Script file="darkmode.lua"/>
     
@@ -104,32 +93,16 @@
 
     <!-- Chat Mods module -->
     <Script file="chatmods.lua"/>
-<<<<<<< HEAD
-
-    <!-- Profile Sync module (AceComm-based profile sharing) -->
-    <Script file="profilesync.lua"/>
-
-    <!-- BNet Toast module (friend online/offline notifications) -->
-    <Script file="BNetToast.lua"/>
-
-    <!-- Bag Skin module -->
-    <Script file="bags_skin.lua"/>
-
-=======
     
->>>>>>> 8f804be (fix(modules): make #468's Low HP Alert and Level Up Enhance production-ready)
     <!-- Bag item usability tint (shared by bagster and bags_skin; must load before both) -->
     <Script file="bags_usability.lua"/>
 
     <!-- Bagster bag replacement module -->
     <Include file="bagster\bagster.xml"/>
 
-<<<<<<< HEAD
-=======
     <!-- Blizzard bag window skin -->
     <Script file="bags_skin.lua"/>
     
->>>>>>> 8f804be (fix(modules): make #468's Low HP Alert and Level Up Enhance production-ready)
     <!-- Bag Sort module (sort buttons for bags and bank) -->
     <Script file="bagsort.lua"/>
 
@@ -154,7 +127,6 @@
     <!-- Performance Warmup module (pre-loads panels to avoid first-use freezes) -->
     <Script file="performance_warmup.lua"/>
 
-<<<<<<< HEAD
     <!-- Talent Inspector module (CoA talent tree viewer in inspect) -->
     <Script file="inspector.lua"/>
 
@@ -169,8 +141,6 @@
 
     <!-- Merchant — retail-style vendor window chrome (uses worldmap's PanelChrome/NineSlice libs) -->
     <Include file="merchant\merchant.xml"/>
-=======
     <!-- Low HP Alert (screen-edge flash and sound on low health) -->
     <Script file="hp_low_alert.lua"/>
->>>>>>> 8f804be (fix(modules): make #468's Low HP Alert and Level Up Enhance production-ready)
 </Ui>

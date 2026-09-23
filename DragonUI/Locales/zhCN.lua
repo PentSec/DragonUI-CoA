@@ -762,8 +762,6 @@ L["World map module disabled: %s replaces the same map frame."] = "世界地图�
 L["Cursor"] = "光标"
 L["Show Zone Levels"] = "显示区域等级"
 L["Show Map Coordinates"] = "显示地图坐标"
-<<<<<<< HEAD
-=======
 
 -- Level Up Enhance Module
 L["LevelUpFrame"] = "Level Up"
@@ -778,4 +776,3 @@ L["Level %d"] = "等级 %d"
 
 L["Low HP Alert"] = "低HP警报"
 L["Plays a sound and flashes the screen edges when your HP drops below the threshold."] = "当你的HP低于设定的临界值时，发出声音并闪烁屏幕边缘。"
->>>>>>> 8f804be (fix(modules): make #468's Low HP Alert and Level Up Enhance production-ready)

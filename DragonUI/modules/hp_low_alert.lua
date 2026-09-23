@@ -194,7 +194,6 @@ function addon.RefreshHpLowAlertSystem()
     end
 end
 
-<<<<<<< HEAD
 -- -----------------------------------------------
 -- Self-initialization (required by Guia_NewModules)
 -- -----------------------------------------------
@@ -217,11 +216,6 @@ initFrame:SetScript("OnEvent", function(self, event, arg1)
                 end)
             end
         end)
-=======
--- =============================================================================
--- OPTIONS PANEL HOOKS
--- =============================================================================
->>>>>>> 8f804be (fix(modules): make #468's Low HP Alert and Level Up Enhance production-ready)
 
 addon.RefreshHpLowAlertFlash = UpdateFlashVisuals
 

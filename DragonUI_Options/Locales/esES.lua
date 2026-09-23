@@ -836,7 +836,6 @@ L["Visual enhancements that add Dragonflight-style polish to the UI. These are o
 
 -- (Dark Mode, Range Indicator, Item Quality, Tooltips defined above in MODULES section)
 
-<<<<<<< HEAD
 -- Low HP Alert
 L["Low HP Alert"] = "Alerta de Poca Vida"
 L["Plays a sound and flashes the screen edges when your HP drops below the configured threshold."] = "Reproduce un sonido y destella los bordes de la pantalla cuando tu vida baja del umbral configurado."
@@ -858,8 +857,6 @@ L["Maximum opacity of the flash effect."] = "Opacidad máxima del efecto de dest
 L["Flash Extent"] = "Extensión del Destello"
 L["How far the flash extends from the screen edges toward the center, in pixels."] = "Cuánto se extiende el destello desde los bordes hacia el centro, en píxeles."
 
-=======
->>>>>>> 8f804be (fix(modules): make #468's Low HP Alert and Level Up Enhance production-ready)
 -- ============================================================================
 -- MICRO MENU TAB
 -- ============================================================================

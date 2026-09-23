@@ -6,8 +6,6 @@
 local addon = select(2, ...)
 local L = addon.L
 
-<<<<<<< HEAD
-=======
 local LEVEL_FRAME = addon._dir .. "NewLevelUp\\levelup"
 local LEVEL_FONT = addon.Fonts.PRIMARY
 
@@ -18,7 +16,6 @@ local HEIGHT = WIDTH * (189 - 67) / 512
 
 local HOLD_TIME, FADE_TIME = 4.5, 1.5
 
->>>>>>> 8f804be (fix(modules): make #468's Low HP Alert and Level Up Enhance production-ready)
 local LevelUpEnhance = {
     initialized = false,
     applied = false,
@@ -42,22 +39,6 @@ end
 -- =============================================================================
 
 local function ApplyWidgetPosition()
-<<<<<<< HEAD
-    if InCombatLockdown() then return end
-    if addon.EditorMode and addon.EditorMode:IsActive() then return end
-
-    local cfg = addon.db.profile.widgets.levelupenhance
-    if not cfg then return end
-
-    anchor:ClearAllPoints()
-    anchor:SetPoint(cfg.anchor or DEFAULT_ANCHOR, UIParent,
-        cfg.anchor or DEFAULT_ANCHOR, cfg.posX or DEFAULT_X, cfg.posY or DEFAULT_Y)
-
-    if newLevelFrame then
-        newLevelFrame:ClearAllPoints()
-        newLevelFrame:SetPoint("TOP", anchor, "TOP", 0, 0)
-    end
-=======
     if IsEditorActive() then return end
 
     local widgets = addon.db.profile.widgets
@@ -65,33 +46,12 @@ local function ApplyWidgetPosition()
 
     anchor:ClearAllPoints()
     anchor:SetPoint(cfg.anchor, UIParent, cfg.anchor, cfg.posX, cfg.posY)
->>>>>>> 8f804be (fix(modules): make #468's Low HP Alert and Level Up Enhance production-ready)
 end
 
 -- =============================================================================
 -- BANNER
 -- =============================================================================
 
-<<<<<<< HEAD
-local function ShowNewLevelFrame(level)
-    if not newLevelFrame or not newLevelFrame.footer then return end
-    newLevelFrame.footer:SetText(string.format(L and L["Level %d"] or "Level %d", level))
-    newLevelFrame:ClearAllPoints()
-    newLevelFrame:SetPoint("TOP", UIParent, "TOP", 0, -128)
-    newLevelFrame:SetFrameStrata("HIGH")
-    newLevelFrame:SetAlpha(1)
-    newLevelFrame:Show()
-    newLevelFrame.timeShown = 0
-    local fadeInfo = { mode = "IN", fadeFunc = function() end, timeToFade = 1.5, startAlpha = 1, endAlpha = 1 }
-    UIFrameFade(newLevelFrame, fadeInfo)
-    local updateFrame = CreateFrame("Frame")
-    updateFrame:SetScript("OnUpdate", function(self, elapsed)
-        newLevelFrame.timeShown = newLevelFrame.timeShown + elapsed
-        if newLevelFrame.timeShown >= 4.5 then
-            UIFrameFadeOut(newLevelFrame, 1.5, 1, 0)
-            self:SetScript("OnUpdate", nil)
-        end
-=======
 local function ShowBanner(level)
     banner.footer:SetText(string.format(L["Level %d"], level))
     banner.fade:Stop()
@@ -129,7 +89,6 @@ local function CreateBanner()
     fadeOut:SetChange(-1)
     banner.fade:SetScript("OnFinished", function()
         banner:Hide()
->>>>>>> 8f804be (fix(modules): make #468's Low HP Alert and Level Up Enhance production-ready)
     end)
 
     addon:RegisterEditableFrame({
@@ -166,60 +125,8 @@ end)
 -- =============================================================================
 
 function addon.ApplyLevelUpEnhanceSystem()
-<<<<<<< HEAD
-    if LevelUpEnhance.applied then return end
-
-    newLevelFrame = CreateFrame("Frame", nil, UIParent)
-    newLevelFrame:SetFrameStrata("MEDIUM")
-    newLevelFrame:SetWidth(400)
-    newLevelFrame:SetHeight(200)
-
-    local texture = newLevelFrame:CreateTexture(nil, "BACKGROUND")
-    texture:SetTexture("Interface\\AddOns\\DragonUI\\Textures\\newlevel_frame")
-    texture:SetAllPoints(newLevelFrame)
-
-    newLevelFrame.header = newLevelFrame:CreateFontString(nil, "ARTWORK")
-    newLevelFrame.header:SetFont("Fonts\\FRIZQT__.TTF", 18)
-    newLevelFrame.header:SetPoint("CENTER", 0, 20)
-    newLevelFrame.header:SetText(L and L["You've Reached"] or "You've Reached")
-
-    newLevelFrame.footer = newLevelFrame:CreateFontString(nil, "ARTWORK")
-    newLevelFrame.footer:SetFont("Fonts\\FRIZQT__.TTF", 30)
-    newLevelFrame.footer:SetPoint("CENTER", 0, -20)
-    newLevelFrame.footer:SetTextColor(207 / 255, 191 / 255, 20 / 255, 1)
-
-    newLevelFrame:Hide()
-
-    if not anchor then
-        anchor = addon.CreateUIFrame(400, 200, "LevelUpFrame")
-
-        addon:RegisterEditableFrame({
-            name = "levelupenhance",
-            frame = anchor,
-            blizzardFrame = newLevelFrame,
-            configPath = {"widgets", "levelupenhance"},
-            editorVisible = function()
-                return IsModuleEnabled()
-            end,
-            showTest = function()
-                anchor:Show()
-                newLevelFrame.footer:SetText(L and L["Level %d"] or "Level %d", UnitLevel("player") + 1)
-                newLevelFrame:Show()
-                newLevelFrame:SetAlpha(1)
-            end,
-            hideTest = function()
-                newLevelFrame:Hide()
-            end,
-            onHide = function()
-                newLevelFrame:Hide()
-                ApplyWidgetPosition()
-            end,
-            module = LevelUpEnhance,
-        })
-=======
     if not banner then
         CreateBanner()
->>>>>>> 8f804be (fix(modules): make #468's Low HP Alert and Level Up Enhance production-ready)
     end
 
     ApplyWidgetPosition()
