@@ -10,13 +10,8 @@ These are general-purpose functions that can be used by any module.
 local addon = select(2, ...)
 local L = addon.L
 
-<<<<<<< HEAD
-addon.DB_SCHEMA_VERSION = 2
-addon.RELEASE_VERSION = GetAddOnMetadata("DragonUI", "Version")
-=======
 addon.DB_SCHEMA_VERSION = 3
-addon.RELEASE_VERSION = GetAddOnMetadata("DragonUI", "Version") or "2.5"
->>>>>>> 5f8c124 (fix(nameplates,loot): overlap-free health text, per-spell debuff rules and stuck loot window)
+addon.RELEASE_VERSION = GetAddOnMetadata("DragonUI", "Version")
 
 -- ============================================================================
 -- TABLE UTILITIES
