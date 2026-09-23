@@ -756,7 +756,6 @@ L["Weighted score of your equipped gear."] = "착용 중인 장비의 가중 점
 L["Reset stat order"] = "순서 초기화"
 L["Restore the stat categories to their default order?"] = "능력치 분류를 기본 순서로 되돌릴까요?"
 
-<<<<<<< HEAD
 -- ============================================================================
 -- DAMAGE METER SKIN (DETAILS!)
 -- ============================================================================
@@ -767,17 +766,12 @@ L["Details! skin applied."] = "Details! 스킨이 적용되었습니다."
 L["Could not apply the skin - Details! is not ready yet."] = "스킨을 적용할 수 없습니다 - Details!가 아직 준비되지 않았습니다."
 L["Details! is not installed."] = "Details!가 설치되어 있지 않습니다."
 
-=======
->>>>>>> 71963e6 (feat(merchant): retail-style vendor window chrome)
 -- MERCHANT MODULE
 L["Merchant"] = "상인"
 L["Retail-style vendor window chrome"] = "상인 창 모던 스타일"
 L["Sell all junk items"] = "모든 잡동사니 아이템 판매"
-<<<<<<< HEAD
 L["Sell all of your junk (gray) items?"] = "모든 잡동사니(회색) 아이템을 판매하시겠습니까?"
-=======
 L["You are about to sell all junk items and will not be able to buy them back.\n\nAre you sure you want to proceed?"] = "모든 잡동사니 아이템을 판매하게 되며 다시 구매할 수 없습니다.\n\n계속 진행하시겠습니까?"
->>>>>>> 71963e6 (feat(merchant): retail-style vendor window chrome)
 L["Sold %d junk item(s)."] = "%d 개의 잡동사니 아이템이 판매되었습니다."
 
 -- World Map

@@ -715,7 +715,6 @@ L["Weighted score of your equipped gear."] = true
 L["Reset stat order"] = true
 L["Restore the stat categories to their default order?"] = true
 
-<<<<<<< HEAD
 -- ============================================================================
 -- DAMAGE METER SKIN (DETAILS!)
 -- ============================================================================
@@ -725,14 +724,12 @@ L["A retail-styled theme for the Details! Damage Meter: gold-titled header bar, 
 L["Details! skin applied."] = true
 L["Could not apply the skin - Details! is not ready yet."] = true
 L["Details! is not installed."] = true
-=======
 --MERCHANT MODULE
 L["Merchant"] = true
 L["Retail-style vendor window chrome"] = true
 L["Sell all junk items"] = true
 L["You are about to sell all junk items and will not be able to buy them back.\n\nAre you sure you want to proceed?"] = true
 L["Sold %d junk item(s)."] = true
->>>>>>> 71963e6 (feat(merchant): retail-style vendor window chrome)
 
 -- World Map
 L["World Map"] = true
