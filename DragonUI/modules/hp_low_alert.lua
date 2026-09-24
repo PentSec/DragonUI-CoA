@@ -194,28 +194,9 @@ function addon.RefreshHpLowAlertSystem()
     end
 end
 
--- -----------------------------------------------
--- Self-initialization
--- -----------------------------------------------
-local initFrame = CreateFrame("Frame")
-initFrame:RegisterEvent("ADDON_LOADED")
-initFrame:RegisterEvent("PLAYER_ENTERING_WORLD")
-initFrame:SetScript("OnEvent", function(self, event, arg1)
-    if event == "ADDON_LOADED" and arg1 == "DragonUI" then
-        if not EnsureConfig() then return end
-        addon:After(0.5, function()
-            if addon.db and addon.db.RegisterCallback then
-                addon.db.RegisterCallback(addon, "OnProfileChanged", function()
-                    addon.RefreshHpLowAlertSystem()
-                end)
-                addon.db.RegisterCallback(addon, "OnProfileCopied", function()
-                    addon.RefreshHpLowAlertSystem()
-                end)
-                addon.db.RegisterCallback(addon, "OnProfileReset", function()
-                    addon.RefreshHpLowAlertSystem()
-                end)
-            end
-        end)
+-- =============================================================================
+-- OPTIONS PANEL HOOKS
+-- =============================================================================
 
 addon.RefreshHpLowAlertFlash = UpdateFlashVisuals
 

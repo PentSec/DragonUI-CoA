@@ -1,0 +1,23 @@
+# macOS
+.DS_Store
+
+# Secrets
+.env
+.env.*
+
+# Python cache
+__pycache__/
+*.pyc
+*.pyo
+
+# Backup files
+*.bak
+*.lua.bak
+*.bak2
+# Reference forks
+_ref-*/
+*.sh
+.atl
+docs/
+.serena/
+.codegraph/
