@@ -6,6 +6,8 @@
 ## LoadOnDemand: 1
 ## Dependencies: DragonUI
 ## X-License: MIT for project-authored code; bundled dependencies retain their own licenses
+## X-oUF: DragonUF
+## X-IconTexture: Interface\AddOns\DragonUI\DragonUI
 
 # Libraries for options UI (loaded only when options are opened)
 libs\LibStub\LibStub.lua

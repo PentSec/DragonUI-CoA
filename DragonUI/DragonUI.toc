@@ -6,6 +6,8 @@
 ## SavedVariables: DragonUIDB
 ## OptionalDeps: Blizzard_TimeManager, Details
 ## X-License: MIT for project-authored code; bundled dependencies retain their own licenses
+## X-oUF: DragonUF
+## X-IconTexture: Interface\AddOns\DragonUI\DragonUI
 
 # Core libraries (always loaded)
 libs\LibStub\LibStub.lua
