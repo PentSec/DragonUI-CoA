@@ -1,5 +1,6 @@
 # 🐉 DragonUI for Conquest Of AzerothCore servers
-
+Support me <3
+[![ko-fi](https://ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/D5R327PO99)
 
 ### Join Discord: ⬎
 
@@ -174,3 +175,6 @@ DragonUI is released under the [MIT License](LICENSE). Bundled third-party compo
 
 DragonUI is a free, fan-made addon. No content is sold and no in-game advantages are provided. Donations are entirely voluntary. Not affiliated with or endorsed by Blizzard Entertainment.
 
+## Support me <3
+
+[![ko-fi](https://ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/D5R327PO99)
