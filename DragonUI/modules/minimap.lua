@@ -65,7 +65,7 @@ local ROUND_BORDER_TEXTURE = "Interface\\AddOns\\DragonUI\\Textures\\Minimap\\Mi
 local ADDON_ORBIT_RADIUS = 15
 local DRAGONUI_SETTINGS_BUTTON_SIZE = 21
 local DRAGONUI_SETTINGS_BUTTON_ICON = "Interface\\AddOns\\DragonUI\\Textures\\UI\\INV_Misc_Head_Dragon_01"
-local DRAGONUI_CLASSIC_COLLECTOR_ICON = "Interface\\AddOns\\DragonUI\\Textures\\Minimap\\dfrl_collector_toggle.tga"
+local DRAGONUI_CLASSIC_COLLECTOR_ICON = "Interface\\AddOns\\DragonUI\\Textures\\Minimap\\collector_toggle.tga"
 
 -- Addon icon whitelist: define before ReplaceBlizzardFrame
 local WHITE_LIST = {'MiniMapBattlefieldFrame', 'MiniMapTrackingButton', 'MiniMapMailFrame', 'HelpOpenTicketButton',
