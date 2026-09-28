@@ -532,7 +532,7 @@ local function SlashCommandHandler(input)
         ScanGlobals()
 
         if HandleModifiedItemClick then
-            addon:Print("HandleModifiedItemClick found — Ascension may hook this.")
+            addon:Print("HandleModifiedItemClick found — Conquest of Azeroth may hook this.")
         end
         if ContainerFrameItemButton_OnClick then
             addon:Print("ContainerFrameItemButton_OnClick found.")

@@ -4,7 +4,7 @@ local L = addon.L
 -- ============================================================================
 -- Extra Action Button movability widget
 -- ============================================================================
--- Ascension/Blizzard creates `ExtraActionBarFrame` which holds the quest/zone
+-- Conquest of Azeroth/Blizzard creates `ExtraActionBarFrame` which holds the quest/zone
 -- extra action button (ExtraActionButton1). This widget lets the user
 -- reposition it via DragonUI Editor Mode and persists the position per profile
 -- in `addon.db.profile.widgets.extraActionButton`.

@@ -69,7 +69,7 @@ L["PlayerPrimaryStat"] = "Atributo Principal"
 L["TargetPrimaryStat"] = "Atributo Principal (Alvo)"
 L["Primary stat icon movability widget"] = "Widget de mobilidade do ícone de atributo principal"
 L["WildCardDice"] = "Dados WildCard"
-L["Ascension WildCard dice movability widget"] = "Widget de mobilidade dos dados WildCard do Ascension"
+L["Conquest of Azeroth WildCard dice movability widget"] = "Widget de mobilidade dos dados WildCard do Conquest of Azeroth"
 L["DurabilityFrameWidget"] = "Quadro de Durabilidade"
 L["Durability frame movability widget"] = "Widget de mobilidade do quadro de durabilidade"
 

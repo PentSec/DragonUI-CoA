@@ -217,7 +217,7 @@ L["PlayerPrimaryStat"] = "Estadística Principal"
 L["TargetPrimaryStat"] = "Estadística Principal (Objetivo)"
 L["Primary stat icon movability widget"] = "Widget de movilidad del icono de estadística principal"
 L["WildCardDice"] = "Dados WildCard"
-L["Ascension WildCard dice movability widget"] = "Widget de movilidad de los dados WildCard de Ascension"
+L["Conquest of Azeroth WildCard dice movability widget"] = "Widget de movilidad de los dados WildCard de Conquest of Azeroth"
 L["DurabilityFrameWidget"] = "Marco de Durabilidad"
 L["Durability frame movability widget"] = "Widget de movilidad del marco de durabilidad"
 

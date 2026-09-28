@@ -213,7 +213,7 @@ L["PlayerPrimaryStat"] = "主属性"
 L["TargetPrimaryStat"] = "目标主属性"
 L["Primary stat icon movability widget"] = "主属性图标可移动组件"
 L["WildCardDice"] = "WildCard 骰子"
-L["Ascension WildCard dice movability widget"] = "Ascension WildCard 骰子可移动组件"
+L["Conquest of Azeroth WildCard dice movability widget"] = "Conquest of Azeroth WildCard 骰子可移动组件"
 L["DurabilityFrameWidget"] = "耐久度框架"
 L["Durability frame movability widget"] = "耐久度框架可移动组件"
 

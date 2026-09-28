@@ -331,16 +331,16 @@ local function BuildAurasTab(scroll)
     C:AddSpacer(weaponSection)
 
     -- ====================================================================
-    -- VANITY BUFFS (Ascension)
+    -- VANITY BUFFS (Conquest of Azeroth)
     -- ====================================================================
     local vanitySection = C:AddSection(scroll, LO["Vanity Buffs"])
 
     C:AddDescription(vanitySection,
-        LO["Vanity buffs are cosmetic auras consolidated by Ascension (mounts, toys, transmog effects). The consolidated container is provided by the Ascension_VanityCollection addon."])
+        LO["Vanity buffs are cosmetic auras consolidated by Conquest of Azeroth (mounts, toys, transmog effects). The consolidated container is provided by the Ascension_VanityCollection addon."])
 
     C:AddToggle(vanitySection, {
         label = LO["Hide Vanity Buffs"],
-        desc = LO["Hide the Ascension vanity-buff consolidated container and its contained auras from the buff frame. Existing buff order and positioning are preserved."],
+        desc = LO["Hide the Conquest of Azeroth vanity-buff consolidated container and its contained auras from the buff frame. Existing buff order and positioning are preserved."],
         dbPath = "buffs.hide_vanity_buffs",
         callback = function()
             if addon.BuffFrameModule and addon.BuffFrameModule.RefreshVanityBuffsVisibility then

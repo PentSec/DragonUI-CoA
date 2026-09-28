@@ -12,17 +12,17 @@ local FADE_SECONDS = 0.15
 local PLATE_SHEET = addon._dir .. "CharacterPanel\\commonbuttons"
 local ICON_SHEET = addon._dir .. "CharacterPanel\\commonicons"
 
--- The strip's zoom buttons write the depth axis the native gestures drive. On the Ascension model
+-- The strip's zoom buttons write the depth axis the native gestures drive. On the Conquest of Azeroth model
 -- the native scroll-zoom still moves that same depth (this engine has no camera -- SetCamDistanceScale
 -- only arrives in Cataclysm), so the retail buttons read the live position and clamp to the range the
 -- XML's SetMinMaxDistance configures; the vanilla and pet models are handled by the core module
 -- (core/modelview.lua), which tracks the same depth as an offset and re-bases it on reload.
 local ZOOM_STEP = 0.25
--- Fallbacks only: the Ascension clamp is read off the model's own SetMinMaxDistance when available.
+-- Fallbacks only: the Conquest of Azeroth clamp is read off the model's own SetMinMaxDistance when available.
 local RETAIL_ZOOM_MIN, RETAIL_ZOOM_MAX = -1.4, 1.4
 -- Model_OnLoad's own starting rotation, so reset returns to exactly Blizzard's default.
 local DEFAULT_ROTATION = 0.61
--- The Ascension model's OnLoad facing (PaperDollPanel.xml), so reset returns to exactly its default.
+-- The Conquest of Azeroth model's OnLoad facing (PaperDollPanel.xml), so reset returns to exactly its default.
 local DEFAULT_FACING = 0.45
 -- One click of a strip rotate button, matching Blizzard's own 0.15-per-press step.
 local ROTATE_STEP = 0.15
@@ -37,7 +37,7 @@ local STRIP_ORDER = { "left", "right", "zoomOut", "zoomIn", "reset" }
 -- One entry per viewport the strip is built over, keyed by the model itself.
 local strips = {}
 
--- The Ascension model's native gestures write the widget directly, so its strip reads the live
+-- The Conquest of Azeroth model's native gestures write the widget directly, so its strip reads the live
 -- position to stay in step (the vanilla model's depth is owned by the core module instead).
 local function position(model)
     if not model.GetPosition then return 0, 0, 0 end
@@ -53,7 +53,7 @@ end
 
 -- The strip's zoom buttons write the same axis the native gestures drive: the model's depth
 -- position. The vanilla model's depth is owned by the core module (addon:ZoomModelView), which
--- tracks it as an offset re-based on every reload; the Ascension model's native scroll-zoom and
+-- tracks it as an offset re-based on every reload; the Conquest of Azeroth model's native scroll-zoom and
 -- drag-move write the widget directly, so its strip reads the position live and clamps to the
 -- range its own XML configures.
 local function applyZoom(strip, notches)
@@ -79,7 +79,7 @@ local function resetModel(strip)
     end
 end
 
--- Steps the strip's own rotate pair. On the Ascension model the native drag-rotate writes the
+-- Steps the strip's own rotate pair. On the Conquest of Azeroth model the native drag-rotate writes the
 -- facing too, so reading it live keeps the buttons and the mouse in step; the vanilla model reads
 -- the same `rotation` field Model_OnUpdate carries while a Blizzard button is held.
 local function rotateModel(strip, delta)
@@ -236,7 +236,7 @@ local function startFade(strip, target)
 end
 
 -- One strip per model viewport: the vanilla CharacterModelFrame (Blizzard's rotate buttons passed
--- in) and the Ascension character/Inspect models (retail = true -- a created rotate pair, and no
+-- in) and the Conquest of Azeroth character/Inspect models (retail = true -- a created rotate pair, and no
 -- drag or wheel wiring, since ModelMixin owns those gestures).
 local function buildStrip(model, opts)
     if not model or strips[model] then return end
@@ -245,7 +245,7 @@ local function buildStrip(model, opts)
     local strip = { model = model, retail = opts.retail and true or false }
     strips[model] = strip
 
-    -- The zoom clamp the retail buttons obey: the Ascension model's live SetMinMaxDistance (with
+    -- The zoom clamp the retail buttons obey: the Conquest of Azeroth model's live SetMinMaxDistance (with
     -- the same fallback the XML configures). Some getters hand back (max, min), so normalize first.
     -- The vanilla model's clamp lives in the core module (DEPTH_MIN/MAX), so none is stored here.
     if strip.retail then
@@ -285,7 +285,7 @@ local function buildStrip(model, opts)
             btn:Hide()
         end
     else
-        -- The Ascension window has no rotate buttons, so the strip makes its own pair; as children
+        -- The Conquest of Azeroth window has no rotate buttons, so the strip makes its own pair; as children
         -- of the bar they inherit its fade instead of needing a sibling alpha of their own.
         local function makeRotate(name, glyph, delta)
             local btn = CreateFrame("Button", name, bar)
@@ -355,7 +355,7 @@ local function buildStrip(model, opts)
     end)
 
     model:EnableMouse(true)
-    -- The Ascension model's ModelMixin already owns drag-rotate, drag-move and scroll-zoom, so the
+    -- The Conquest of Azeroth model's ModelMixin already owns drag-rotate, drag-move and scroll-zoom, so the
     -- wheel hook and the drag loops below are vanilla-only. Hooked, not set: the model's XML
     -- OnMouseUp is what lets an item be dropped onto it to equip.
     if not strip.retail then

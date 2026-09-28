@@ -65,13 +65,13 @@ local original_BuffButton_SetPoint = {}
 local buffFramePositionLocked = false
 
 -- ============================================================================
--- NOTE: VanityBuffs positioning (Ascension custom frame)
--- VanityBuffs is a global frame injected by Ascension (not part of stock
+-- NOTE: VanityBuffs positioning (Conquest of Azeroth custom frame)
+-- VanityBuffs is a global frame injected by Conquest of Azeroth (not part of stock
 -- 3.3.5a FrameXML).  It SELF-POSITIONS via its OnShow/OnHide handlers
 -- (ConsolidatedBuffs_OnShow/OnHide and VanityBuffs_OnShow/OnHide in the
 -- server FrameXML).  DragonUI must NEVER call ClearAllPoints/SetPoint on
 -- VanityBuffs — doing so triggers a visible reflow of VanityBuffsContainer
--- children and fights Ascension on every UNIT_AURA tick, which is the root
+-- children and fights Conquest of Azeroth on every UNIT_AURA tick, which is the root
 -- cause of the vanity-buff flickering.
 -- ============================================================================
 
@@ -262,14 +262,14 @@ local function CollectSortedBuffButtons()
     local count = 0
     for index = 1, BUFF_ACTUAL_DISPLAY do
         local button = _G["BuffButton" .. index]
-        -- Skip consolidated AND vanity buttons: Ascension's VanityBuffs addon
+        -- Skip consolidated AND vanity buttons: Conquest of Azeroth's VanityBuffs addon
         -- reparents vanity-marked auras into VanityBuffsContainer and lays them
         -- out in its own tooltip grid (see _ref-/vanitybuff/BuffFrame.lua).
-        -- If we touch them here, ReanchorBuffButtons fights Ascension every
+        -- If we touch them here, ReanchorBuffButtons fights Conquest of Azeroth every
         -- UNIT_AURA tick for the same button's parent/anchor -> visible flicker
         -- where the buff jumps out of the vanity container into the buff row
         -- and back.
-        -- IMPORTANT: check BOTH the flag AND the parent. Ascension clears
+        -- IMPORTANT: check BOTH the flag AND the parent. Conquest of Azeroth clears
         -- buff.vanity = nil at the TOP of AuraButton_Update before re-assigning
         -- it; during that transient window the flag is nil but the button is
         -- still parented to VanityBuffsContainer. Checking the parent catches
@@ -376,7 +376,7 @@ local function SetBuffsCollapsed(collapsed)
         end
     end
 
-    -- VanityBuffs is an Ascension-only global; nil in vanilla 3.3.5a so the
+    -- VanityBuffs is an Conquest of Azeroth-only global; nil in vanilla 3.3.5a so the
     -- guard no-ops there. Hide it when the row is collapsed (matching the
     -- BuffButton loop above) and show it when expanded.
     if VanityBuffs then
@@ -476,7 +476,7 @@ local function ApplyAuraScales()
         SetAuraScale(ConsolidatedBuffs, buffScale)
     end
 
-    -- VanityBuffs container (Ascension) — part of the buff chain, so it must
+    -- VanityBuffs container (Conquest of Azeroth) — part of the buff chain, so it must
     -- track the buff scale like every other buff icon. Nil in vanilla 3.3.5a.
     if VanityBuffs then
         SetAuraScale(VanityBuffs, buffScale)
@@ -783,12 +783,12 @@ local function AnchorWeaponEnchantsToFrame()
 end
 
 -- Desired anchor for TemporaryEnchantFrame in the NORMAL buff chain (used when
--- weapon enchants are NOT separated). Respects Ascension's chain: when
+-- weapon enchants are NOT separated). Respects Conquest of Azeroth's chain: when
 -- VanityBuffs is shown, TEF follows VanityBuffs (its LEFT), not ConsolidatedBuffs.
 --
 -- CRITICAL with Hide Vanity Buffs ON: VanityBuffs is forced invisible but its
 -- anchor math (36px-wide slot at ConsolidatedBuffs.TOPLEFT - 6) STILL consumes
--- space, and Ascension's VanityBuffs_OnHide re-pins TEF to VanityBuffs.TOPRIGHT.
+-- space, and Conquest of Azeroth's VanityBuffs_OnHide re-pins TEF to VanityBuffs.TOPRIGHT.
 -- Visually that leaves an empty 36px gap right where VanityBuffs used to render
 -- — the "hueco donde va el vanitybuff" reported by the user. Pin TEF directly
 -- to ConsolidatedBuffs.TOPLEFT (no -6 spacing offset) so the chain closes the
@@ -797,7 +797,7 @@ local function DesiredChainTempEnchantAnchor()
     if not TemporaryEnchantFrame then return nil end
     -- Only chain off VanityBuffs when it's actually visible AND not suppressed.
     -- Hidden-by-option still sets IsShown() false (our Show hook re-hides),
-    -- so this branch only fires when the option is OFF and Ascension shows it.
+    -- so this branch only fires when the option is OFF and Conquest of Azeroth shows it.
     if VanityBuffs and VanityBuffs:IsShown() and (BuffFrame.numVanity or 0) > 0 then
         return "TOPRIGHT", VanityBuffs, "TOPLEFT", -6, 0
     end
@@ -808,7 +808,7 @@ local function DesiredChainTempEnchantAnchor()
         -- chain starts immediately next to CB and the phantom VanityBuffs slot
         -- is removed from the layout. When the option is OFF, VanityBuffs
         -- occupies that adjacent slot, so TEF sits at CB.TOPLEFT - 6 to leave
-        -- room for the 36px VanityBuffs icon (matches Ascension's chain length).
+        -- room for the 36px VanityBuffs icon (matches Conquest of Azeroth's chain length).
         local offset = IsVanityBuffsHidden() and 0 or -6
         return "TOPRIGHT", ConsolidatedBuffs, "TOPLEFT", offset, 0
     end
@@ -884,7 +884,7 @@ end
 -- Desired anchor for the first non-consolidated BuffButton when "Hide Vanity
 -- Buffs" is on. Dispatches by mode: separated enchants root the row off
 -- dragonUIBuffFrame/CB (never TEF, which lives on the weapon frame); the
--- regular chain mirrors Ascension's BuffFrame_UpdateAllBuffAnchors branch
+-- regular chain mirrors Conquest of Azeroth's BuffFrame_UpdateAllBuffAnchors branch
 -- chain (BuffFrame.lua l.370-379) with numVanity forced to 0, and skips the
 -- hidden CB so no 36px phantom-slot gap opens against our frame.
 local function DesiredFirstBuffAnchor()
@@ -1257,10 +1257,10 @@ function BuffFrameModule:Enable()
         -- When weapon enchants are separated, TemporaryEnchantFrame is managed
         -- by the weapon enchant system — do NOT re-anchor it to ConsolidatedBuffs.
         if weaponEnchantsAreSeparated then return end
-        -- When VanityBuffs is active, Ascension's VanityBuffs_OnShow already
+        -- When VanityBuffs is active, Conquest of Azeroth's VanityBuffs_OnShow already
         -- positions TEF to VanityBuffs TOPLEFT (ref line 726). Re-anchoring
         -- TEF here would call ClearAllPoints which triggers a reflow visible
-        -- as flickering. Let Ascension own the TEF anchor when vanity is up.
+        -- as flickering. Let Conquest of Azeroth own the TEF anchor when vanity is up.
         if VanityBuffs and VanityBuffs:IsShown() and (BuffFrame.numVanity or 0) > 0 then
             return
         end
@@ -1395,7 +1395,7 @@ function BuffFrameModule:Enable()
     BuffFrameModule._FixDebuffPositions = FixDebuffPositions
 
     local function AnchorFirstBuff(button, slack)
-        -- VanityBuffs is the innermost container in Ascension's buff chain
+        -- VanityBuffs is the innermost container in Conquest of Azeroth's buff chain
         -- (see _ref-/vanitybuff/BuffFrame.xml: ConsolidatedBuffs →
         -- VanityBuffs → TemporaryEnchantFrame → BuffButton1). When vanity
         -- buffs are active, the first regular buff must chain off
@@ -1428,7 +1428,7 @@ function BuffFrameModule:Enable()
             end
         end
 
-        -- Match Ascension's first-buff anchor priority exactly (see _ref-/
+        -- Match Conquest of Azeroth's first-buff anchor priority exactly (see _ref-/
         -- vanitybuff/BuffFrame.lua l.370-374): when VanityBuffs is shown, the
         -- first non-vanity buff anchors to VanityBuffs.LEFT so the normal row
         -- starts right after the vanity container.
@@ -1549,10 +1549,10 @@ function BuffFrameModule:Enable()
     -- ========================================================================
     -- HOOK: BuffFrame_UpdateAllBuffAnchors — MINIMAL post-anchoring pass.
     --
-    -- KEY DESIGN (matching Ascension's pattern):
+    -- KEY DESIGN (matching Conquest of Azeroth's pattern):
     --   We let Blizzard lay out ALL children first (ConsolidatedBuffs,
     --   TemporaryEnchantFrame, BuffButtons). Then we do ONE corrective pass
-    --   for things Blizzard doesn't know about: VanityBuffs (Ascension),
+    --   for things Blizzard doesn't know about: VanityBuffs (Conquest of Azeroth),
     --   toggle state, and weapon enchant separation.
     --
     --   We do NOT re-anchor individual BuffButtons here — that causes flicker
@@ -1582,7 +1582,7 @@ function BuffFrameModule:Enable()
         end
 
         -- Apply an anchor only if the frame is not ALREADY there. The cached
-        -- signature alone is not enough: Ascension's VanityBuffs_OnHide re-pins
+        -- signature alone is not enough: Conquest of Azeroth's VanityBuffs_OnHide re-pins
         -- TemporaryEnchantFrame to VanityBuffs.TOPRIGHT outside our code (see
         -- _ref-/vanitybuff/BuffFrame.lua), so on the next anchor pass the cache
         -- would still match our last desired sig and short-circuit the corrective
@@ -1639,7 +1639,7 @@ function BuffFrameModule:Enable()
             --    VanityBuffs (the regular chain), idempotent via _applyAnchor.
             --
             --    Hide-Vanity-Buffs short-circuits the VanityBuffs anchor branch
-            --    even when Ascension's recursive BuffFrame_UpdatePositions
+            --    even when Conquest of Azeroth's recursive BuffFrame_UpdatePositions
             --    (fired from VanityBuffs_OnShow) re-enters this hook with
             --    VanityBuffs:IsShown() still true (our Show hook re-hides only
             --    AFTER the original OnShow script chain returns). Without this
@@ -1651,23 +1651,23 @@ function BuffFrameModule:Enable()
                 or IsVanityBuffsHidden() then
                 -- Re-anchor TEF when VanityBuffs is NOT shown, OR when the user
                 -- has Hide Vanity Buffs ON (regardless of the transient visible
-                -- state set by Ascension's OnShow before our re-hide fires).
+                -- state set by Conquest of Azeroth's OnShow before our re-hide fires).
                 local pt, rf, rp, x, y = _desiredTempEnchantAnchor()
                 if pt then
                     _applyAnchor(TemporaryEnchantFrame, "tempEnchant", pt, rf, rp, x, y)
                 end
             end
 
-            -- 2) VanityBuffs (Ascension custom frame): DO NOT re-anchor it here.
-            --    Ascension anchors VanityBuffs to ConsolidatedBuffs directly in
+            -- 2) VanityBuffs (Conquest of Azeroth custom frame): DO NOT re-anchor it here.
+            --    Conquest of Azeroth anchors VanityBuffs to ConsolidatedBuffs directly in
             --    its XML + OnShow/OnHide handlers (see _ref-/vanitybuff/BuffFrame.xml
             --    and VanityBuffs_OnShow), and our ConsolidatedBuffs.SetPoint
             --    override already pins CB to dragonUIBuffFrame, so VanityBuffs
             --    inherits the right screen position transitively. Calling
-            --    _applyAnchor(VanityBuffs, ...) here fought Ascension for the
+            --    _applyAnchor(VanityBuffs, ...) here fought Conquest of Azeroth for the
             --    frame's anchor every aura tick: the ClearAllPoints it issued
             --    triggered a visible reflow of VanityBuffsContainer children
-            --    (the very buttons Ascension just reparented there) -> the buff
+            --    (the very buttons Conquest of Azeroth just reparented there) -> the buff
             --    "jumps out of the container into the row then back" flicker.
             --    Only sync scale (idempotent via dragonAuraScale, no reflow).
             if VanityBuffs then
@@ -1707,12 +1707,12 @@ function BuffFrameModule:Enable()
             end
 
             -- 3.5) Re-anchor VanityBuffs children inside their container.
-            --    Ascension's BuffFrame_UpdateAllBuffAnchors reparents each
+            --    Conquest of Azeroth's BuffFrame_UpdateAllBuffAnchors reparents each
             --    vanity-marked button into VanityBuffsContainer but does NOT
             --    apply a new SetPoint — the old anchor from the previous
             --    buff ("TOPRIGHT", BuffButtonN-1, "TOPLEFT") stays put. The
             --    actual container layout only runs in
-            --    VanityBuffs_UpdateAllAnchors, which is called by Ascension
+            --    VanityBuffs_UpdateAllAnchors, which is called by Conquest of Azeroth
             --    ONLY when VanityBuffsTooltip is shown (on-hover). Until then,
             --    the button sits with stale anchors pointing at a sibling
             --    rather than the container, so the next UNIT_AURA tick that
@@ -1732,8 +1732,8 @@ function BuffFrameModule:Enable()
             -- 3.6) When "Hide Vanity Buffs" is on, Blizzard's anchor code ran
             --    before this hook may have left the first BuffButton anchored
             --    to a now-hidden VanityBuffs if the numVanity=0 reset raced
-            --    with Ascension's computation. Re-anchor that first button the
-            --    way Ascension does in BuffFrame_UpdateAllBuffAnchors
+            --    with Conquest of Azeroth's computation. Re-anchor that first button the
+            --    way Conquest of Azeroth does in BuffFrame_UpdateAllBuffAnchors
             --    (BuffFrame.lua l.370-379), dispatched by mode via
             --    DesiredFirstBuffAnchor. Runs for BOTH the regular chain and
             --    separated weapon enchants: without the separated branch the
@@ -1760,7 +1760,7 @@ function BuffFrameModule:Enable()
                 if firstButton then
                     local pt, rf, rp, x, y = DesiredFirstBuffAnchor()
                     if pt then
-                        -- Ascension's VanityBuffs_OnHide (BuffFrame.lua l.744-749)
+                        -- Conquest of Azeroth's VanityBuffs_OnHide (BuffFrame.lua l.744-749)
                         -- re-runs the anchor pass with numVanity still > 0 (our
                         -- Show hook zeroes it only after Hide() returns) and
                         -- re-anchors the first buff to the hidden VanityBuffs.
@@ -1811,11 +1811,11 @@ function BuffFrameModule:Enable()
             if not button then return end
             if buttonName == "BuffButton" then
                 -- Hide vanity buffs from the buff row when the option is on.
-                -- Ascension marks buffs with .vanity = true inside AuraButton_Update
+                -- Conquest of Azeroth marks buffs with .vanity = true inside AuraButton_Update
                 -- (see _ref-/vanitybuff/BuffFrame.lua l.237-258) using
                 -- C_VanityCollection.IsConsolidatedVanityBuff(spellID) and the
                 -- "consolidateVanityBuffs" cvar. We hide the button here after
-                -- Ascension's pass so the vanity flag is already set, and keep
+                -- Conquest of Azeroth's pass so the vanity flag is already set, and keep
                 -- the VanityBuffs container hidden via the OnShow hook below.
                 if IsVanityBuffsHidden() and button.vanity then
                     button:Hide()
@@ -1830,23 +1830,23 @@ function BuffFrameModule:Enable()
         end)
     end
 
-    -- Keep the Ascension VanityBuffs container hidden while the option is on.
-    -- Ascension's BuffFrame_Update shows VanityBuffs whenever numVanity > 0;
+    -- Keep the Conquest of Azeroth VanityBuffs container hidden while the option is on.
+    -- Conquest of Azeroth's BuffFrame_Update shows VanityBuffs whenever numVanity > 0;
     -- hooking Show lets us suppress it every time it tries to appear.
-    -- CRITICAL: Ascension calls VanityBuffs:Show() at l.108-109 of
+    -- CRITICAL: Conquest of Azeroth calls VanityBuffs:Show() at l.108-109 of
     -- BuffFrame.lua BEFORE it calls BuffFrame_UpdateAllBuffAnchors() at l.115.
     -- Blizzard's BuffFrame_UpdateAllBuffAnchors uses BuffFrame.numVanity to
     -- decide where the first non-vanity buff anchors ( VanityBuffs.TOPLEFT ).
     -- If we only Hide() the container, numVanity stays > 0 and the first buff
     -- is still anchored to the now-hidden VanityBuffs, leaving an empty gap.
     -- So in addition to Hide(), we zero BuffFrame.numVanity here. This runs
-    -- synchronously inside the Ascension BuffFrame_Update flow, BEFORE
+    -- synchronously inside the Conquest of Azeroth BuffFrame_Update flow, BEFORE
     -- BuffFrame_UpdateAllBuffAnchors runs, so the anchor chain skips the
     -- VanityBuffs link entirely and the buff row starts flush against
     -- ConsolidatedBuffs. While the option stays on, numVanity is kept at 0
     -- so the value the next BuffFrame_Update computes (always > 0 when there
     -- are vanity spells) is overridden again. Disabling the option lets
-    -- Ascension's native value flow through untouched.
+    -- Conquest of Azeroth's native value flow through untouched.
     if not BuffFrameModule._hookedVanityBuffsShow and VanityBuffs then
         BuffFrameModule._hookedVanityBuffsShow = true
         hooksecurefunc(VanityBuffs, "Show", function()
@@ -1859,16 +1859,16 @@ function BuffFrameModule:Enable()
         end)
     end
 
-    -- PRE-HOOK on BuffFrame_Update to zero numVanity BEFORE Ascension's body
+    -- PRE-HOOK on BuffFrame_Update to zero numVanity BEFORE Conquest of Azeroth's body
     -- runs. hooksecurefunc fires AFTER the original returns, which is too late
-    -- to intercept numVanity usage inside Ascension's recursive
+    -- to intercept numVanity usage inside Conquest of Azeroth's recursive
     -- BuffFrame_UpdatePositions() re-entry (the value gets set at l.95 and
     -- consumed at l.334+ BuffFrame_UpdateAllBuffAnchors, both inside
     -- BuffFrame_Update's body). Wrap the global once so we can run our fix
     -- BEFORE each call to the saved original — including the recursive calls
-    -- that Ascension itself makes through BuffFrame_UpdatePositions and
+    -- that Conquest of Azeroth itself makes through BuffFrame_UpdatePositions and
     -- OnShow handlers. Zeroing at the top of the wrapper is harmless: if
-    -- Ascension's body re-sets numVanity after the aura scan (it does, l.95),
+    -- Conquest of Azeroth's body re-sets numVanity after the aura scan (it does, l.95),
     -- the wrapper zero would be overwritten — so we save the original, call it,
     -- and ZERO NumVanity AFTER it returns. To handle the in-body recursive
     -- reads, we ALSO save VanityBuffs in a sentinel that the wrapped function
@@ -1876,7 +1876,7 @@ function BuffFrameModule:Enable()
     --
     -- Implementation: replace the global with a wrapper that manually
     -- pre-emptively zeros numVanity and immediately calls the saved original.
-    -- If Ascension re-enters BuffFrame_Update recursively, the same wrapper
+    -- If Conquest of Azeroth re-enters BuffFrame_Update recursively, the same wrapper
     -- runs and zeros again at the top of each depth before delegating.
     -- Limitation: l.95 `BuffFrame.numVanity = #vanityBuffs` re-setts the value
     -- to the LIVE aura count inside the body. So the pre-zero alone is not

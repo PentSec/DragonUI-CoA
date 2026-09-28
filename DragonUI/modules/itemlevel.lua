@@ -20,8 +20,8 @@ local ItemLevelModule = {
     texts = {} -- Track every created FontString for cleanup
 }
 
--- Ascension replaces the stock Character/Inspect paper-doll with its own frames.
-local isAscension = _G.PathToAscensionMicroButton ~= nil
+-- Conquest of Azeroth replaces the stock Character/Inspect paper-doll with its own frames.
+local isCoA = _G.PathToAscensionMicroButton ~= nil
 
 if addon.RegisterModule then
     addon:RegisterModule("itemlevel", ItemLevelModule,
@@ -466,12 +466,12 @@ local INSPECT_SLOT_FRAMES = {
     "InspectMainHandSlot", "InspectSecondaryHandSlot", "InspectRangedSlot", "InspectTabardSlot",
 }
 
--- Ascension prefixes slot frames with "Ascension" (e.g. AscensionCharacterHeadSlot).
--- Resolve the actual frame name, preferring Ascension's variant when present.
+-- The client prefixes slot frames with "Ascension" (e.g. AscensionCharacterHeadSlot).
+-- Resolve the actual frame name, preferring that variant when present.
 local function ResolveSlotFrame(frameName)
-    local ascensionName = "Ascension" .. frameName
-    if _G[ascensionName] then
-        return ascensionName
+    local frameGlobal = "Ascension" .. frameName
+    if _G[frameGlobal] then
+        return frameGlobal
     end
     return frameName
 end
@@ -707,7 +707,7 @@ local function UpdateCharacterAverage()
         if averageTexts["player"] then averageTexts["player"]:Hide() end
         return
     end
-    if isAscension then
+    if isCoA then
         UpdateAverageFor("player", "character", "player",
             _G.AscensionCharacterFrame or PaperDollFrame,
             _G.AscensionPaperDollPanelModel or CharacterModelFrame, true)
@@ -732,7 +732,7 @@ local function UpdateInspectAverage()
         if averageTexts["inspect"] then averageTexts["inspect"]:Hide() end
         return
     end
-    if isAscension then
+    if isCoA then
         UpdateAverageFor("inspect", "inspect", inspectFrame.unit,
             AscensionInspectFrame, InspectPaperDollPanelModel, true)
     else
@@ -1017,9 +1017,9 @@ end
 local function InstallInspectHooks()
     if ItemLevelModule.hooks["Inspect"] then return end
 
-    if isAscension then
-        -- Ascension replaces the Blizzard inspect paper-doll entirely.
-        -- Wait for the Ascension inspect addon to load; retry from ADDON_LOADED.
+    if isCoA then
+        -- Conquest of Azeroth replaces the Blizzard inspect paper-doll entirely.
+        -- Wait for the Conquest of Azeroth inspect addon to load; retry from ADDON_LOADED.
         if not _G.AscensionInspectFrame then return end
 
         hooksecurefunc(AscensionInspectFrame, "UpdateCharacterInfo", function()
@@ -1124,13 +1124,13 @@ local function ApplyItemLevelSystem()
         ItemLevelModule.hooks["PaperDollShow"] = true
     end
 
-    -- Ascension: the stock PaperDollFrame is hidden; hook the Ascension frame directly.
-    if isAscension and not ItemLevelModule.hooks["AscensionPaperDoll"] and _G.AscensionCharacterFrame then
+    -- Conquest of Azeroth: the stock PaperDollFrame is hidden; hook the Conquest of Azeroth frame directly.
+    if isCoA and not ItemLevelModule.hooks["CoAPaperDoll"] and _G.AscensionCharacterFrame then
         AscensionCharacterFrame:HookScript("OnShow", function()
             RefillRetryBudget()
             addon:After(0.05, UpdateAllCharacterSlots)
         end)
-        ItemLevelModule.hooks["AscensionPaperDoll"] = true
+        ItemLevelModule.hooks["CoAPaperDoll"] = true
     end
 
     if not ItemLevelModule.hooks["Merchant"] and MerchantFrame_UpdateMerchantInfo then

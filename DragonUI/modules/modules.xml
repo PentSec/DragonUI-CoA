@@ -112,7 +112,7 @@
     <Script file="memoryusage\AddonUsage.lua"/>
     <Include file="memoryusage\AddonUsage.xml"/>
 
-    <!-- Transmog Collector (Ascension: auto-collect appearances on loot) -->
+    <!-- Transmog Collector (Conquest of Azeroth: auto-collect appearances on loot) -->
     <Script file="transmog_collector.lua"/>
 
     <!-- Alt Gold module (other characters' money on the bag coin tooltip) -->
@@ -133,7 +133,7 @@
     <!-- Talent Inspector module (CoA talent tree viewer in inspect) -->
     <Script file="inspector.lua"/>
 
-    <!-- Ascension WildCard Dice movability widget -->
+    <!-- Conquest of Azeroth WildCard Dice movability widget -->
     <Script file="wildcarddice.lua"/>
 
     <!-- Details! Damage Meter skin (inert until applied; requires the Details! addon) -->

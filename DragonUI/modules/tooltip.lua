@@ -204,7 +204,7 @@ end
 -- PLAYER STATS LINE (item level / PvE-PvP power / prestige)
 -- ============================================================================
 
--- Ascension-only data for another player (UnitPvEPower/UnitPvPPower/
+-- Conquest of Azeroth-only data for another player (UnitPvEPower/UnitPvPPower/
 -- UnitAverageItemLevel) only exists after the client has that player's gear.
 -- That normally requires an Inspect, so on hover we fire NotifyInspect and
 -- rebuild the tooltip when the data arrives — no manual Inspect needed.
@@ -282,7 +282,7 @@ end
 -- Add one line per stat (sidepanel order: Item Level, PvE, PvP, Prestige).
 local function AddPlayerStatsInfo(unit)
     if not unit or not UnitExists(unit) or not UnitIsPlayer(unit) then return end
-    -- Vanilla 3.3.5a has no UnitPvEPower / UnitAverageItemLevel (Ascension client only)
+    -- Vanilla 3.3.5a has no UnitPvEPower / UnitAverageItemLevel (Conquest of Azeroth client only)
     if not UnitPvEPower or not UnitAverageItemLevel then return end
 
     local config = GetModuleConfig()
@@ -309,7 +309,7 @@ local function AddPlayerStatsInfo(unit)
             pvePower = UnitPvEPower(unit)
             pvpPower = UnitPvPPower and UnitPvPPower(unit)
 
-            -- PvE/PvP power only applies at max level (the Ascension sidepanel
+            -- PvE/PvP power only applies at max level (the Conquest of Azeroth sidepanel
             -- gates it with minLevel = GetMaxLevel()); below that it is always 0.
             local atMaxLevel = (not GetMaxLevel) or (UnitLevel(unit) >= GetMaxLevel())
             local hasPowers = (pvePower and pvePower > 0) or (pvpPower and pvpPower > 0)
@@ -723,7 +723,7 @@ local function ApplyTooltipSystem()
         TooltipModule.hooks["SetUnit"] = true
     end
 
-    -- Inspect data for hovered players (item level / powers). Ascension client
+    -- Inspect data for hovered players (item level / powers). Conquest of Azeroth client
     -- fires the retail-named event; register both, only one will fire.
     if not TooltipModule.hooks["InspectReady"] then
         inspectEventFrame:RegisterEvent("INSPECT_READY")

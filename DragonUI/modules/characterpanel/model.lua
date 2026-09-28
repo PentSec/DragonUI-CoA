@@ -11,7 +11,7 @@ local VANILLA_X, VANILLA_Y = 65, -78
 -- Gnome or Troll backdrop art.
 local RACE_FALLBACK = { GNOME = "Dwarf", TROLL = "Orc" }
 
--- `unit` lets the Ascension skin build the same backdrop for the Inspect viewport, which shows the
+-- `unit` lets the Conquest of Azeroth skin build the same backdrop for the Inspect viewport, which shows the
 -- *target* rather than the player; the character model defaults to "player" like Blizzard's own.
 local function raceKey(unit)
     unit = unit or "player"
@@ -51,7 +51,7 @@ local function resizeModel()
 end
 
 -- The backdrop grid is retail's 212x245 / 231x320 split; keeping the ratios lets the same art
--- scale to any model viewport (Ascension's) while staying continuous across the seams.
+-- scale to any model viewport (Conquest of Azeroth's) while staying continuous across the seams.
 local X_SPLIT, Y_SPLIT = 212 / 231, 245 / 320
 
 -- Cropped to the viewport: 245 + 75 = 320, the model's exact height. Retail runs the bottom pair
@@ -135,7 +135,7 @@ end
 
 CP.ApplyModelBackdrop = applyRaceBackground
 
--- Shared with the Ascension skin, which builds the same backdrop on its own model viewport; the
+-- Shared with the Conquest of Azeroth skin, which builds the same backdrop on its own model viewport; the
 -- Inspect passes its unit ("target") so the backdrop reads that target's race, not the player's.
 function CP.BuildModelBackdrop(model, unit)
     buildRaceBackdrop(model)

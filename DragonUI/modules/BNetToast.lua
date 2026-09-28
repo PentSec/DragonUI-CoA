@@ -6,7 +6,7 @@ BNet Toast Module for DragonUI
 Friend online/offline notifications via Battle.net toasts and/or chat messages.
 Configurable: toast popup, chat notifications, toon name display, zone display.
 
-Ascension WoW notes:
+Conquest of Azeroth notes:
 - BNet friends appear in the WoW friend list (not BNet list).
 - GetFriendInfo returns: name=bnetName, level=bnetID, class="Unknown",
   area="Unknown Added as: (ToonName)".
@@ -71,15 +71,15 @@ local function GetCleanName(rawName)
     return rawName
 end
 
---- Look up a friend in the WoW friend list and return Ascension-specific data.
---- On Ascension, GetFriendInfo returns:
+--- Look up a friend in the WoW friend list and return Conquest of Azeroth-specific data.
+--- On Conquest of Azeroth, GetFriendInfo returns:
 ---   name = BNet display name (e.g. "Tempok")
 ---   level = BNet presenceID (e.g. 47709784) — NOT a real level
 ---   class = "Unknown"
 ---   area = "Unknown Added as: (ToonName)" — toon name is hidden here
 ---
 --- Returns: bnetName, bnetID, toonName, realLevel(nil), realClass(nil), realZone(nil), connected
---- On non-Ascension servers, returns standard: name, nil, nil, level, class, area, connected
+--- On non-Conquest of Azeroth servers, returns standard: name, nil, nil, level, class, area, connected
 local function FindFriendInfo(friendName)
     local clean = GetCleanName(friendName)
     if not clean then return end
@@ -87,13 +87,13 @@ local function FindFriendInfo(friendName)
     for i = 1, GetNumFriends() do
         local name, level, class, area, connected = GetFriendInfo(i)
         if name and (name == clean or name == friendName) then
-            -- Detect Ascension: class="Unknown" and area matches "Added as:" pattern
+            -- Detect Conquest of Azeroth: class="Unknown" and area matches "Added as:" pattern
             local toonFromArea = strmatch(area or "", "Added as: %((.+)%)")
 
             if toonFromArea then
-                -- Ascension server: extract toon name from area field
+                -- Conquest of Azeroth server: extract toon name from area field
                 -- Real level/class/zone are not available from any API
-                local bnetID = tonumber(level) -- On Ascension, "level" is actually the BNet ID
+                local bnetID = tonumber(level) -- On Conquest of Azeroth, "level" is actually the BNet ID
                 return name, bnetID, toonFromArea, nil, nil, nil, connected
             end
 
@@ -109,7 +109,7 @@ end
 
 --- Cache of friend names for O(1) lookup. Built on FRIENDLIST_UPDATE.
 ---
---- On Ascension the guild roster only ever contains members currently online
+--- On Conquest of Azeroth the guild roster only ever contains members currently online
 --- (a live snapshot), so it cannot be used to reliably detect guild members.
 --- However, guild member online/offline broadcasts arrive as CHAT_MSG_SYSTEM
 --- messages for people who are NOT in the friend list. The friend list is the
@@ -285,7 +285,7 @@ local function OnSystemMessage(self, event, arg1, ...)
     -- Friend came online
     local name = arg1:gmatch(pattern1)()
     if name then
-        -- Guild filter: with guild_notify OFF, show ONLY friends. On Ascension
+        -- Guild filter: with guild_notify OFF, show ONLY friends. On Conquest of Azeroth
         -- every other "X has come online" is a guild broadcast.
         if config.guild_notify == false and not IsFriend(name) then
             return
@@ -381,7 +381,7 @@ local function ApplyBNetToast()
     eventFrame:RegisterEvent("CHAT_MSG_SYSTEM")
 
     -- 4b. Friend list cache for guild_notify filtering. The friend list is the
-    -- authoritative "real friends" set on Ascension (guild broadcasts come for
+    -- authoritative "real friends" set on Conquest of Azeroth (guild broadcasts come for
     -- names that are NOT in the friend list).
     BuildFriendNameCache()
     eventFrame:RegisterEvent("FRIENDLIST_UPDATE")

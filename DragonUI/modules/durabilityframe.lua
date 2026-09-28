@@ -112,7 +112,7 @@ function addon.ApplyDurabilityFrameSystem()
     local w, h = GetDurabilityFrameSize()
     durabilityAnchor = addon.CreateUIFrame(w, h, "DurabilityFrameWidget")
 
-    -- Hook SetPoint to prevent Blizzard/Ascension from overriding our position
+    -- Hook SetPoint to prevent Blizzard/Conquest of Azeroth from overriding our position
     -- Only redirect when user has custom position OR editor is active
     -- If minimap module is controlling, let it handle capture bars unless custom_position
     durabilityOriginal_SetPoint = DurabilityFrame.SetPoint

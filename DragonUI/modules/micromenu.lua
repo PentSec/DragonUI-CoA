@@ -16,9 +16,9 @@ local L = addon.L
 -- SERVER DETECTION & MODULE STATE
 -- ============================================================================
 
--- Detect if we are on an Ascension server by checking for one of its custom buttons.
+-- Detect if we are on an Conquest of Azeroth server by checking for one of its custom buttons.
 -- This is the most reliable method.
-local isAscensionServer = (_G.PathToAscensionMicroButton ~= nil)
+local isCoAServer = (_G.PathToAscensionMicroButton ~= nil)
 
 local MicromenuModule = {
     initialized = false,
@@ -102,15 +102,15 @@ local function MicroButtonFor(stem)
     return stem and _G[stem .. "MicroButton"] or nil
 end
 
--- CoA runs one slot wider than upstream on Ascension: that client ships its own
+-- CoA runs one slot wider than upstream on Conquest of Azeroth: that client ships its own
 -- PathToAscension and Challenges buttons, and the CoA strip still wants Collections,
--- so Ascension needs three variable stems where every other client needs two.
+-- so Conquest of Azeroth needs three variable stems where every other client needs two.
 local EIGHTH_STEM, NINTH_STEM, TENTH_STEM = "Collections", "PVP", nil
-if isAscensionServer then
+if isCoAServer then
     EIGHTH_STEM, NINTH_STEM, TENTH_STEM = "Collections", "PathToAscension", "Challenges"
 end
 
--- The tenth slot is nil on every client but Ascension. Both readers below nil-check
+-- The tenth slot is nil on every client but Conquest of Azeroth. Both readers below nil-check
 -- before use and the strip geometry is computed from CollectPresentMicroButtons(), so
 -- the hole costs nothing; a table constructor keeps # at twelve either way.
 local MICRO_BUTTONS = {
@@ -179,15 +179,15 @@ local MicromenuAtlas = {
 }
 
 -- Collections sits on the strip on every client, so its atlas is shared rather than
--- server-specific. Upstream parked it in the non-Ascension branch, which left the button
--- without art on Ascension; the CoA strip carries it on both.
+-- server-specific. Upstream parked it in the non-Conquest of Azeroth branch, which left the button
+-- without art on Conquest of Azeroth; the CoA strip carries it on both.
 MicromenuAtlas["UI-HUD-MicroMenu-Collections-Disabled"] = {0.0654297, 0.12793, 0.658203, 0.818359}
 MicromenuAtlas["UI-HUD-MicroMenu-Collections-Down"] = {0.0654297, 0.12793, 0.822266, 0.982422}
 MicromenuAtlas["UI-HUD-MicroMenu-Collections-Mouseover"] = {0.129883, 0.192383, 0.00195312, 0.162109}
 MicromenuAtlas["UI-HUD-MicroMenu-Collections-Up"] = {0.129883, 0.192383, 0.166016, 0.326172}
 
 -- Add server-specific atlas data
-if isAscensionServer then
+if isCoAServer then
     MicromenuAtlas["UI-HUD-MicroMenu-Challenges-Disabled"] = {0.000976562, 0.0634766, 0.658203, 0.818359}
     MicromenuAtlas["UI-HUD-MicroMenu-Challenges-Down"] = {0.000976562, 0.0634766, 0.822266, 0.982422}
     MicromenuAtlas["UI-HUD-MicroMenu-Challenges-Mouseover"] = {0.0654297, 0.12793, 0.00195312, 0.162109}
@@ -428,7 +428,7 @@ end
 -- Atlas helpers
 local function GetAtlasKey(buttonName)
     local buttonMap
-    if isAscensionServer then
+    if isCoAServer then
         buttonMap = {
             character = nil, -- Uses portrait
             spellbook = "UI-HUD-MicroMenu-SpellbookAbilities",

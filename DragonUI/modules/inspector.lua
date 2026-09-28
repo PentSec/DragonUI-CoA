@@ -110,13 +110,13 @@ local function AddInspectorBorder(frame)
     bg:SetFrameLevel(0)
     ns.Bg = bg
 
-    -- Class-specific background atlas (Ascension: one per class)
+    -- Class-specific background atlas (Conquest of Azeroth: one per class)
     -- Must be on the bg frame so it draws above frame-level BACKGROUND textures
     ns.ClassBg = bg:CreateTexture(nil, 'BACKGROUND', nil, 1)
     ns.ClassBg:SetAllPoints(bg)
     ns.ClassBg:Hide()
 
-    -- Spec passive background (wraps right-side talents, Ascension "ca-passive-bg" atlas)
+    -- Spec passive background (wraps right-side talents, Conquest of Azeroth "ca-passive-bg" atlas)
     ns.SpecBg = frame:CreateTexture(nil, 'OVERLAY')
     ns.SpecBg:SetAtlas("ca-passive-bg")
     ns.SpecBg:Hide()
@@ -1091,7 +1091,7 @@ end
 
 local current = { unit = nil, className = nil, tree = nil, slot = nil }
 
--- Ascension resolves the class backdrop in its talent tree's SetSpecID (CoATreeViewMixin), by
+-- Conquest of Azeroth resolves the class backdrop in its talent tree's SetSpecID (CoATreeViewMixin), by
 -- which time the class DBC is loaded. The inspector fires off the inspect result instead, so the
 -- first inspect of a class can run before that data landed: GetBackgroundAtlas returns nil and the
 -- backdrop stays hidden until some later inspect happens to re-render. Re-resolve on a short timer
@@ -1118,7 +1118,7 @@ local function SetClassBackground(frame, classFile, slot)
     end
 
     local function resolve()
-        -- Resolve spec name. Ascension slots (1,2,3) are NOT Blizzard spec IDs (71,72,73).
+        -- Resolve spec name. Conquest of Azeroth slots (1,2,3) are NOT Blizzard spec IDs (71,72,73).
         -- Try GetAllSpecs indexed by slot position as a heuristic.
         local specFile = nil
         if slot and C_ClassInfo and C_ClassInfo.GetAllSpecs then
@@ -1175,7 +1175,7 @@ local function GetInspectFrame()
     return nil
 end
 
--- The unit token the Ascension inspect frame actually queried. The frame tracks
+-- The unit token the Conquest of Azeroth inspect frame actually queried. The frame tracks
 -- a token ("target", "party1", ...) not a GUID, so in combat the referent can
 -- drift (e.g. "target" now points to the mob being fought). Always use this
 -- token for the advancement queries instead of a hardcoded "target".
@@ -1302,7 +1302,7 @@ end
 local eventFrame
 local buildTabWatcher
 
--- The Ascension inspect frame resets to the first tab (Character) every time it
+-- The Conquest of Azeroth inspect frame resets to the first tab (Character) every time it
 -- re-inspects, which happens on every PLAYER_TARGET_CHANGED while the frame is
 -- open (very common in combat). Track which tab the user actually clicked so we
 -- can restore it after that auto-reset instead of letting the build panel hide.

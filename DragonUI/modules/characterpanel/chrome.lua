@@ -161,8 +161,8 @@ local TINTS = {
 }
 
 -- The rock and streaks every reskinned window draws tile the same art, so one tint drives them
--- all: the stock CharacterFrame and the Ascension character/Inspect windows, which reuse the same
--- chrome (ascension.lua stamps its own _duiRockBg/_duiStreaks on those frames). The Inspect frame
+-- all: the stock CharacterFrame and the Conquest of Azeroth character/Inspect windows, which reuse the same
+-- chrome (conquest.lua stamps its own _duiRockBg/_duiStreaks on those frames). The Inspect frame
 -- does not exist until Ascension_InspectUI loads, so a nil lookup is simply skipped.
 local function tintFrame(cf, tint)
     if not cf then return end

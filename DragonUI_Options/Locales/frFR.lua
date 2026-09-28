@@ -344,7 +344,7 @@ L["Fade Out Duration"] = "Duree du fondu sortant"
 L["Seconds used to fade bars out when they become hidden."] = "Secondes utilisees pour faire disparaitre les barres en fondu."
 L["Fade Out Delay"] = "Delai avant fondu sortant"
 L["Delay before hover-out starts fading, useful to avoid flicker between buttons."] = "Delai avant de commencer le fondu quand la souris sort, utile pour eviter le scintillement entre boutons."
-L["This Fork is maintained by PentSec for AscensionWow, based on the original work by Neticsoul."] = "Ce Fork est maintenu par PentSec pour AscensionWow, base sur le travail original de Neticsoul."
+L["This Fork is maintained by PentSec for Conquest of Azeroth, based on the original work by NeticSoul."] = "Ce Fork est maintenu par PentSec pour Conquest of Azeroth, base sur le travail original de Neticsoul."
 
 -- BNet Toast Tab
 L["BNet Toast"] = "Notification BNet"
@@ -889,9 +889,9 @@ L["Enable DragonUI buff frame with custom styling, positioning, and toggle butto
 L["Show Toggle Button"] = "Afficher le bouton de bascule"
 L["Show a collapse/expand button next to the buff icons."] = "Afficher un bouton de réduction/agrandissement à côté des icônes d'améliorations."
 L["Vanity Buffs"] = true
-L["Vanity buffs are cosmetic auras consolidated by Ascension (mounts, toys, transmog effects). The consolidated container is provided by the Ascension_VanityCollection addon."] = true
+L["Vanity buffs are cosmetic auras consolidated by Conquest of Azeroth (mounts, toys, transmog effects). The consolidated container is provided by the Ascension_VanityCollection addon."] = true
 L["Hide Vanity Buffs"] = true
-L["Hide the Ascension vanity-buff consolidated container and its contained auras from the buff frame. Existing buff order and positioning are preserved."] = true
+L["Hide the Conquest of Azeroth vanity-buff consolidated container and its contained auras from the buff frame. Existing buff order and positioning are preserved."] = true
 L["Aura Borders"] = "Bordures d'auras"
 L["Enable Aura Borders"] = "Activer les bordures d'auras"
 L["Show modern borders around buff and debuff icons."] = "Afficher des bordures modernes autour des icônes d'améliorations et d'affaiblissements."
@@ -1533,7 +1533,7 @@ L["Force Off"] = "Forcer désactivé"
 L["DragonUI (Custom)"] = "DragonUI (personnalisé)"
 L["Transmog Collector"] = "Collecteur de transmogrification"
 L["Enable Transmog Collector"] = "Activer le collecteur de transmogrification"
-L["Automatically collect transmog appearances when looting new items. Works with Ascension's Ctrl+Alt+Click appearance system."] = "Collecter automatiquement les apparences de transmogrification en récupérant de nouveaux objets. Fonctionne avec le système d'apparences Ctrl+Alt+Clic d'Ascension."
+L["Automatically collect transmog appearances when looting new items. Works with Conquest of Azeroth's Ctrl+Alt+Click appearance system."] = "Collecter automatiquement les apparences de transmogrification en récupérant de nouveaux objets. Fonctionne avec le système d'apparences Ctrl+Alt+Clic d'Conquest of Azeroth."
 L["On loot, auto-collects appearances for items you haven't learned yet."] = "Lors du butin, collecte automatiquement les apparences des objets que vous n'avez pas encore appris."
 L["Attack Bar"] = "Barre d'attaque"
 L["Shows swing timers for your main hand, off hand, ranged attacks, and enemy target melee swings."] = "Affiche les minuteurs de coup pour votre main droite, main gauche, attaques à distance et coups de mêlée de la cible ennemie."
@@ -1765,9 +1765,9 @@ L["Enable DragonUI buff frame with custom styling, positioning, and toggle butto
 L["Show Toggle Button"] = "Afficher le bouton de bascule"
 L["Show a collapse/expand button next to the buff icons."] = "Affiche un bouton de repli/déploiement à côté des icônes de buff."
 L["Vanity Buffs"] = true
-L["Vanity buffs are cosmetic auras consolidated by Ascension (mounts, toys, transmog effects). The consolidated container is provided by the Ascension_VanityCollection addon."] = true
+L["Vanity buffs are cosmetic auras consolidated by Conquest of Azeroth (mounts, toys, transmog effects). The consolidated container is provided by the Ascension_VanityCollection addon."] = true
 L["Hide Vanity Buffs"] = true
-L["Hide the Ascension vanity-buff consolidated container and its contained auras from the buff frame. Existing buff order and positioning are preserved."] = true
+L["Hide the Conquest of Azeroth vanity-buff consolidated container and its contained auras from the buff frame. Existing buff order and positioning are preserved."] = true
 L["Aura Borders"] = "Bordures d'aura"
 L["Enable Aura Borders"] = "Activer les bordures d'aura"
 L["Show modern borders around buff and debuff icons."] = "Affiche des bordures modernes autour des icônes de buff et d'affaiblissement."

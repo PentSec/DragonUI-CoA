@@ -155,9 +155,9 @@ L["Detach weapon enchant icons (poisons, sharpening stones, etc.) from the buff 
 L["Show Toggle Button"] = "Mostrar Botón de Alternancia"
 L["Show a collapse/expand button next to the buff icons."] = "Mostrar un botón para colapsar/expandir junto a los iconos de beneficios."
 L["Vanity Buffs"] = true
-L["Vanity buffs are cosmetic auras consolidated by Ascension (mounts, toys, transmog effects). The consolidated container is provided by the Ascension_VanityCollection addon."] = true
+L["Vanity buffs are cosmetic auras consolidated by Conquest of Azeroth (mounts, toys, transmog effects). The consolidated container is provided by the Ascension_VanityCollection addon."] = true
 L["Hide Vanity Buffs"] = true
-L["Hide the Ascension vanity-buff consolidated container and its contained auras from the buff frame. Existing buff order and positioning are preserved."] = true
+L["Hide the Conquest of Azeroth vanity-buff consolidated container and its contained auras from the buff frame. Existing buff order and positioning are preserved."] = true
 L["Weapon Enchants"] = "Encantamientos de Arma"
 L["Weapon enchant icons include rogue poisons, sharpening stones, wizard oils, and similar temporary weapon enhancements."] = "Los iconos de encantamientos de arma incluyen venenos de pícaro, piedras de afilar, aceites de mago y mejoras temporales similares."
 L["When enabled, a 'Weapon Enchants' mover appears in Editor Mode that you can drag to any position on screen."] = "Al activar, aparece un marco 'Encantamientos de Arma' en el Modo Editor que puedes arrastrar a cualquier posición de la pantalla."
@@ -1332,7 +1332,7 @@ L["Profile imported: "] = "Perfil importado: "
 L["Enter a name for the imported profile:"] = "Introduce un nombre para el perfil importado:"
 L["Imported Profile"] = "Perfil Importado"
 L["Enter profile name"] = "Ingrese nombre del perfil"
-L["This Fork is maintained by PentSec for AscensionWow, based on the original work by Neticsoul."] = "Este Fork es mantenido por PentSec para AscensionWow, basado en el trabajo original de Neticsoul."
+L["This Fork is maintained by PentSec for Conquest of Azeroth, based on the original work by NeticSoul."] = "Este Fork es mantenido por PentSec para Conquest of Azeroth, basado en el trabajo original de Neticsoul."
 
 -- BNet Toast Tab
 L["BNet Toast"] = "Aviso BNet"
@@ -1896,7 +1896,7 @@ L["Behavior Mode"] = "Modo de comportamiento"
 L["DragonUI (Custom)"] = "DragonUI (Personalizado)"
 L["Transmog Collector"] = "Coleccionista de transfiguración"
 L["Enable Transmog Collector"] = "Activar coleccionista de transfiguración"
-L["Automatically collect transmog appearances when looting new items. Works with Ascension's Ctrl+Alt+Click appearance system."] = "Recopila automáticamente apariencias de transfiguración al saquear objetos nuevos. Funciona con el sistema de apariencias Ctrl+Alt+Clic de Ascension."
+L["Automatically collect transmog appearances when looting new items. Works with Conquest of Azeroth's Ctrl+Alt+Click appearance system."] = "Recopila automáticamente apariencias de transfiguración al saquear objetos nuevos. Funciona con el sistema de apariencias Ctrl+Alt+Clic de Conquest of Azeroth."
 L["On loot, auto-collects appearances for items you haven't learned yet."] = "Al saquear, recopila automáticamente las apariencias de los objetos que aún no has aprendido."
 L["Attack Bar"] = "Barra de ataque"
 L["Shows swing timers for your main hand, off hand, ranged attacks, and enemy target melee swings."] = "Muestra los temporizadores de golpe de tu mano principal, mano secundaria, ataques a distancia y golpes cuerpo a cuerpo del objetivo enemigo."

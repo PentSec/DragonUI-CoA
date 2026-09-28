@@ -5,11 +5,11 @@ local NP = addon.Nameplates
 local C = NP.const
 
 -- Nameplates combo points widget.
--- Native Rogue/Druid combo points (GetComboPoints) plus Ascension custom-class
+-- Native Rogue/Druid combo points (GetComboPoints) plus Conquest of Azeroth custom-class
 -- "stack" resources (Felsworm/Demonhunter Fellfury, Pyromancer Embers, Reaper
 -- Souls, etc.) reusing the same widget on the target nameplate.
 
--- Per custom-class stack resource definition (mirror of Ascension's
+-- Per custom-class stack resource definition (mirror of Conquest of Azeroth's
 -- ClassResources.lua / CoAResourceSegmentBar templates, but minimal: only the
 -- atlas names + spell info we need to render segments on a nameplate).
 --   spellID      : aura spell id to read stacks from (filter by MatchesSpellID).
@@ -110,23 +110,23 @@ local CLASS_STACKS = {
 
 local NATIVE_MAX = 5
 
--- Ascension-only API guards: the custom-class path must be inert on a vanilla
+-- Conquest of Azeroth-only API guards: the custom-class path must be inert on a vanilla
 -- client. We resolve the symbols lazily and cache nil on first miss.
-local _ascension_class_cache = {} -- ["<token>"] = token | false | nil-unknown-yet
+local _coa_class_cache = {} -- ["<token>"] = token | false | nil-unknown-yet
 
-local function IsAscensionClassPresent()
-    if _ascension_class_cache.present ~= nil then
-        return _ascension_class_cache.present
+local function IsCoAClassPresent()
+    if _coa_class_cache.present ~= nil then
+        return _coa_class_cache.present
     end
     local ok = pcall(function()
         return _G.IsCustomClass and _G.IsCustomClass()
     end)
-    _ascension_class_cache.present = (ok == true) and true or false
-    return _ascension_class_cache.present
+    _coa_class_cache.present = (ok == true) and true or false
+    return _coa_class_cache.present
 end
 
 local function GetPlayerCustomClass()
-    if not IsAscensionClassPresent() then return nil end
+    if not IsCoAClassPresent() then return nil end
     local ok, token = pcall(function()
         return _G.C_Player and _G.C_Player.GetClass and _G.C_Player:GetClass()
     end)
@@ -171,7 +171,7 @@ end
 -- Resolve which combo provider is active for the player right now.
 -- Returns:
 --   "native",  5, currentStacks   -- Rogue/Druid combo points (or 0 native)
---   "class",   maxStacks, cur     -- Ascension custom-class resource
+--   "class",   maxStacks, cur     -- Conquest of Azeroth custom-class resource
 --   "none",    0, 0
 local function ResolveComboProvider()
     if UnitExists("target") then
@@ -200,7 +200,7 @@ local function ResolveComboProvider()
     return "class", maxStacks, cur
 end
 
--- Cheap cached check: is the player an Ascension custom class with a stack
+-- Cheap cached check: is the player an Conquest of Azeroth custom class with a stack
 -- resource entry? Used to gate UNIT_AURA-driven combo refreshes on vanilla
 -- clients / classes without a custom resource (avoids per-aura work).
 function NP.widgets.HasCustomClassCombo()

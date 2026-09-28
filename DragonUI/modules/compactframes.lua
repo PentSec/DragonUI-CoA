@@ -195,7 +195,7 @@ local function SweepGroupMembers(groupFrame)
     end
 end
 
--- The Ascension container is usually _G.CompactRaidFrameContainer, but the
+-- The Conquest of Azeroth container is usually _G.CompactRaidFrameContainer, but the
 -- only handle may be the manager's .container field. Resolve both.
 local function ResolveContainer()
     local container = _G.CompactRaidFrameContainer
@@ -243,7 +243,7 @@ local function SweepPartyFrame()
 end
 
 -- Hook the container's LayoutFrames on the instance itself: fires whenever
--- the Ascension UI lays out (re)built frames, regardless of when the
+-- the Conquest of Azeroth UI lays out (re)built frames, regardless of when the
 -- container was created relative to our hooks. Runs before SweepAll so the
 -- very first sweep also arms it.
 local function HookContainerLayout()
@@ -399,7 +399,7 @@ end
 local eventFrame = CreateFrame("Frame")
 eventFrame:RegisterEvent("ADDON_LOADED")
 eventFrame:RegisterEvent("PLAYER_ENTERING_WORLD")
--- The Ascension container rebuilds its frames on these events; re-sweep so
+-- The Conquest of Azeroth container rebuilds its frames on these events; re-sweep so
 -- any frame that existed before our hooks were installed still gets flattened.
 eventFrame:RegisterEvent("PARTY_MEMBERS_CHANGED")
 eventFrame:RegisterEvent("RAID_ROSTER_UPDATE")
@@ -409,7 +409,7 @@ eventFrame:SetScript("OnEvent", function(self, event, arg1)
     if event == "ADDON_LOADED" and arg1 == "DragonUI" then
         if not IsModuleEnabled() then return end
 
-        -- The Ascension compact raid frame container is its own addon that may
+        -- The Conquest of Azeroth compact raid frame container is its own addon that may
         -- load after DragonUI; sweep it once it is up.
         addon:After(1, function()
             if not CompactFramesModule.applied then return end

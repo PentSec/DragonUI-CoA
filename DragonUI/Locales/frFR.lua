@@ -69,7 +69,7 @@ L["PlayerPrimaryStat"] = "Statistique principale"
 L["TargetPrimaryStat"] = "Statistique principale (Cible)"
 L["Primary stat icon movability widget"] = "Widget de mobilité de l'icône de statistique principale"
 L["WildCardDice"] = "Dés WildCard"
-L["Ascension WildCard dice movability widget"] = "Widget de mobilité des dés WildCard d'Ascension"
+L["Conquest of Azeroth WildCard dice movability widget"] = "Widget de mobilité des dés WildCard d'Conquest of Azeroth"
 L["DurabilityFrameWidget"] = "Cadre de durabilité"
 L["Durability frame movability widget"] = "Widget de mobilité du cadre de durabilité"
 -- Bag Sort (Sell Scrap)

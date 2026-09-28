@@ -509,7 +509,7 @@ local function InstallHooks()
                     StyleAura(enchant, false, "TempEnchant" .. i .. "Border", false)
                 end
             end
-            -- VanityBuffs container (Ascension) — styled like a buff, no debuff border to suppress.
+            -- VanityBuffs container (Conquest of Azeroth) — styled like a buff, no debuff border to suppress.
             -- Skip styling when the user has DragonUI's "Hide Vanity Buffs" option on; in that
             -- case restore any chrome we previously applied so the border does not linger after
             -- the container is hidden by buff_frame.lua's Show -> Hide hook.
@@ -558,7 +558,7 @@ local function RestyleAll()
             RestyleShown(frameName .. "Debuff" .. i, true, "Border", true)
         end
     end
-    -- VanityBuffs container (Ascension). Skip when DragonUI's Hide Vanity Buffs
+    -- VanityBuffs container (Conquest of Azeroth). Skip when DragonUI's Hide Vanity Buffs
     -- option is on; otherwise RestyleShown would re-apply the chrome even though
     -- the container is intentionally hidden.
     if VanityBuffs then

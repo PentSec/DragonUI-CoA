@@ -452,7 +452,7 @@ local function EngineOnUpdate(_, elapsed)
         local points = NP.widgets.GetPlayerComboPoints()
         -- maxStacks is provider-dependent (native=5; custom classes may stack to 6+).
         -- We only need to know "non-zero & capped at a sane upper bound" here so the
-        -- re-show guard fires for Ascension class stacks as well as native combo points.
+        -- re-show guard fires for Conquest of Azeroth class stacks as well as native combo points.
         if points > 0 and points <= 20 and host and host.IsShown and not host:IsShown() then
             NP.widgets.SyncComboPoints(NP.module.comboTargetPlate)
         end
@@ -744,7 +744,7 @@ local function EngineOnEvent(_, event, unit, ...)
         if unit == "player"
             and NP.widgets.HasCustomClassCombo
             and NP.widgets.HasCustomClassCombo() then
-            -- Ascension custom-class stack resources (Fellfury, souls, embers,
+            -- Conquest of Azeroth custom-class stack resources (Fellfury, souls, embers,
             -- ...) live as player auras; refresh the combo strip in live time.
             -- Native combo points keep using UNIT_COMBO_POINTS instead.
             E.QueueMass(CB.OnUpdateCombo)

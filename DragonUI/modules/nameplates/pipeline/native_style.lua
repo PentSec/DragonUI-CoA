@@ -370,7 +370,7 @@ local function GetPlateReactionFromBarColor(plateData)
     return "HOSTILE", "PLAYER"
 end
 
--- Ascension: lightweight unit token resolver for reaction correction.
+-- Conquest of Azeroth: lightweight unit token resolver for reaction correction.
 -- Uses identity resolution and native plate tokens; no group lookup.
 local function ResolvePlateTokenForReaction(plateData)
     local unit = NP.identity.ResolvePlateUnit(plateData)
@@ -384,7 +384,7 @@ local function ResolvePlateTokenForReaction(plateData)
     return nil
 end
 
--- Ascension: native bar RGB can disagree with attackability under Mercenary.
+-- Conquest of Azeroth: native bar RGB can disagree with attackability under Mercenary.
 -- Only correct when we have a unit token; plates without tokens stay on bar color.
 local function ReactionFromUnitAttackability(unit, barReaction, barUnitType)
     if not unit or not UnitExists(unit) or not UnitIsPlayer(unit) then

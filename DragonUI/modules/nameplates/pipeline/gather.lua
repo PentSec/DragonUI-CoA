@@ -474,7 +474,7 @@ function NP.gather.GetHealthBarColor(plateData, skipFriendlyClass)
     end
 
     local reaction, unitType = NP.native_style.GetPlateReaction(plateData)
-        -- Ascension: GetPlateReaction already corrects attackability under Mercenary;
+        -- Conquest of Azeroth: GetPlateReaction already corrects attackability under Mercenary;
         -- trust the reaction directly instead of requiring a blue-ish bar color.
         if reaction == "FRIENDLY" and unitType == "PLAYER" then
             if not skipFriendlyClass then
@@ -511,7 +511,7 @@ function NP.gather.GetHealthBarColor(plateData, skipFriendlyClass)
     if reaction == "FRIENDLY" and unitType == "NPC" and cfg.friendlyNPCColor then
         return cfg.friendlyNPCColor.r, cfg.friendlyNPCColor.g, cfg.friendlyNPCColor.b
     end
-    -- Ascension: any hostile player needs manual class color from the unit token.
+    -- Conquest of Azeroth: any hostile player needs manual class color from the unit token.
     -- The CVar ShowClassColorInNameplate may not recolor the native bar on custom
     -- class forks (Reaper/Engineer/...), and custom class tokens are not in the
     -- bar-color table, so we cannot rely on plateData.barR/barG/barB here.
@@ -812,7 +812,7 @@ function NP.gather.SyncName(plateData, unit)
 
     local r, g, b = 1, 1, 1
     local classKey = plateData.classKey
-    -- Custom Ascension classes (Reaper/Engineer/...) are not in the bar-color table,
+    -- Custom Conquest of Azeroth classes (Reaper/Engineer/...) are not in the bar-color table,
     -- so plateData.classKey is nil for them; resolve the real class via UnitClass.
     local nameReaction, nameUnitType = NP.native_style.GetPlateReaction(plateData)
     local isEnemyPlayer = (nameReaction == "HOSTILE" and nameUnitType == "PLAYER")
@@ -1194,14 +1194,14 @@ function NP.gather.ProcessThreatTransitions()
 end
 
 -- Reaction drift (200ms): re-gather when native bar color changes or
--- when UnitCanAttack changes for player plates (Ascension Mercenary / PvP toggle).
+-- when UnitCanAttack changes for player plates (Conquest of Azeroth Mercenary / PvP toggle).
 function NP.gather.ProcessReactionDrift()
     for _, plateData in pairs(NP.module.plates) do
         local bar = plateData.healthBar
         if not bar or not bar.GetStatusBarColor or not plateData.barR then
             -- No bar color baseline yet; skip attackability check too (no styled plate).
         else
-            -- Ascension: detect attackability changes for player plates without bar color drift.
+            -- Conquest of Azeroth: detect attackability changes for player plates without bar color drift.
             local unit = plateData.namePlateUnitToken or (plateData.plate and plateData.plate.unit)
             if unit and UnitExists(unit) and UnitIsPlayer(unit) then
                 local canAttack = UnitCanAttack("player", unit)

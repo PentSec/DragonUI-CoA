@@ -21,11 +21,11 @@ local heightAdjustedHost = nil
 local hookInstalled = false
 local updateHookInstalled = false
 local onShowHookInstalled = false
-local ascensionHookInstalled = false
+local coaHookInstalled = false
 local CreateDragonUIButton
 
 local KNOWN_MENU_BUTTON_NAMES = {
-    "EscapeMenuButton1", -- Ascension custom: Close
+    "EscapeMenuButton1", -- Conquest of Azeroth custom: Close
     "GameMenuButtonHelp",
     "GameMenuButtonWhatsNew",
     "GameMenuButtonStore",
@@ -49,7 +49,7 @@ local function IsDescendantOf(frame, parent)
     return false
 end
 
-local function IsAscensionMenuEnvironment()
+local function IsCoAMenuEnvironment()
     if not _G then return false end
 
     if _G.EscapeMenu and _G.EscapeMenu.IsShown and _G.EscapeMenu:IsShown() then
@@ -64,9 +64,9 @@ local function IsAscensionMenuEnvironment()
 end
 
 local function DetectCustomMenuHostFrame()
-    if not IsAscensionMenuEnvironment() then return nil end
+    if not IsCoAMenuEnvironment() then return nil end
 
-    -- Ascension custom menu host found via fstack.
+    -- Conquest of Azeroth custom menu host found via fstack.
     if _G.EscapeMenu and _G.EscapeMenu.IsShown and _G.EscapeMenu:IsShown() then
         return _G.EscapeMenu
     end
@@ -80,7 +80,7 @@ local function DetectCustomMenuHostFrame()
 end
 
 local function GetMenuHostFrame()
-    if IsAscensionMenuEnvironment() then
+    if IsCoAMenuEnvironment() then
         local custom = DetectCustomMenuHostFrame()
         if custom then return custom end
     end
@@ -157,10 +157,10 @@ local function PositionDragonUIButton()
     dragonUIButton:SetFrameStrata(menuHost:GetFrameStrata())
     dragonUIButton:SetFrameLevel((menuHost:GetFrameLevel() or 1) + 20)
 
-    if IsAscensionMenuEnvironment() then
+    if IsCoAMenuEnvironment() then
         local closeButton, bottomMost = FindBottomButtons(menuHost)
 
-        -- Ascension: keep DragonUI near the bottom around Close.
+        -- Conquest of Azeroth: keep DragonUI near the bottom around Close.
         if closeButton and closeButton:IsShown() then
             dragonUIButton:ClearAllPoints()
             dragonUIButton:SetPoint("BOTTOM", closeButton, "TOP", 0, -2)
@@ -423,12 +423,12 @@ local function InstallGameMenuHook()
         end)
     end
 
-    if IsAscensionMenuEnvironment() and (not ascensionHookInstalled) and _G.EscapeMenu and _G.EscapeMenu.HookScript then
+    if IsCoAMenuEnvironment() and (not coaHookInstalled) and _G.EscapeMenu and _G.EscapeMenu.HookScript then
         _G.EscapeMenu:HookScript("OnShow", function(self)
             EnsureDragonUIButton()
             QueueEnsureAfterShow()
         end)
-        ascensionHookInstalled = true
+        coaHookInstalled = true
     end
 
     hookInstalled = true

@@ -1,7 +1,7 @@
 -- =============================================================================
 -- Transmog Collector Module
 -- Automatically collects transmog appearances when looting new items.
--- Uses C_AppearanceCollection.CollectItemAppearance(guid) (Ascension API).
+-- Uses C_AppearanceCollection.CollectItemAppearance(guid) (Conquest of Azeroth API).
 -- =============================================================================
 
 local addon = select(2, ...)
@@ -71,7 +71,7 @@ local lastBagScan   = 0  -- timestamp of last ScanBags to throttle rapid BAG_UPD
 -- BAG SCANNER
 -- =============================================================================
 
---- Check if an item can be transmog-collected (matches Ascension macro filter).
+--- Check if an item can be transmog-collected (matches Conquest of Azeroth macro filter).
 --- Class IDs < 5 cover Weapon, Armor, Container, and Consumable (macro uses < 5).
 --- If item info isn't cached yet, still try collection.
 local function IsCollectableItem(itemID)
@@ -81,7 +81,7 @@ local function IsCollectableItem(itemID)
     return classID < 5
 end
 
---- Check if the Ascension collection API is available.
+--- Check if the Conquest of Azeroth collection API is available.
 local function IsCollectionAvailable()
     return C_AppearanceCollection
         and type(C_AppearanceCollection.CollectItemAppearance) == "function"
@@ -108,7 +108,7 @@ local function ScanQueueProcessor()
     local itemID = GetContainerItemID(bag, slot)
 
     -- Only cache once the API is confirmed available. Items seen before
-    -- Ascension's C_AppearanceCollection loads stay uncached and are retried on
+    -- Conquest of Azeroth's C_AppearanceCollection loads stay uncached and are retried on
     -- a later scan, rather than being marked 'processed' and skipped forever.
     if IsCollectionAvailable() then
         -- Mark BEFORE calling to prevent re-entry; API is server-idempotent.

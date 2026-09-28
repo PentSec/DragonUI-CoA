@@ -229,7 +229,7 @@ local defaults = {
                 posY = -6,
                 custom_position = false,
             },
-            -- Ascension WildCard dice frame (visible during Draft / WildCard rolls)
+            -- Conquest of Azeroth WildCard dice frame (visible during Draft / WildCard rolls)
             wildcarddice = {
                 anchor = "TOP",
                 posX = 0,
@@ -1288,7 +1288,7 @@ local defaults = {
                 enabled = true, -- Retail-style textures for bags
             },
             transmog_collector = {
-                enabled = false, -- Auto-collect transmog appearances on loot (Ascension)
+                enabled = false, -- Auto-collect transmog appearances on loot (Conquest of Azeroth)
             },
             attackbar = {
                 enabled = false, -- Attack bar swing timer (opt-in module)

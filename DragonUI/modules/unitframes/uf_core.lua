@@ -247,7 +247,7 @@ end
 -- ============================================================================
 -- CLASSES KNOWN TO THE ADDON
 -- ============================================================================
--- Maps every Ascension class token known to the addon for CoA detection and
+-- Maps every Conquest of Azeroth class token known to the addon for CoA detection and
 -- debug commands. Used as a fallback indicator only — actual rendering goes
 -- through ROUND → TCOORDS → individual BLP.
 

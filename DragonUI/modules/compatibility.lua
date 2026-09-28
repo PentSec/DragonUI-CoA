@@ -87,10 +87,10 @@ local function IsRegistryAddonLoaded(addonName)
             or _G.CompactRaidFrameManager ~= nil
     end
 
-    -- Ascension_NamePlates is a virtual addon — detect whether the Ascension
+    -- Ascension_NamePlates is a virtual addon — detect whether the Conquest of Azeroth
     -- custom nameplate CVar is active instead of checking IsAddOnLoaded.
     if addonName == "ascension_nameplates" then
-        -- On 3.3.5a, Ascension/CoA enables its custom nameplate system via CVar
+        -- On 3.3.5a, Conquest of Azeroth/CoA enables its custom nameplate system via CVar
         local useNewPlates = GetCVarBool and GetCVarBool("useNewNamePlates")
         if useNewPlates then
             return true

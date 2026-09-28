@@ -221,7 +221,7 @@ L["PlayerPrimaryStat"] = "Primary Stat"
 L["TargetPrimaryStat"] = "Target Primary Stat"
 L["Primary stat icon movability widget"] = true
 L["WildCardDice"] = "WildCard Dice"
-L["Ascension WildCard dice movability widget"] = true
+L["Conquest of Azeroth WildCard dice movability widget"] = true
 L["DurabilityFrameWidget"] = "Durability Frame"
 L["Durability frame movability widget"] = true
 

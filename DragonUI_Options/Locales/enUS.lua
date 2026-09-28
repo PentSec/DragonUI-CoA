@@ -162,9 +162,9 @@ L["Detach weapon enchant icons (poisons, sharpening stones, etc.) from the buff 
 L["Show Toggle Button"] = true
 L["Show a collapse/expand button next to the buff icons."] = true
 L["Vanity Buffs"] = true
-L["Vanity buffs are cosmetic auras consolidated by Ascension (mounts, toys, transmog effects). The consolidated container is provided by the Ascension_VanityCollection addon."] = true
+L["Vanity buffs are cosmetic auras consolidated by Conquest of Azeroth (mounts, toys, transmog effects). The consolidated container is provided by the Ascension_VanityCollection addon."] = true
 L["Hide Vanity Buffs"] = true
-L["Hide the Ascension vanity-buff consolidated container and its contained auras from the buff frame. Existing buff order and positioning are preserved."] = true
+L["Hide the Conquest of Azeroth vanity-buff consolidated container and its contained auras from the buff frame. Existing buff order and positioning are preserved."] = true
 L["Weapon Enchants"] = true
 L["Weapon enchant icons include rogue poisons, sharpening stones, wizard oils, and similar temporary weapon enhancements."] = true
 L["Aura Borders"] = true
@@ -1421,7 +1421,7 @@ L["Share"] = true
 L["Enter a target player name for whisper."] = true
 L["Profile shared with"] = true
 
-L["This Fork is maintained by PentSec for AscensionWow, based on the original work by Neticsoul."] = true
+L["This Fork is maintained by PentSec for Conquest of Azeroth, based on the original work by NeticSoul."] = true
 L["Close"] = true
 L["Enter a name for the imported preset:"] = true
 L["Imported Preset"] = true
@@ -1935,7 +1935,7 @@ L["Showing top %d results. Type at least 3 characters for the full list."] = tru
 -- Transmog Collector
 L["Transmog Collector"] = true
 L["Enable Transmog Collector"] = true
-L["Automatically collect transmog appearances when looting new items. Works with Ascension's Ctrl+Alt+Click appearance system."] = true
+L["Automatically collect transmog appearances when looting new items. Works with Conquest of Azeroth's Ctrl+Alt+Click appearance system."] = true
 L["On loot, auto-collects appearances for items you haven't learned yet."] = true
 
 -- Attack Bar Tab
@@ -2014,7 +2014,13 @@ L["Run |cffffcc55/duidetails|r to apply it from chat."] = true
 -- World Map
 L["World Map"] = true
 L["Retail-style world map with breadcrumb navigation and a quest log side panel."] = true
+L["Retail-styled world map with breadcrumb navigation, drag-to-resize and quest log side panel. Requires a full /reload after toggling."] = true
 L["Enable World Map"] = true
+L["Activates the modern world map frame. Requires /reload to take effect."] = true
+L["Enable Fog Reveal"] = true
+L["Draw grey tint over undiscovered zones using account-wide exploration data. Each alt sees your main's exploration immediately."] = true
+L["Enable Wheel Zoom"] = true
+L["Mouse wheel zooms and pans the map canvas."] = true
 L["Apply the DragonUI reskin to the world map."] = true
 L["Show Undiscovered Areas"] = true
 L["Draw the map art of areas you have not explored yet, dimmed."] = true

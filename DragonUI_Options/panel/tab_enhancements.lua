@@ -793,12 +793,12 @@ local function BuildEnhancementsTab(scroll)
     })
 
     -- ====================================================================
-    -- TRANSMOG COLLECTOR (Ascension)
+    -- TRANSMOG COLLECTOR (Conquest of Azeroth)
     -- ====================================================================
     C:AddSpacer(scroll)
     local tmSection = C:AddSection(scroll, LO["Transmog Collector"])
 
-    C:AddDescription(tmSection, LO["Automatically collect transmog appearances when looting new items. Works with Ascension's Ctrl+Alt+Click appearance system."])
+    C:AddDescription(tmSection, LO["Automatically collect transmog appearances when looting new items. Works with Conquest of Azeroth's Ctrl+Alt+Click appearance system."])
 
     C:AddToggle(tmSection, {
         label = LO["Enable Transmog Collector"],

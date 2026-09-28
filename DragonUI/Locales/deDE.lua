@@ -217,7 +217,7 @@ L["PlayerPrimaryStat"] = "Hauptstatistik"
 L["TargetPrimaryStat"] = "Hauptstatistik (Ziel)"
 L["Primary stat icon movability widget"] = "Widget zur Beweglichkeit des Primärstatistik-Symbols"
 L["WildCardDice"] = "WildCard-Würfel"
-L["Ascension WildCard dice movability widget"] = "Beweglichkeits-Widget für die WildCard-Würfel von Ascension"
+L["Conquest of Azeroth WildCard dice movability widget"] = "Beweglichkeits-Widget für die WildCard-Würfel von Conquest of Azeroth"
 L["DurabilityFrameWidget"] = "Haltbarkeitsfenster"
 L["Durability frame movability widget"] = "Beweglichkeits-Widget für das Haltbarkeitsfenster"
 

@@ -1,9 +1,9 @@
--- Ascension (custom-class private server) replaces the stock character window with
+-- Conquest of Azeroth (custom-class private server) replaces the stock character window with
 -- AscensionCharacterFrame -- a retail-style PortraitFrameTemplate (nineslice chrome, a tab
 -- system, a model viewport and a right inset) that the stock CharacterFrame skin never sees.
 -- Its client is retail-based, so SetAtlas, CallbackRegistry and hooksecurefunc on mixins are
 -- available, and the addon's own atlas shim resolves its UI textures exactly as on 3.3.5a.
--- We skin in place: Ascension's layout and tab system stay, the art becomes DragonUI chrome.
+-- We skin in place: Conquest of Azeroth's layout and tab system stay, the art becomes DragonUI chrome.
 local addon = select(2, ...)
 local CP = addon.CharacterPanel
 
@@ -30,7 +30,7 @@ local SIDEBAR_TC = {
 
 local STREAK_Y, STREAK_H = 21, 43
 
--- The class icon is a plain texture named *Portrait; Ascension parks it clear of the ring cutout
+-- The class icon is a plain texture named *Portrait; Conquest of Azeroth parks it clear of the ring cutout
 -- baked into our top-left chrome corner. Re-pin it into the ring slightly larger than the cutout --
 -- the ring edge covers the excess, the same trick the vanilla skin uses (portrait.lua: 62x62 at
 -- TOPLEFT(-5,7)) -- so the icon shows framed again.
@@ -91,7 +91,7 @@ local function isPortrait(region)
     return name ~= nil and name:find("Portrait") ~= nil
 end
 
--- The portrait texture survives sweep() via isPortrait, but on this client it stays where Ascension
+-- The portrait texture survives sweep() via isPortrait, but on this client it stays where Conquest of Azeroth
 -- put it -- outside our ring. Re-anchor it over the cutout, and keep re-asserting on OnShow since
 -- the client re-layouts the window on some display changes. Our nineslice pieces are unnamed, so
 -- the name filter can never match them.
@@ -110,7 +110,7 @@ local function repositionPortrait(cf)
 end
 
 -- A container may carry its own NineSlice child on top of the art we hide (the frame's is handled
--- by name above); the inset templates on the Ascension client draw theirs the same way. Neuter it
+-- by name above); the inset templates on the Conquest of Azeroth client draw theirs the same way. Neuter it
 -- so restore() re-shows it like every other swept region.
 local function hideNineSlice(host)
     if not host or not host.GetName then return end
@@ -257,7 +257,7 @@ local function buildChrome(cfName, panes, opts)
         -- which lets both leak through in front of the panel chrome.
         cf:SetFrameStrata("HIGH")
 
-        -- Ascension's own retail nineslice hides; the shared layout draws DragonUI's metal over
+        -- Conquest of Azeroth's own retail nineslice hides; the shared layout draws DragonUI's metal over
         -- the rock instead, so the two can never double up.
         local ns = _G[cfName .. "NineSlice"]
         if ns then
@@ -287,7 +287,7 @@ local function buildChrome(cfName, panes, opts)
                 for _, piece in ipairs(NINESLICE_PIECES) do
                     if cf[piece] then
                         cf[piece]._duiOwned = true
-                        -- The Ascension client may already own these pieces (its retail nineslice),
+                        -- The Conquest of Azeroth client may already own these pieces (its retail nineslice),
                         -- which makes the layout's SetDrawLayer a no-op; re-assert OVERLAY so the
                         -- portrait ring always draws above the class icon.
                         cf[piece]:SetDrawLayer("OVERLAY")
@@ -402,7 +402,7 @@ local function buildChrome(cfName, panes, opts)
     end
 end
 
-function CP.RestoreAscensionChrome()
+function CP.RestoreCoAChrome()
     local cf = _G.AscensionCharacterFrame
     restoreHidden()
     if cf then
@@ -427,7 +427,7 @@ end
 -- Restore mirrors for the Inspect window: it has no static Panes list (the Inspect's panels reset
 -- individually via their own Hide), so we only clear shared owned textures and the per-window chrome
 -- pieces the builder stamped on AscensionInspectFrame and its Inset/RightInset.
-function CP.RestoreAscensionInspectChrome()
+function CP.RestoreCoAInspectChrome()
     local cf = _G.AscensionInspectFrame
     if cf then
         if cf._duiNineSliceFrame then cf._duiNineSliceFrame:Show() end
@@ -669,11 +669,11 @@ local function syncAll(host)
 end
 
 -- sidebartabs.lua caps the vanilla strip with a decor piece at each end of the tab row, behind the
--- plates. Ascension's tabs hang straight off the RightInset (no strip frame), so the same two
+-- plates. Conquest of Azeroth's tabs hang straight off the RightInset (no strip frame), so the same two
 -- sprites land on the RightInset at the row's ends -- 3px clear of the first tab, 2px off the last,
 -- on the tab bottoms -- and draw under the tabs' own plates.
 -- sidebartabs.lua caps the vanilla strip with a decor piece at each end of the tab row, behind the
--- plates. Ascension's tabs hang straight off the RightInset (no strip frame), so the same two
+-- plates. Conquest of Azeroth's tabs hang straight off the RightInset (no strip frame), so the same two
 -- sprites land on the RightInset, pinning to the first and last tab in the row. The pieces are
 -- created once but re-anchored on every build pass: the Inspect adds its MysticEnchant tab
 -- dynamically in OnShow, so the row's ends can move after the first build.
@@ -727,7 +727,7 @@ local function onDeselectedOne(t)
     syncTab(t, false)
 end
 
--- The Ascension client drives its own tabs through these mixins; hooking them keeps the art
+-- The Conquest of Azeroth client drives its own tabs through these mixins; hooking them keeps the art
 -- in lockstep with whichever tab it selects, without us owning the selection logic.
 local selectionHooked = false
 local function hookSelectionMixins()
@@ -746,7 +746,7 @@ local function hookSelectionMixins()
 end
 
 -- The client's CallbackRegistry calls registered fns with its own leading argument (a numeric
--- tab id on Ascension), not the frame -- so capture the host in a closure and resync by re-reading
+-- tab id on Conquest of Azeroth), not the frame -- so capture the host in a closure and resync by re-reading
 -- each tab's checked state, which the tab system sets before it fires the event.
 local function registerTabCallbacks(host)
     if not host or not host.RegisterCallback or host._duiTabCB then return end
@@ -796,7 +796,7 @@ end
 -- strata in EquipmentFlyout.xml, the same strata the character panel now occupies. Other chrome
 -- children at the same strata can intercept mouse events before the flyout receives them. Raise
 -- the frame and its known children to DIALOG on show so they always render above the character
--- panel. Children are created dynamically by the Ascension client after OnShow, so iterate on
+-- panel. Children are created dynamically by the Conquest of Azeroth client after OnShow, so iterate on
 -- every show rather than once at build time.
 local FLYOUT_DIALOG = "DIALOG"
 local FLYOUT_NAMED = {
@@ -832,14 +832,14 @@ local function hookEquipmentFlyout()
     end)
 end
 
-CP:RegisterBuilder("ascension-chrome", function()
+CP:RegisterBuilder("coa-chrome", function()
     buildChrome("AscensionCharacterFrame", CHARACTER_PANES, {
         paperDoll = "AscensionPaperDollPanel",
         companionModel = "AscensionPetPaperDollPanelCompanionTabCompanionModel",
     })
     hookEquipmentFlyout()
-end, { server = "ascension" })
-CP:RegisterBuilder("ascension-tabs", function() return buildTabs("AscensionCharacterFrame") end, { server = "ascension" })
+end, { server = "coa" })
+CP:RegisterBuilder("coa-tabs", function() return buildTabs("AscensionCharacterFrame") end, { server = "coa" })
 
 -- The Inspect window reuses the same AscensionCharacterFrameTemplate, so it gets the same skin:
 -- metal nineslice over rock, the pane rim on Inset/RightInset, the sidebar tabs and the main tabs.
@@ -854,42 +854,42 @@ local INSPECT_PANES = {
     "InspectBuildPanel",
     "InspectMysticEnchantPanel",
 }
-CP:RegisterBuilder("ascension-inspect-chrome", function() return buildChrome("AscensionInspectFrame", INSPECT_PANES, {
+CP:RegisterBuilder("coa-inspect-chrome", function() return buildChrome("AscensionInspectFrame", INSPECT_PANES, {
     paperDoll = "InspectPaperDollPanel",
     modelName = "InspectPaperDollPanelModel",
     modelUnit = "target",
-}) end, { server = "ascension" })
-CP:RegisterBuilder("ascension-inspect-tabs", function() return buildTabs("AscensionInspectFrame") end, { server = "ascension" })
+}) end, { server = "coa" })
+CP:RegisterBuilder("coa-inspect-tabs", function() return buildTabs("AscensionInspectFrame") end, { server = "coa" })
 
--- The model control strip over the Ascension viewports: the model already has native drag-rotate,
+-- The model control strip over the Conquest of Azeroth viewports: the model already has native drag-rotate,
 -- drag-move and scroll-zoom via ModelMixin, so the strip is pure affordance -- its rotate pair
 -- steps the facing, the zoom pair steps the camera, and reset restores the OnLoad defaults, all
 -- the same state the native gestures write. The Inspect model only exists after the first inspect,
 -- so the builders simply wait for theirs to appear.
-CP:RegisterBuilder("ascension-model-controls", function()
+CP:RegisterBuilder("coa-model-controls", function()
     local model = _G.AscensionPaperDollPanelModel
     if model and CP.BuildModelControls then
         CP.BuildModelControls(model, {
-            name = "DragonUIAscensionModelControls",
-            prefix = "DragonUIAscensionModel",
+            name = "DragonUICoAModelControls",
+            prefix = "DragonUICoAModel",
             retail = true,
         })
     end
 end)
 
-CP:RegisterBuilder("ascension-inspect-model-controls", function()
+CP:RegisterBuilder("coa-inspect-model-controls", function()
     local model = _G.InspectPaperDollPanelModel
     if model and CP.BuildModelControls then
         CP.BuildModelControls(model, {
-            name = "DragonUIAscensionInspectModelControls",
-            prefix = "DragonUIAscensionInspectModel",
+            name = "DragonUICoAInspectModelControls",
+            prefix = "DragonUICoAInspectModel",
             retail = true,
         })
     end
 end)
 
 -- The settings cog: on this client the stock CharacterFrame never shows, so this gear is the
--- module's only settings entry point. The shared menu is trimmed to what the Ascension windows can
+-- module's only settings entry point. The shared menu is trimmed to what the Conquest of Azeroth windows can
 -- actually change -- the body tint shades the rock and streaks both windows draw, and the model
 -- backdrop section only appears on the paperdoll tab, whose viewport the shared BuildModelBackdrop
 -- paints. The Gear summary section is vanilla-sidebar-only and stays out.
@@ -908,7 +908,7 @@ local function ascSetDark(dark)
 end
 
 -- The grey toggle writes the shared config the backdrop builder reads on every apply, so re-running
--- the build on both Ascension models is all the refresh needs -- the Inspect's reads the target's
+-- the build on both Conquest of Azeroth models is all the refresh needs -- the Inspect's reads the target's
 -- race (it is nil-safe here: the Inspect model only exists after the first inspect).
 local function ascSetGrey(grey)
     CP:Config().grey_model_backdrop = grey and true or false
@@ -968,10 +968,10 @@ local function buildCog()
     local cf = _G.AscensionCharacterFrame
     if ascCog or not cf then return end
 
-    ascMenu = CreateFrame("Frame", "DragonUIAscensionSettingsMenu", UIParent, "UIDropDownMenuTemplate")
+    ascMenu = CreateFrame("Frame", "DragonUICoASettingsMenu", UIParent, "UIDropDownMenuTemplate")
     UIDropDownMenu_Initialize(ascMenu, ascInitMenu, "MENU")
 
-    ascCog = CreateFrame("Button", "DragonUIAscensionSettingsCog", cf)
+    ascCog = CreateFrame("Button", "DragonUICoASettingsCog", cf)
     ascCog:SetSize(COG_SIZE, COG_SIZE)
     -- The nineslice corner and the title band both paint over this corner otherwise, the same way
     -- the close button has to clear them.
@@ -1019,15 +1019,15 @@ local function buildCog()
     end
 end
 
-CP:RegisterBuilder("ascension-settings-cog", buildCog)
+CP:RegisterBuilder("coa-settings-cog", buildCog)
 
--- Ascension detection, matching the rest of the addon: the PathToAscension micro button exists only
--- on Ascension servers. (CP.SERVER is never assigned, so the old gate here could never fire.)
-local isAscension = _G.PathToAscensionMicroButton ~= nil or _G.AscensionCharacterFrame ~= nil
+-- Conquest of Azeroth detection, matching the rest of the addon: the PathToAscension micro button exists only
+-- on Conquest of Azeroth servers. (CP.SERVER is never assigned, so the old gate here could never fire.)
+local isCoA = _G.PathToAscensionMicroButton ~= nil or _G.AscensionCharacterFrame ~= nil
 
 -- The client builds AscensionCharacterFrame during login, but never sooner: poll briefly so the
 -- skin lands the moment it exists, whatever order login events fired in. Stops on its own.
-if isAscension then
+if isCoA then
     local tries = 0
     local retry = CreateFrame("Frame")
     retry:SetScript("OnUpdate", function(self)
@@ -1045,7 +1045,7 @@ end
 -- someone, so no login-time pass can skin it. ADDON_LOADED fires the moment that addon loads --
 -- and the XML has already run by then, so the builders skin the window in place. The OnShow hook
 -- covers later opens, whose panels re-stamp their backdrops per inspect. Registered unconditionally:
--- the addon name never matches on a non-Ascension client, so there is no wasted work.
+-- the addon name never matches on a non-Conquest of Azeroth client, so there is no wasted work.
 local inspectLoader = CreateFrame("Frame")
 inspectLoader:RegisterEvent("ADDON_LOADED")
 inspectLoader:SetScript("OnEvent", function(_, _, name)
@@ -1062,9 +1062,9 @@ inspectLoader:SetScript("OnEvent", function(_, _, name)
     end
 end)
 
--- EquipmentFlyoutFrame is defined in Ascension's own EquipmentFlyout.xml, which may load after
+-- EquipmentFlyoutFrame is defined in Conquest of Azeroth's own EquipmentFlyout.xml, which may load after
 -- the builders run. Poll until it exists, then hook its strata. Stops on its own.
-if isAscension then
+if isCoA then
     local tries = 0
     local flyoutPoll = CreateFrame("Frame")
     flyoutPoll:SetScript("OnUpdate", function(self)

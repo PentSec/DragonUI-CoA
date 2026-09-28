@@ -4,7 +4,7 @@ local L = addon.L
 -- ============================================================================
 -- WildCardDice movability widget
 -- ============================================================================
--- Ascension creates `_G.WildCardDice` (256x128, default TOP UIParent TOP 0 -32).
+-- Conquest of Azeroth creates `_G.WildCardDice` (256x128, default TOP UIParent TOP 0 -32).
 -- It only shows during Draft / WildCard rolls. This widget lets the user
 -- reposition it via DragonUI Editor Mode and persists the position per profile
 -- in `addon.db.profile.widgets.wildcarddice`.
@@ -104,7 +104,7 @@ function addon.ApplyWildCardDiceSystem()
     anchor = addon.CreateUIFrame(FRAME_W, FRAME_H, "WildCardDice")
 
     -- Hook SetPoint: always redirect to our anchor when custom_position is set,
-    -- even outside editor mode (Ascension re-sets position on each draft show)
+    -- even outside editor mode (Conquest of Azeroth re-sets position on each draft show)
     original_SetPoint = blizz.SetPoint
     blizz.SetPoint = function(self, ...)
         if movingWidget then
@@ -131,7 +131,7 @@ function addon.ApplyWildCardDiceSystem()
         configPath = { "widgets", "wildcarddice" },
         editorVisible = function() return true end,
         showTest = function()
-            -- Force the Ascension frame visible so the user can see what they move
+            -- Force the Conquest of Azeroth frame visible so the user can see what they move
             anchor:Show()
             local blizz = GetBlizzFrame()
             if blizz then
@@ -191,7 +191,7 @@ function addon.RestoreWildCardDiceSystem()
             original_SetPoint = nil
         end
 
-        -- Return to the Ascension default position
+        -- Return to the Conquest of Azeroth default position
         if not InCombatLockdown() then
             blizz:ClearAllPoints()
             blizz:SetPoint(DEFAULT_ANCHOR, UIParent, DEFAULT_ANCHOR, DEFAULT_X, DEFAULT_Y)
@@ -222,7 +222,7 @@ initFrame:SetScript("OnEvent", function(self, event, arg1)
 
     elseif event == "PLAYER_ENTERING_WORLD" then
         if not IsModuleEnabled() then return end
-        -- Ascension frame may not exist on first PEW; retry once shortly after
+        -- Conquest of Azeroth frame may not exist on first PEW; retry once shortly after
         addon.ApplyWildCardDiceSystem()
         addon:After(1.0, function()
             if not addon.WildCardDiceModule.applied then
