@@ -299,8 +299,20 @@ git log "origin/${DEFAULT_BRANCH}" --format=%B \
 git show "origin/${DEFAULT_BRANCH}:.upstream-ignore" 2>/dev/null \
   | sed 's/#.*//' | awk 'NF {print $1}' > "$TMP/ignored" || true
 
-# Commits that already have a "skipped" issue (open or closed)
-gh issue list -R "$REPO" --label upstream-conflict --state all --limit 1000 \
+# Commits that already have an OPEN "skipped" issue.
+#
+# Open only, deliberately. A closed issue is not proof the commit landed: cleanup_resolved()
+# closes the issue once the trailer reaches the default branch, but a squash merge drops that
+# trailer, and closing the issue by hand hides the commit for good. With `--state all` such a
+# commit is masked forever and the sync silently stops retrying it. That is how e00daaa stayed
+# half-applied on main for so long: PR #18 was squash-merged, which landed literal conflict
+# markers and lost the trailer, a follow-up commit stripped the marker lines without resolving
+# the conflicts, and the closed issue #19 meant no run ever retried it.
+# Genuinely applied commits are unaffected: the candidate loop checks the `applied` trailer
+# list before known_skipped(), so it short-circuits them regardless of issue state. To skip a
+# commit permanently, list it in .upstream-ignore, which is checked by is_ignored() and states
+# the intent explicitly.
+gh issue list -R "$REPO" --label upstream-conflict --state open --limit 1000 \
   --json title --jq '.[].title' > "$TMP/issue_titles" 2>/dev/null || : > "$TMP/issue_titles"
 
 # Close issues / draft PRs that were resolved since the last run
