@@ -1,3 +1,5 @@
+-- Copyright (c) 2026 NeticSoul. Licensed under the MIT License; see LICENSE.
+
 -- ============================================================================
 -- DragonUI - Multicast (Totem/Possess) Bar Module
 -- Handles Shaman totem bar and possession bar positioning and styling.
@@ -635,7 +637,7 @@ end
 -- CENTRALIZED EVENT HANDLER
 -- =============================================================================
 local eventFrame = CreateFrame("Frame")
-local function RegisterEvents()
+local function registerMulticastEvents()
     eventFrame:RegisterEvent("ADDON_LOADED")
     eventFrame:RegisterEvent("PLAYER_ENTERING_WORLD")
     eventFrame:RegisterEvent("PLAYER_LOGOUT")
@@ -672,4 +674,4 @@ local function RegisterEvents()
 end
 
 -- Initialize event system
-RegisterEvents()
+registerMulticastEvents()

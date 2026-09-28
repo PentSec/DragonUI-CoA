@@ -5,7 +5,7 @@
 ## Author: PentSec, NeticSoul
 ## SavedVariables: DragonUIDB
 ## OptionalDeps: Blizzard_TimeManager, Details
-## X-License: MIT for project-authored code; bundled dependencies retain their own licenses
+## X-License: MIT for project-authored code; Blizzard art, fonts and bundled libraries keep their own terms (see THIRD_PARTY_NOTICES)
 ## X-oUF: DragonUF
 ## X-IconTexture: Interface\AddOns\DragonUI\DragonUI
 

@@ -1,3 +1,5 @@
+-- Copyright (c) 2026 NeticSoul. Licensed under the MIT License; see LICENSE.
+
 local addon = select(2, ...)
 
 -- ============================================================================
@@ -161,7 +163,7 @@ local function UpdateAnchorPosition()
     
     local cfg = GetDynamicConfig()
     local holder = PetbarModule.anchor
-    local mainBar = addon.pUiMainBar
+    local mainBar = addon.MainBar
     local onMainBar = mainBar and mainBar:IsShown()
     local locked = InCombatLockdown()
     local offsetY = cfg.y_position
