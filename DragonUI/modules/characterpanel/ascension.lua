@@ -271,7 +271,7 @@ local function buildChrome(cfName, panes, opts)
 
         if not cf._duiStreaks then
             local streaks = cf:CreateTexture(nil, "BORDER")
-            streaks:set_atlas("_UI-Frame-TopTileStreaks")
+            streaks:SetAtlasTexture("_UI-Frame-TopTileStreaks")
             streaks:SetHorizTile(true)
             streaks:SetHeight(STREAK_H)
             streaks:SetPoint("TOPLEFT", cf, "TOPLEFT", 6, -STREAK_Y)
@@ -280,9 +280,9 @@ local function buildChrome(cfName, panes, opts)
         end
 
         if not cf._duiNineSlice then
-            local layout = NineSliceUtils and NineSliceUtils.GetLayout("PortraitFrameTemplate")
+            local layout = DragonUI_NineSlice and DragonUI_NineSlice.GetLayout("PortraitFrameTemplate")
             if layout then
-                NineSliceUtils.ApplyLayout(cf, layout)
+                DragonUI_NineSlice.ApplyLayout(cf, layout)
                 cf._duiNineSlice = true
                 for _, piece in ipairs(NINESLICE_PIECES) do
                     if cf[piece] then
@@ -486,7 +486,7 @@ local function ensureTabArtHost(cf)
     host:SetAllPoints(cf)
     cf:HookScript("OnShow", function() host:Show() end)
     cf:HookScript("OnHide", function() host:Hide() end)
-    host:SetShownReq(cf:IsShown())
+    host:SetShown(cf:IsShown())
     cf._duiTabArtHost = host
     return host
 end
