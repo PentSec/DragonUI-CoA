@@ -140,6 +140,9 @@ Extensive customization available directly in-game through the configuration pan
 
 DragonUI builds on original work and adapted ideas from these addon authors and projects:
 
+<details>
+<summary><b>Addons and references (16)</b></summary>
+
 | Project | Author | Contribution |
 |---------|--------|-------------|
 | [Dragonflight UI (Classic)](https://github.com/Karl-HeinzSchneider) | Karl-HeinzSchneider | Primary design reference |
@@ -154,11 +157,29 @@ DragonUI builds on original work and adapted ideas from these addon authors and 
 | [oGlow](https://github.com/haste) | haste | Item quality border reference |
 | [ElvUI-WotLK](https://github.com/ElvUI-WotLK/) | ElvUI team | Pattern reference |
 | [Quartz](https://github.com/Nevcairiel/Quartz) | Hendrik Leppkes | Latency indicator concept |
+<<<<<<< HEAD
+=======
+
+</details>
+
+<details>
+<summary><b>Contributors (17)</b></summary>
+
+| Contributor | Name | Contribution |
+|---------|--------|-------------|
+| [PentSec](https://github.com/PentSec) | PentSec | Collaborator: original drafts of the loot skin and world map modules |
+>>>>>>> ffd53b6 (chore(license): MIT header on every DragonUI source file; collapsible README credits)
 | [CrimsonHollow](https://github.com/CrimsonHollow) | CrimsonHollow | Fat Health Bar contribution |
 | [RovBot](https://github.com/RovxBot) | RovBot | Action bar grid/preset system |
 | [Raz0r](https://github.com/Raz0r1337) | Raz0r | German localization |
 | [nadugi](https://github.com/nadugi) | nadugi | Korean localization |
 
+<<<<<<< HEAD
+=======
+</details>
+
+Missing from the list? [Let me know](https://github.com/NeticSoul/DragonUI/issues).
+>>>>>>> ffd53b6 (chore(license): MIT header on every DragonUI source file; collapsible README credits)
 
 ## 💛 Special Thanks
 
