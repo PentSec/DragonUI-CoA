@@ -348,7 +348,15 @@ for c in "${CANDIDATES[@]}"; do
     bad=""
     while IFS= read -r f; do
       if [ ! -f "$f" ]; then continue; fi
-      if ! err="$(luac5.1 -p "$f" 2>&1)"; then bad+="${err}"$'\n'; fi
+      # luac5.1 rejects a UTF-8 BOM, and several files in this repo legitimately start
+      # with one (tab_minimap, minimap, castbar, the LibKeyBound locales, ...). Parsing
+      # them raw reports a bogus "Lua syntax error" and skips a perfectly good commit.
+      # Parse a BOM-stripped copy in that case, and map the copy's path back to the real
+      # file in the message so the skip-issue still names something actionable.
+      if [ "$(head -c3 "$f" | od -An -tx1 | tr -d ' \n')" = "efbbbf" ]; then
+        luac_src="$TMP/luacheck.lua"; sed '1s/^\xEF\xBB\xBF//' "$f" > "$luac_src"
+        if ! err="$(luac5.1 -p "$luac_src" 2>&1)"; then bad+="${err//$luac_src/$f}"$'\n'; fi
+      elif ! err="$(luac5.1 -p "$f" 2>&1)"; then bad+="${err}"$'\n'; fi
     done < <(git diff-tree --no-commit-id --name-only -r --diff-filter=AM HEAD -- '*.lua')
     if [ -n "$bad" ]; then
       git reset -q --hard HEAD~1
