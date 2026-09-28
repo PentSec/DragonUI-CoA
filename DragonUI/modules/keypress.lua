@@ -178,7 +178,6 @@ local function OnProxyClicked(proxy)
     StartFlash(target)
 end
 
-<<<<<<< HEAD
 -- Resolve which physical button a "main action button id" maps to at click time.
 --
 -- IMPORTANT: DragonUI pages the main bar by setting the `actionpage` attribute
@@ -206,11 +205,6 @@ local function ResolveMainActionButton(id)
         return _G["VehicleMenuBarActionButton" .. id]
     end
     return _G["ActionButton" .. id]
-=======
-local function TypeIsAllowed(target, button)
-    local kind = SecureButton_GetModifiedAttribute(target, "type", button)
-    return kind == nil or ALLOWED_CLICK_TYPES[kind] == true
->>>>>>> 54b2299 (refactor(license): clean-room phase 1 rewrites, license notices and form-bar checked fix)
 end
 
 local function CanDriveClick(target, mouse)
@@ -256,7 +250,6 @@ local function GetProxy(key)
     local proxy = proxies[key]
     if proxy then return proxy end
 
-<<<<<<< HEAD
             local bindButtonName = "DragonUI_KeyPressButton_" .. key
             local bindButton = _G[bindButtonName]
             if not bindButton then
@@ -314,29 +307,6 @@ local function GetProxy(key)
             hook = true
             return
         end
-=======
-    proxy = CreateFrame("Button", PROXY_PREFIX .. key, nil, "SecureActionButtonTemplate")
-    proxy:RegisterForClicks("AnyDown")
-    for label, globalName in pairs(FRAME_REFS) do
-        local ref = _G[globalName]
-        if ref then SecureHandlerSetFrameRef(proxy, label, ref) end
-    end
-    SecureHandlerExecute(proxy, EXPOSE_REFS)
-    -- Hooked before any wrap, so each wrap saves and later restores the hooked handler.
-    proxy:HookScript("OnClick", OnProxyClicked)
-    proxies[key] = proxy
-    return proxy
-end
-
-local function ResetProxy(proxy)
-    if wrapped[proxy] then
-        SecureHandlerUnwrapScript(proxy, "OnClick")
-        wrapped[proxy] = nil
-    end
-    -- A leftover "macro" attribute outranks "macrotext" in SECURE_ACTIONS.macro.
-    for i = 1, #STALE_ATTRS do
-        proxy:SetAttribute(STALE_ATTRS[i], nil)
->>>>>>> 54b2299 (refactor(license): clean-room phase 1 rewrites, license notices and form-bar checked fix)
     end
 end
 
