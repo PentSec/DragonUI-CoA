@@ -55,12 +55,15 @@ local EXPOSE_REFS = [[
 local ROUTE_SLOT = [[
     local slot = self:GetAttribute("dragonui-slot")
     if not slot then return end
+    -- CoA divergence: never redirect main-bar keybinds to BonusActionButtonN. DragonUI
+    -- pages the main bar via the actionpage attribute on ActionButton1..12 (mainbars.lua
+    -- state driver), so those slots already hold the correct page; BonusActionButtons are
+    -- click-through with no real payload in DragonUI's model, so clicking them would fire
+    -- the wrong action or nothing (Prophet/Spider Form and every bonusbar:N class).
     local family = "ActionButton"
     if vehicleBar and vehicleBar:IsProtected() and vehicleBar:IsShown()
         and slot <= self:GetAttribute("dragonui-vehiclecap") then
         family = "VehicleMenuBarActionButton"
-    elseif bonusBar and bonusBar:IsProtected() and bonusBar:IsShown() then
-        family = "BonusActionButton"
     end
     self:SetAttribute("macrotext", "/click " .. family .. slot)
 ]]
@@ -130,11 +133,11 @@ local function CallQuietly(api, ...)
 end
 
 local function CurrentSlotButton(slot)
-    local vehicle, bonus = _G.VehicleMenuBar, _G.BonusActionBarFrame
+    -- CoA divergence: the flash must land on the button the click actually drove,
+    -- so never BonusActionButtonN either; see ROUTE_SLOT.
+    local vehicle = _G.VehicleMenuBar
     if vehicle and vehicle:IsProtected() and vehicle:IsShown() and slot <= (VEHICLE_MAX_ACTIONBUTTONS or 6) then
         return _G["VehicleMenuBarActionButton" .. slot]
-    elseif bonus and bonus:IsProtected() and bonus:IsShown() then
-        return _G["BonusActionButton" .. slot]
     end
     return _G["ActionButton" .. slot]
 end
@@ -178,33 +181,9 @@ local function OnProxyClicked(proxy)
     StartFlash(target)
 end
 
--- Resolve which physical button a "main action button id" maps to at click time.
---
--- IMPORTANT: DragonUI pages the main bar by setting the `actionpage` attribute
--- on ActionButton1..12 via a state driver (see mainbars.lua `_onstate-page`).
--- It does NOT rely on Blizzard's BonusActionBarFrame to surface shapeshift/stance
--- actions. Therefore, even when BonusActionBarFrame:IsShown() is true (which it
--- is in CoA whenever a class with bonusbar:N forms shapeshifts, e.g. Prophet
--- Spider Form → bonusbar:1), keybinds MUST keep targeting ActionButtonN — the
--- page driver has already remapped those slots to the correct bonus action page.
---
--- Previously the code redirected keybinds to BonusActionButtonN here when
--- BonusActionBarFrame:IsShown() was true. That broke every class with a real
--- bonusbar in CoA (Druid/Warrior/Prophet/etc.): BonusActionButtons are set
--- click-through (mainbars.lua EnsureBonusButtonsClickThrough) and contain
--- placeholder/empty slots in DragonUI's model, so keybinds fired the wrong
--- action or nothing — the classic "se bugean las barras / pierde bindeos" PvP
--- report for Prophet. Keeping only the VehicleMenuBar branch below is correct:
--- the vehicle module manages VehicleMenuBarActionButton separately and is the
--- only case where physical ActionButtonN is genuinely not the target.
-local function ResolveMainActionButton(id)
-    id = tonumber(id)
-    if not id then return nil end
-    if VehicleMenuBar and VehicleMenuBar:IsProtected() and VehicleMenuBar:IsShown()
-        and id <= VEHICLE_MAX_ACTIONBUTTONS then
-        return _G["VehicleMenuBarActionButton" .. id]
-    end
-    return _G["ActionButton" .. id]
+local function TypeIsAllowed(target, button)
+    local kind = SecureButton_GetModifiedAttribute(target, "type", button)
+    return kind == nil or ALLOWED_CLICK_TYPES[kind] == true
 end
 
 local function CanDriveClick(target, mouse)
@@ -250,63 +229,27 @@ local function GetProxy(key)
     local proxy = proxies[key]
     if proxy then return proxy end
 
-            local bindButtonName = "DragonUI_KeyPressButton_" .. key
-            local bindButton = _G[bindButtonName]
-            if not bindButton then
-                bindButton = CreateFrame("Button", bindButtonName, nil, "SecureActionButtonTemplate")
-                bindButton:RegisterForClicks("AnyDown")
-                SecureHandlerSetFrameRef(bindButton, "VehicleMenuBar", VehicleMenuBar)
-                SecureHandlerSetFrameRef(bindButton, "MultiCastSummonSpellButton", MultiCastSummonSpellButton)
-                SecureHandlerExecute(bindButton, [[
-                    VehicleMenuBar = self:GetFrameRef("VehicleMenuBar");
-                    MultiCastSummonSpellButton = self:GetFrameRef("MultiCastSummonSpellButton");
-                ]])
-            end
+    proxy = CreateFrame("Button", PROXY_PREFIX .. key, nil, "SecureActionButtonTemplate")
+    proxy:RegisterForClicks("AnyDown")
+    for label, globalName in pairs(FRAME_REFS) do
+        local ref = _G[globalName]
+        if ref then SecureHandlerSetFrameRef(proxy, label, ref) end
+    end
+    SecureHandlerExecute(proxy, EXPOSE_REFS)
+    -- Hooked before any wrap, so each wrap saves and later restores the hooked handler.
+    proxy:HookScript("OnClick", OnProxyClicked)
+    proxies[key] = proxy
+    return proxy
+end
 
-            -- Clear any stale wrap from a previous acceleration of this key.
-            SecureHandlerUnwrapScript(bindButton, "OnClick")
-            bindButton._dragonUIActionId = nil
-
-            for _, attribute in ipairs(template.attributes) do
-                local attributeName = attribute[1]
-                local attributeValue = stringgsub(command, template.command, attribute[2], 1)
-
-                if attributeName == "clickbutton" then
-                    bindButton:SetAttribute(attributeName, _G[attributeValue])
-                elseif attributeName == "actionbutton" then
-                    bindButton._dragonUIActionId = tonumber(attributeValue)
-                    -- Decide vehicle vs action at click time, like ActionButtonUp().
-                    -- (BonusActionBarFrame is intentionally NOT handled here — see
-                    -- ResolveMainActionButton above for why DragonUI never
-                    -- redirects main-bar keybinds to BonusActionButtonN.)
-                    SecureHandlerWrapScript(bindButton, "OnClick", bindButton, [[
-                        local clickMacro = "/click ActionButton]] .. attributeValue .. [[";
-                        if (VehicleMenuBar:IsProtected() and VehicleMenuBar:IsShown() and ]] .. tostring(tonumber(attributeValue) <= VEHICLE_MAX_ACTIONBUTTONS) .. [[) then
-                            clickMacro = "/click VehicleMenuBarActionButton]] .. attributeValue .. [[";
-                        end
-                        self:SetAttribute("macrotext", clickMacro);
-                    ]])
-                elseif attributeName == "multicastsummon" then
-                    SecureHandlerWrapScript(bindButton, "OnClick", bindButton, [[
-                        lastID = MultiCastSummonSpellButton:GetID();
-                        MultiCastSummonSpellButton:SetID(]] .. attributeValue .. [[);
-                    ]], [[
-                        MultiCastSummonSpellButton:SetID(lastID);
-                    ]])
-                    bindButton:SetAttribute("clickbutton", MultiCastSummonSpellButton)
-                else
-                    bindButton:SetAttribute(attributeName, attributeValue)
-                end
-            end
-
-            EnsureFlashHook(bindButton)
-
-            -- Priority override so the key clicks our proxy on key-down.
-            hook = false
-            SetOverrideBindingClick(overrideFrame, true, key, bindButtonName, mouseButton)
-            hook = true
-            return
-        end
+local function ResetProxy(proxy)
+    if wrapped[proxy] then
+        SecureHandlerUnwrapScript(proxy, "OnClick")
+        wrapped[proxy] = nil
+    end
+    -- A leftover "macro" attribute outranks "macrotext" in SECURE_ACTIONS.macro.
+    for i = 1, #STALE_ATTRS do
+        proxy:SetAttribute(STALE_ATTRS[i], nil)
     end
 end
 
