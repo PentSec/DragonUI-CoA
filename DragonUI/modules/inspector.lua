@@ -455,9 +455,11 @@ function TreeModel.Build(rawTree, buildMap)
     end
 
     for id, node in pairs(model.nodes) do
-        for _, targetId in ipairs(node.connected) do
-            if model.nodes[targetId] then
-                table.insert(model.edges, { from = id, to = targetId })
+        if type(node.connected) == "table" then
+            for _, targetId in ipairs(node.connected) do
+                if model.nodes[targetId] then
+                    table.insert(model.edges, { from = id, to = targetId })
+                end
             end
         end
     end
@@ -545,48 +547,65 @@ function CAReader.GetClassName(unit)
     return nil
 end
 
+local classTabCache = {}
+local classTreeCache = {}
+
+function CAReader.GetClassTabs(className)
+    local cached = classTabCache[className]
+    if cached then return cached end
+
+    local tabs, seen = {}, {}
+    local function add(name)
+        if type(name) == "string" and name ~= "" and not seen[name] then
+            seen[name] = true
+            tabs[#tabs + 1] = name
+        end
+    end
+
+    add("Class")
+
+    local api = CA()
+    if api and type(api.GetTabName) == "function" then
+        local indexes = {}
+        if type(api.GetCategories) == "function" then
+            local cok, cats = pcall(api.GetCategories)
+            if cok and type(cats) == "table" then indexes = cats end
+        end
+        if #indexes == 0 then
+            for i = 1, 80 do indexes[#indexes + 1] = i end
+        end
+        for _, idx in ipairs(indexes) do
+            local ok, name = pcall(api.GetTabName, idx)
+            if ok then add(name) end
+        end
+    end
+
+    classTabCache[className] = tabs
+    return tabs
+end
+
 function CAReader.GetClassTree(className, slot)
+    local cached = classTreeCache[className]
+    if cached then return cached end
+
     local api = CA()
     if not (api and className) then return {} end
+    if type(api.GetEntriesByClass) ~= "function" then return {} end
 
-    local tabs, seenTab = {}, {}
-    if type(api.GetTalentsByClass) == "function" then
-        local ok, entries = pcall(api.GetTalentsByClass, className, slot, false)
+    local seen, out = {}, {}
+    for _, tab in ipairs(CAReader.GetClassTabs(className)) do
+        local ok, entries = pcall(api.GetEntriesByClass, className, tab, false)
         if ok and type(entries) == "table" then
             for _, e in ipairs(entries) do
-                if e.Tab and not seenTab[e.Tab] then
-                    seenTab[e.Tab] = true
-                    tabs[#tabs + 1] = e.Tab
+                if e.ID and not seen[e.ID] then
+                    seen[e.ID] = true
+                    out[#out + 1] = e
                 end
             end
         end
     end
 
-    local seen, out = {}, {}
-    local function absorb(entries)
-        if type(entries) ~= "table" then return end
-        for _, e in ipairs(entries) do
-            if e.ID and not seen[e.ID] then
-                seen[e.ID] = true
-                out[#out + 1] = e
-            end
-        end
-    end
-
-    if type(api.GetEntriesByClass) == "function" and #tabs > 0 then
-        for _, tab in ipairs(tabs) do
-            local ok, entries = pcall(api.GetEntriesByClass, className, tab, false)
-            if ok then absorb(entries) end
-        end
-    end
-
-    if #out == 0 and type(api.GetTalentsByClass) == "function" then
-        for _, withMasteries in ipairs({ false, true }) do
-            local ok, entries = pcall(api.GetTalentsByClass, className, slot, withMasteries)
-            if ok then absorb(entries) end
-        end
-    end
-
+    if #out > 0 then classTreeCache[className] = out end
     return out
 end
 
@@ -1596,13 +1615,7 @@ function DebugTools.DumpEntries()
         analyze(label, res)
     end
 
-    local tabs, seen = {}, {}
-    local ok0, base = pcall(api.GetTalentsByClass, cn, active, false)
-    if ok0 and type(base) == "table" then
-        for _, e in ipairs(base) do
-            if e.Tab and not seen[e.Tab] then seen[e.Tab] = true; tabs[#tabs + 1] = e.Tab end
-        end
-    end
+    local tabs = CAReader.GetClassTabs(cn)
 
     LogMsg("GetEntriesByClass por tab (faltan " .. missN .. "):")
     local totalFound = 0
@@ -1659,13 +1672,7 @@ function DebugTools.DumpCategories()
     local cn = CAReader.GetClassName(u)
     if not cn then LogMsg("debug: no class."); return end
     local active = CAReader.GetInspectInfo(u) or 1
-    local tabs, seen = {}, {}
-    local ok, base = pcall(api.GetTalentsByClass, cn, active, false)
-    if ok and type(base) == "table" then
-        for _, e in ipairs(base) do
-            if e.Tab and not seen[e.Tab] then seen[e.Tab] = true; tabs[#tabs + 1] = e.Tab end
-        end
-    end
+    local tabs = CAReader.GetClassTabs(cn)
     for _, tab in ipairs(tabs) do
         local ok2, res = pcall(api.GetEntriesByClass, cn, tab, false)
         if ok2 and type(res) == "table" then
@@ -1722,26 +1729,11 @@ function DebugTools.DumpSpecs()
     local u = "target"
     local cn = CAReader.GetClassName(u)
     if not cn then LogMsg("debug: no class."); return end
+    local _, classFile = UnitClass(u)
     local active, unlocked = CAReader.GetInspectInfo(u)
     local unlockedStr = type(unlocked) == "table" and ("{" .. table.concat(unlocked, ",") .. "}") or tostring(unlocked)
-    LogMsg("active=" .. tostring(active) .. " unlocked=" .. unlockedStr)
-
-    if type(api.GetCategories) == "function" then
-        local ok, cats = pcall(api.GetCategories, cn)
-        if ok and type(cats) == "table" then
-            for i, c in ipairs(cats) do
-                if type(c) == "table" then
-                    local parts = {}
-                    for k, v in pairs(c) do parts[#parts + 1] = k .. "=" .. tostring(v) end
-                    LogMsg("  cat[" .. i .. "] " .. table.concat(parts, " "))
-                else
-                    LogMsg("  cat[" .. i .. "] " .. tostring(c))
-                end
-            end
-        else
-            LogMsg("  GetCategories -> " .. tostring(cats))
-        end
-    end
+    LogMsg("active=" .. tostring(active) .. " unlocked=" .. unlockedStr
+        .. " cn=" .. tostring(cn) .. " classFile=" .. tostring(classFile))
 
     local slot = active or 1
     local tree = CAReader.GetClassTree(cn, slot)
@@ -1755,12 +1747,96 @@ function DebugTools.DumpSpecs()
     for _, tb in ipairs(ord) do
         LogMsg("  TAB " .. tb .. " total=" .. total[tb] .. " learned=" .. (learned[tb] or 0))
     end
+
+    local byId = {}
+    for _, n in ipairs(tree) do byId[n.ID] = n end
+    local shown, notInTree = 0, 0
+    for id, info in pairs(build) do
+        shown = shown + 1
+        local node = byId[id]
+        if not node then notInTree = notInTree + 1 end
+        if shown <= 15 then
+            local function mark(list)
+                if type(list) ~= "table" or #list == 0 then return "-" end
+                local parts = {}
+                for _, r in ipairs(list) do
+                    parts[#parts + 1] = tostring(r) .. (build[r] and "+" or "-")
+                end
+                return table.concat(parts, ",")
+            end
+            LogMsg("  build id=" .. tostring(id)
+                .. " rank=" .. tostring(info.rank) .. "/" .. tostring(info.maxRank)
+                .. " req[" .. (node and mark(node.RequiredIDs) or "-") .. "]"
+                .. " conn[" .. (node and mark(node.ConnectedNodes) or "-") .. "]"
+                .. (node and ("  " .. tostring(node.Tab) .. "@" .. tostring(node.PositionX) .. "," .. tostring(node.PositionY))
+                         or "  NOT-IN-TREE"))
+        end
+    end
+    local ids = {}
+    for id in pairs(build) do ids[#ids + 1] = tostring(id) end
+    table.sort(ids, function(a, b) return tonumber(a) < tonumber(b) end)
+    LogMsg("  build ids: " .. table.concat(ids, ","))
+    LogMsg("  build entries=" .. shown .. " notInTree=" .. notInTree .. " tree=" .. #tree)
+
+    if type(api.GetInspectedBuild) == "function" then
+        local okb, raw = pcall(api.GetInspectedBuild, u, slot)
+        if okb and type(raw) == "table" then
+            local noid, rank0 = 0, 0
+            for _, e in ipairs(raw) do
+                if not e.EntryId then noid = noid + 1 end
+                if type(e.Rank) == "number" and e.Rank <= 0 then rank0 = rank0 + 1 end
+            end
+            local ks = {}
+            if raw[1] then for k in pairs(raw[1]) do ks[#ks + 1] = tostring(k) end; table.sort(ks) end
+            LogMsg("  rawBuild n=" .. #raw .. " noEntryId=" .. noid .. " rank0=" .. rank0)
+            LogMsg("    entry1 keys: " .. table.concat(ks, ","))
+        else
+            LogMsg("  rawBuild -> " .. tostring(raw))
+        end
+    end
+end
+
+function DebugTools.CheckID(id)
+    id = tonumber(id)
+    if not id then LogMsg("check: give a numeric id"); return end
+    local u = "target"
+    local cn = CAReader.GetClassName(u)
+    if not cn then LogMsg("check: no class"); return end
+    local active = CAReader.GetInspectInfo(u) or 1
+    local tree = CAReader.GetClassTree(cn, active)
+    local build = CAReader.GetUnitBuild(u, active)
+
+    local byEntry, bySpell
+    for _, n in ipairs(tree) do
+        if n.ID == id then byEntry = n end
+        if type(n.Spells) == "table" then
+            for _, s in ipairs(n.Spells) do
+                if s == id then bySpell = n end
+            end
+        end
+    end
+    local node = byEntry or bySpell
+    local b = (byEntry and build[id]) or (node and build[node.ID])
+    LogMsg("check " .. id .. ": entryMatch=" .. tostring(byEntry ~= nil)
+        .. " spellMatch=" .. tostring(bySpell ~= nil)
+        .. " inBuild=" .. tostring(b ~= nil)
+        .. (b and (" rank=" .. tostring(b.rank) .. "/" .. tostring(b.maxRank)) or ""))
+    if node then
+        LogMsg("  entryID=" .. tostring(node.ID) .. " tab=" .. tostring(node.Tab)
+            .. " pos=" .. tostring(node.PositionX) .. "," .. tostring(node.PositionY)
+            .. " type=" .. tostring(node.NodeType))
+    end
 end
 
 _G.SLASH_COAIT1 = "/coait"
 _G.SlashCmdList = _G.SlashCmdList or {}
 _G.SlashCmdList["COAIT"] = function(msg)
     msg = (msg or ""):lower():gsub("^%s+", ""):gsub("%s+$", "")
+    local checkId = msg:match("^check%s+(%d+)")
+    if checkId then
+        SafeCall(DebugTools.CheckID, tonumber(checkId))
+        return
+    end
     if msg == "class" then
         SafeCall(DebugTools.DumpClass)
     elseif msg == "api" then
