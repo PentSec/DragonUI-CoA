@@ -861,31 +861,303 @@ CP:RegisterBuilder("coa-inspect-chrome", function() return buildChrome("Ascensio
 }) end, { server = "coa" })
 CP:RegisterBuilder("coa-inspect-tabs", function() return buildTabs("AscensionInspectFrame") end, { server = "coa" })
 
--- The model control strip over the Conquest of Azeroth viewports: the model already has native drag-rotate,
--- drag-move and scroll-zoom via ModelMixin, so the strip is pure affordance -- its rotate pair
--- steps the facing, the zoom pair steps the camera, and reset restores the OnLoad defaults, all
--- the same state the native gestures write. The Inspect model only exists after the first inspect,
--- so the builders simply wait for theirs to appear.
-CP:RegisterBuilder("coa-model-controls", function()
-    local model = _G.AscensionPaperDollPanelModel
-    if model and CP.BuildModelControls then
-        CP.BuildModelControls(model, {
-            name = "DragonUICoAModelControls",
-            prefix = "DragonUICoAModel",
-            retail = true,
-        })
+-- The model control strip over the Conquest of Azeroth viewports. modelcontrols.lua is upstream's and
+-- builds a single strip over CharacterModelFrame, so the two Conquest of Azeroth viewports -- which
+-- this client ships no rotate buttons for -- get their own strip here.
+--
+-- Pure affordance: ModelMixin already owns drag-rotate, drag-move and scroll-zoom, so every button
+-- reads the live position the native gestures write and steps the same fields. Deliberately no
+-- addon:WireModelView -- that installs a second gesture loop and the two would fight over the widget.
+local COA_BTN_SIZE, COA_BTN_OVERLAP, COA_GLYPH_SIZE = 29, 5, 17
+local COA_FADE_SECONDS = 0.15
+local COA_ZOOM_STEP = 0.25
+-- Fallbacks only: the clamp is read off the model's own SetMinMaxDistance when it has one.
+local COA_ZOOM_MIN, COA_ZOOM_MAX = -1.4, 1.4
+-- The Conquest of Azeroth model's OnLoad facing (PaperDollPanel.xml), so reset returns to its default.
+local COA_DEFAULT_FACING = 0.45
+-- One click of a rotate button, matching Blizzard's own 0.15-per-press step.
+local COA_ROTATE_STEP = 0.15
+-- Draw order; the settings decide which of these actually stand.
+local COA_STRIP_ORDER = { "left", "right", "zoomOut", "zoomIn", "reset" }
+local COA_PLATE_SHEET = addon._dir .. "CharacterPanel\commonbuttons"
+local COA_ICON_SHEET = addon._dir .. "CharacterPanel\commonicons"
+
+-- Keyed by the model itself, which makes the builder idempotent: the first run builds, every later
+-- one re-lays out. That is what a settings change needs -- CP.Apply re-runs every builder, while
+-- upstream's CP.RefreshModelControls only knows about the vanilla strip.
+local coaStrips = {}
+
+local function coaStyleButton(btn, glyph)
+    btn:SetSize(COA_BTN_SIZE, COA_BTN_SIZE)
+
+    -- A plain Button has no normal or pushed texture, so they must exist before they can be skinned.
+    if not btn:GetNormalTexture() then btn:SetNormalTexture(COA_PLATE_SHEET) end
+    if not btn:GetPushedTexture() then btn:SetPushedTexture(COA_PLATE_SHEET) end
+
+    -- Pinned below the glyph explicitly rather than trusting the widget's default layer.
+    local normal = btn:GetNormalTexture()
+    normal:SetAtlasTexture("common-button-square-gray-up")
+    normal:SetDrawLayer("BORDER")
+    normal:ClearAllPoints()
+    normal:SetAllPoints(btn)
+
+    local pushed = btn:GetPushedTexture()
+    pushed:SetAtlasTexture("common-button-square-gray-down")
+    pushed:SetDrawLayer("BORDER")
+    pushed:ClearAllPoints()
+    pushed:SetAllPoints(btn)
+
+    -- OVERLAY, not ARTWORK: a button's normal texture sits there too and creation order decides.
+    local icon = btn:CreateTexture(nil, "OVERLAY")
+    icon:SetAtlasTexture(glyph)
+    icon:SetSize(COA_GLYPH_SIZE, COA_GLYPH_SIZE)
+    icon:SetPoint("CENTER", btn, "CENTER", 0, 0)
+
+    if not btn:GetHighlightTexture() then btn:SetHighlightTexture(COA_ICON_SHEET) end
+    local hl = btn:GetHighlightTexture()
+    hl:SetAtlasTexture(glyph)
+    hl:ClearAllPoints()
+    hl:SetAllPoints(icon)
+    hl:SetBlendMode("ADD")
+    hl:SetAlpha(0.45)
+end
+
+-- ModelMixin writes the widget itself, so the position is read live rather than tracked.
+local function coaPosition(model)
+    if not model.GetPosition then return 0, 0, 0 end
+    local ok, x, y, z = pcall(model.GetPosition, model)
+    if not ok or not x then return 0, 0, 0 end
+    return x, y or 0, z or 0
+end
+
+local function coaClamp(value, low, high)
+    if value < low then return low elseif value > high then return high end
+    return value
+end
+
+-- The zoom pair steps the same depth axis the native scroll-zoom writes, held inside the range the
+-- model's own XML configures.
+local function coaZoom(strip, notches)
+    local model = strip.model
+    local x, y, z = coaPosition(model)
+    pcall(model.SetPosition, model,
+          coaClamp(x + notches * COA_ZOOM_STEP, strip.zoomMin, strip.zoomMax), y, z)
+end
+
+local function coaReset(strip)
+    local model = strip.model
+    if model.SetFacing then pcall(model.SetFacing, model, COA_DEFAULT_FACING) end
+    -- Clears the depth (zoom) and the drag-move pan in one go.
+    if model.SetPosition then pcall(model.SetPosition, model, 0, 0, 0) end
+end
+
+-- The native drag-rotate writes the facing too, so reading it live keeps the buttons and the mouse
+-- in step.
+local function coaRotate(strip, delta)
+    local model = strip.model
+    local facing = 0
+    if model.GetFacing then
+        local ok, value = pcall(model.GetFacing, model)
+        if ok and type(value) == "number" then facing = value end
     end
+    if model.SetFacing then pcall(model.SetFacing, model, facing + delta) end
+end
+
+-- Hiding a button between its down and its up strands it latched PUSHED, drawing the dark plate.
+local function coaReleaseButtons(strip)
+    for _, key in ipairs(COA_STRIP_ORDER) do
+        local btn = strip.buttons[key]
+        if btn and btn:GetButtonState() == "PUSHED" then btn:SetButtonState("NORMAL") end
+    end
+end
+
+-- Rebuilt rather than toggled: the strip is centred on the model, so dropping a button has to
+-- re-measure the bar or whatever survives ends up sitting off-centre.
+local function coaLayout(strip)
+    local bar, buttons = strip.bar, strip.buttons
+    if not (bar and buttons) then return end
+    local cfg = CP:Config()
+
+    local order = {}
+    if not cfg.hide_model_controls then
+        for _, key in ipairs(COA_STRIP_ORDER) do order[#order + 1] = buttons[key] end
+    elseif cfg.model_controls_reset_only then
+        order[1] = buttons.reset
+    end
+
+    coaReleaseButtons(strip)
+
+    for _, key in ipairs(COA_STRIP_ORDER) do buttons[key]:Hide() end
+    for _, btn in ipairs(order) do btn:Show() end
+    strip.standing = order
+
+    local step = COA_BTN_SIZE - COA_BTN_OVERLAP
+    bar:SetWidth(math.max(1, step * (#order - 1) + COA_BTN_SIZE))
+    for i, btn in ipairs(order) do
+        btn:ClearAllPoints()
+        btn:SetPoint("LEFT", bar, "LEFT", (i - 1) * step, 0)
+    end
+end
+
+-- A plain alpha lerp over the strip and its children. Re-armed every call: a ticker dies with an
+-- ancestor, which would otherwise strand the bar lit.
+local function coaFade(strip, target)
+    local bar = strip.bar
+    if not bar then return end
+    if target > 0 and #(strip.standing or {}) == 0 then return end
+    bar._duiTarget = target
+
+    if target > 0 then
+        -- Not while a button is held: moving off one onto the model re-fires this and stops the spin.
+        if not IsMouseButtonDown("LeftButton") then coaReleaseButtons(strip) end
+        bar:Show()
+        for _, btn in ipairs(strip.standing or {}) do btn:Show() end
+    end
+
+    bar:SetScript("OnUpdate", function(self, elapsed)
+        local standing = strip.standing or {}
+        local current = self:GetAlpha()
+        local goal = self._duiTarget
+        local step = elapsed / COA_FADE_SECONDS
+        if current < goal then
+            current = math.min(goal, current + step)
+        else
+            current = math.max(goal, current - step)
+        end
+
+        self:SetAlpha(current)
+        for _, btn in ipairs(standing) do btn:SetAlpha(current) end
+
+        if current == goal then
+            self:SetScript("OnUpdate", nil)
+            if goal == 0 then
+                self:Hide()
+                for _, btn in ipairs(standing) do btn:Hide() end
+            end
+        end
+    end)
+end
+
+-- modelcontrols.lua loads after this file, so the restore hook is attached on the first builder run,
+-- once upstream's CP.RestoreModelControls exists. These strips live outside that module's table, so
+-- it has to be told to put them away as well.
+local coaRestoreHooked
+
+local function hookCoaRestore()
+    if coaRestoreHooked or not CP.RestoreModelControls then return end
+    coaRestoreHooked = true
+    local upstreamRestore = CP.RestoreModelControls
+    function CP.RestoreModelControls()
+        upstreamRestore()
+        for _, strip in pairs(coaStrips) do
+            if strip.bar then strip.bar:Hide() end
+        end
+    end
+end
+
+-- One strip per Conquest of Azeroth viewport. The Inspect model only exists after the first inspect,
+-- so its builder simply waits for it to appear.
+local function buildCoAModelStrip(model, name, prefix)
+    if not model then return end
+
+    local existing = coaStrips[model]
+    if existing then coaLayout(existing) return end
+
+    local strip = { model = model }
+    coaStrips[model] = strip
+
+    -- The zoom clamp the buttons obey: the model's live SetMinMaxDistance, with the same fallback the
+    -- XML configures. Some getters hand back (max, min), so normalize first.
+    if model.GetMinMaxDistance then
+        local ok, lo, hi = pcall(model.GetMinMaxDistance, model)
+        if ok and type(lo) == "number" and type(hi) == "number" then
+            if lo > hi then lo, hi = hi, lo end
+            strip.zoomMin, strip.zoomMax = lo, hi
+        end
+    end
+    strip.zoomMin = strip.zoomMin or COA_ZOOM_MIN
+    strip.zoomMax = strip.zoomMax or COA_ZOOM_MAX
+
+    local bar = CreateFrame("Frame", name, model)
+    bar:SetHeight(COA_BTN_SIZE)
+    bar:SetPoint("TOP", model, "TOP", 0, -1)
+    bar:SetAlpha(0)
+    bar:Hide()
+    strip.bar = bar
+
+    local buttons = {}
+    strip.buttons = buttons
+
+    local function makeRotate(key, glyph, delta)
+        local btn = CreateFrame("Button", prefix .. key, bar)
+        coaStyleButton(btn, glyph)
+        btn:SetScript("OnClick", function() coaRotate(strip, delta) end)
+        buttons[key] = btn
+    end
+    -- The glyphs mirror the vanilla pair: the left button shows the right-turn arrow and steps the
+    -- facing down, the right shows the left-turn arrow and steps it up.
+    makeRotate("RotateLeft", "common-icon-rotateright", -COA_ROTATE_STEP)
+    makeRotate("RotateRight", "common-icon-rotateleft", COA_ROTATE_STEP)
+
+    local function makeButton(key, glyph, onClick)
+        local btn = CreateFrame("Button", prefix .. key, bar)
+        coaStyleButton(btn, glyph)
+        btn:SetScript("OnClick", onClick)
+        buttons[key] = btn
+    end
+    makeButton("ZoomIn", "common-icon-zoomin", function() coaZoom(strip, 1) end)
+    makeButton("ZoomOut", "common-icon-zoomout", function() coaZoom(strip, -1) end)
+    makeButton("Reset", "common-icon-undo", function() coaReset(strip) end)
+
+    coaLayout(strip)
+
+    -- Revealed over the model OR the strip, so reaching for a button does not fade it out from
+    -- underneath. Nothing standing means nothing to reveal; the native gestures are not buttons
+    -- and stay.
+    local function show() coaFade(strip, 1) end
+    local function hide()
+        if bar:IsMouseOver() or model:IsMouseOver() then return end
+        coaFade(strip, 0)
+    end
+    model:HookScript("OnEnter", show)
+    model:HookScript("OnLeave", hide)
+    bar:EnableMouse(true)
+    bar:HookScript("OnEnter", show)
+    bar:HookScript("OnLeave", hide)
+    for _, key in ipairs(COA_STRIP_ORDER) do
+        local btn = buttons[key]
+        btn:HookScript("OnEnter", show)
+        btn:HookScript("OnLeave", hide)
+    end
+
+    -- The strip and its buttons lie across the model, so the gestures they cover are handed back.
+    addon:ForwardModelInput(bar, model)
+    for _, key in ipairs(COA_STRIP_ORDER) do
+        addon:ForwardModelInput(buttons[key], model, true)
+    end
+
+    -- Closing the panel kills the ticker mid-fade, so reset rather than reopen at a frozen alpha.
+    bar:HookScript("OnHide", function(self)
+        self:SetScript("OnUpdate", nil)
+        self:SetAlpha(0)
+        self._duiTarget = 0
+        for _, btn in ipairs(strip.standing or {}) do
+            btn:SetAlpha(0)
+            btn:Hide()
+        end
+        coaReleaseButtons(strip)
+    end)
+
+    model:EnableMouse(true)
+end
+
+CP:RegisterBuilder("coa-model-controls", function()
+    hookCoaRestore()
+    buildCoAModelStrip(_G.AscensionPaperDollPanelModel, "DragonUICoAModelControls", "DragonUICoAModel")
 end)
 
 CP:RegisterBuilder("coa-inspect-model-controls", function()
-    local model = _G.InspectPaperDollPanelModel
-    if model and CP.BuildModelControls then
-        CP.BuildModelControls(model, {
-            name = "DragonUICoAInspectModelControls",
-            prefix = "DragonUICoAInspectModel",
-            retail = true,
-        })
-    end
+    buildCoAModelStrip(_G.InspectPaperDollPanelModel, "DragonUICoAInspectModelControls", "DragonUICoAInspectModel")
 end)
 
 -- The settings cog: on this client the stock CharacterFrame never shows, so this gear is the

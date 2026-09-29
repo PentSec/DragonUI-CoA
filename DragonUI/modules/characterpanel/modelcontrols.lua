@@ -12,21 +12,7 @@ local FADE_SECONDS = 0.15
 local PLATE_SHEET = addon._dir .. "CharacterPanel\\commonbuttons"
 local ICON_SHEET = addon._dir .. "CharacterPanel\\commonicons"
 
--- The strip's zoom buttons write the depth axis the native gestures drive. On the Conquest of Azeroth model
--- the native scroll-zoom still moves that same depth (this engine has no camera -- SetCamDistanceScale
--- only arrives in Cataclysm), so the retail buttons read the live position and clamp to the range the
--- XML's SetMinMaxDistance configures; the vanilla and pet models are handled by the core module
--- (core/modelview.lua), which tracks the same depth as an offset and re-bases it on reload.
-local ZOOM_STEP = 0.25
--- Fallbacks only: the Conquest of Azeroth clamp is read off the model's own SetMinMaxDistance when available.
-local RETAIL_ZOOM_MIN, RETAIL_ZOOM_MAX = -1.4, 1.4
--- Model_OnLoad's own starting rotation, so reset returns to exactly Blizzard's default.
-local DEFAULT_ROTATION = 0.61
--- The Conquest of Azeroth model's OnLoad facing (PaperDollPanel.xml), so reset returns to exactly its default.
-local DEFAULT_FACING = 0.45
--- One click of a strip rotate button, matching Blizzard's own 0.15-per-press step.
-local ROTATE_STEP = 0.15
--- Radians per second while a hold-to-rotate button is held; roughly a full turn in four seconds.
+-- Radians per second while a rotate button is held; roughly a full turn in four seconds.
 local ROTATE_PER_SECOND = 1.6
 -- A tap can begin and end inside one frame, so it is worth this much of a hold on its own.
 local TAP_SECONDS = 0.02
@@ -34,68 +20,7 @@ local TAP_SECONDS = 0.02
 -- Draw order of the strip; the settings decide which of these actually stand.
 local STRIP_ORDER = { "left", "right", "zoomOut", "zoomIn", "reset" }
 
--- One entry per viewport the strip is built over, keyed by the model itself.
-local strips = {}
-
--- The Conquest of Azeroth model's native gestures write the widget directly, so its strip reads the live
--- position to stay in step (the vanilla model's depth is owned by the core module instead).
-local function position(model)
-    if not model.GetPosition then return 0, 0, 0 end
-    local ok, x, y, z = pcall(model.GetPosition, model)
-    if not ok or not x then return 0, 0, 0 end
-    return x, y or 0, z or 0
-end
-
-local function clamp(v, lo, hi)
-    if v < lo then return lo elseif v > hi then return hi end
-    return v
-end
-
--- The strip's zoom buttons write the same axis the native gestures drive: the model's depth
--- position. The vanilla model's depth is owned by the core module (addon:ZoomModelView), which
--- tracks it as an offset re-based on every reload; the Conquest of Azeroth model's native scroll-zoom and
--- drag-move write the widget directly, so its strip reads the position live and clamps to the
--- range its own XML configures.
-local function applyZoom(strip, notches)
-    local model = strip.model
-    if strip.retail then
-        local x, y, z = position(model)
-        pcall(model.SetPosition, model,
-              clamp(x + notches * ZOOM_STEP, strip.zoomMin, strip.zoomMax), y, z)
-    else
-        addon:ZoomModelView(model, notches)
-    end
-end
-
-local function resetModel(strip)
-    local model = strip.model
-    if strip.retail then
-        if model.SetFacing then pcall(model.SetFacing, model, DEFAULT_FACING) end
-        -- Clears the depth (zoom) and the drag-move pan in one go.
-        if model.SetPosition then pcall(model.SetPosition, model, 0, 0, 0) end
-    else
-        addon:ResetModelView(model)
-        addon:ResetModelRotation(model)
-    end
-end
-
--- Steps the strip's own rotate pair. On the Conquest of Azeroth model the native drag-rotate writes the
--- facing too, so reading it live keeps the buttons and the mouse in step; the vanilla model reads
--- the same `rotation` field Model_OnUpdate carries while a Blizzard button is held.
-local function rotateModel(strip, delta)
-    local model = strip.model
-    if strip.retail then
-        local facing = 0
-        if model.GetFacing then
-            local ok, f = pcall(model.GetFacing, model)
-            if ok and type(f) == "number" then facing = f end
-        end
-        if model.SetFacing then pcall(model.SetFacing, model, facing + delta) end
-    else
-        model.rotation = (model.rotation or DEFAULT_ROTATION) + delta
-        if model.SetRotation then pcall(model.SetRotation, model, model.rotation) end
-    end
-end
+local bar, standing, buttons
 
 -- Square plate, centred glyph, additive glow of that glyph on hover -- how retail lights these.
 local function styleButton(btn, glyph)
@@ -135,31 +60,27 @@ local function styleButton(btn, glyph)
     hl:SetAlpha(0.45)
 end
 
-CP.StyleModelButton = styleButton
-
 -- Blizzard's rotate buttons stay parented to the model: their OnClick passes self:GetParent() on.
 local function isSibling(btn)
     return btn:GetParent() ~= bar
 end
 
-local function eachButton(btns, fn)
+local function eachButton(fn)
     for _, key in ipairs(STRIP_ORDER) do
-        local btn = btns[key]
+        local btn = buttons[key]
         if btn then fn(btn) end
     end
 end
 
 -- Hiding a button between its down and its up strands it latched PUSHED, drawing the dark plate.
-local function releaseButtons(btns)
-    eachButton(btns, function(btn)
+local function releaseButtons()
+    eachButton(function(btn)
         if btn:GetButtonState() == "PUSHED" then btn:SetButtonState("NORMAL") end
     end)
 end
 
--- Rebuilt rather than toggled button by button: the strip is centred on the model, so dropping one
--- has to re-measure the bar or whatever survives ends up sitting off-centre.
-local function layoutControls(strip)
-    local bar, buttons = strip.bar, strip.buttons
+-- Rebuilt, not toggled: the strip is centred on the model, so dropping one has to re-measure it.
+local function layoutStrip()
     if not (bar and buttons) then return end
     local cfg = CP:Config()
 
@@ -170,17 +91,17 @@ local function layoutControls(strip)
         order[1] = buttons.reset
     end
 
-    releaseButtons(buttons)
+    releaseButtons()
 
     -- Everything down first: a sibling dropped from the standing set has nothing left to hide it.
-    eachButton(buttons, function(btn)
+    eachButton(function(btn)
         btn:Hide()
         if isSibling(btn) then btn:SetAlpha(0) end
     end)
     for _, btn in ipairs(order) do
         if not isSibling(btn) then btn:Show() end
     end
-    strip.standing = order
+    standing = order
 
     local step = BTN_SIZE - BTN_OVERLAP
     bar:SetWidth(math.max(1, step * (#order - 1) + BTN_SIZE))
@@ -190,18 +111,14 @@ local function layoutControls(strip)
     end
 end
 
--- A plain alpha lerp; the rotate buttons are siblings, not children, so they fade alongside it.
--- Re-armed every call: the ticker dies with an ancestor, stranding any "already fading" flag.
-local function startFade(strip, target)
-    local bar = strip.bar
-    if not bar then return end
-    local standing = strip.standing or {}
+-- A plain alpha lerp, re-armed every call: the ticker dies with an ancestor, stranding any flag.
+local function fadeStrip(target)
     if target > 0 and #standing == 0 then return end
     bar._duiTarget = target
 
     if target > 0 then
         -- Not while a button is held: moving off one onto the model re-fires this and stops the spin.
-        if not IsMouseButtonDown("LeftButton") then releaseButtons(strip.buttons) end
+        if not IsMouseButtonDown("LeftButton") then releaseButtons() end
         bar:Show()
         for _, btn in ipairs(standing) do
             if isSibling(btn) then btn:Show() end
@@ -235,68 +152,28 @@ local function startFade(strip, target)
     end)
 end
 
--- One strip per model viewport: the vanilla CharacterModelFrame (Blizzard's rotate buttons passed
--- in) and the Conquest of Azeroth character/Inspect models (retail = true -- a created rotate pair, and no
--- drag or wheel wiring, since ModelMixin owns those gestures).
-local function buildStrip(model, opts)
-    if not model or strips[model] then return end
-    opts = opts or {}
+local function build()
+    local model = _G.CharacterModelFrame
+    local left = _G.CharacterModelFrameRotateLeftButton
+    local right = _G.CharacterModelFrameRotateRightButton
+    if not model or not left then return end
+    -- Re-enabled without a reload: the strip outlived Restore, so stand it back up.
+    if bar then return layoutStrip() end
 
-    local strip = { model = model, retail = opts.retail and true or false }
-    strips[model] = strip
-
-    -- The zoom clamp the retail buttons obey: the Conquest of Azeroth model's live SetMinMaxDistance (with
-    -- the same fallback the XML configures). Some getters hand back (max, min), so normalize first.
-    -- The vanilla model's clamp lives in the core module (DEPTH_MIN/MAX), so none is stored here.
-    if strip.retail then
-        local min, max = RETAIL_ZOOM_MIN, RETAIL_ZOOM_MAX
-        if model.GetMinMaxDistance then
-            local ok, lo, hi = pcall(model.GetMinMaxDistance, model)
-            if ok and type(lo) == "number" and type(hi) == "number" then
-                if lo > hi then lo, hi = hi, lo end
-                min, max = lo, hi
-            end
-        end
-        strip.zoomMin, strip.zoomMax = min, max
-    end
-
-    local bar = CreateFrame("Frame", opts.name or "DragonUIModelControls", model)
+    bar = CreateFrame("Frame", "DragonUIModelControls", model)
     bar:SetHeight(BTN_SIZE)
     bar:SetPoint("TOP", model, "TOP", 0, -1)
     bar:SetAlpha(0)
     bar:Hide()
-    strip.bar = bar
+    standing = {}
 
-    local prefix = opts.prefix or "DragonUIModel"
-    local buttons = {}
-    strip.buttons = buttons
-
-    if opts.left and opts.right then
-        -- Blizzard's rotate buttons stay parented to the model: their OnClick passes self:GetParent()
-        -- to the rotation helper, so reparenting them makes model.rotation come back nil.
-        styleButton(opts.left, "common-icon-rotateright")
-        styleButton(opts.right, "common-icon-rotateleft")
-        buttons.left, buttons.right = opts.left, opts.right
-        for _, btn in ipairs({ opts.left, opts.right }) do
-            -- Siblings of the strip, not children, and the strip has mouse enabled over the same area
-            -- -- so without an explicit level it swallows their clicks.
-            btn:SetFrameLevel(bar:GetFrameLevel() + 1)
-            btn:SetAlpha(0)
-            btn:Hide()
-        end
-    else
-        -- The Conquest of Azeroth window has no rotate buttons, so the strip makes its own pair; as children
-        -- of the bar they inherit its fade instead of needing a sibling alpha of their own.
-        local function makeRotate(name, glyph, delta)
-            local btn = CreateFrame("Button", name, bar)
-            styleButton(btn, glyph)
-            btn:SetScript("OnClick", function() rotateModel(strip, delta) end)
-            return btn
-        end
-        -- The glyphs mirror the vanilla pair: the left button shows the right-turn arrow and steps
-        -- the facing down, the right shows the left-turn arrow and steps it up.
-        buttons.left = makeRotate(prefix .. "RotateLeft", "common-icon-rotateright", -ROTATE_STEP)
-        buttons.right = makeRotate(prefix .. "RotateRight", "common-icon-rotateleft", ROTATE_STEP)
+    styleButton(left, "common-icon-rotateright")
+    styleButton(right, "common-icon-rotateleft")
+    for _, btn in ipairs({ left, right }) do
+        -- Siblings, with the strip mouse-enabled over the same area, so they need an explicit level.
+        btn:SetFrameLevel(bar:GetFrameLevel() + 1)
+        btn:SetAlpha(0)
+        btn:Hide()
     end
 
     local function makeButton(name, glyph, onClick)
@@ -306,72 +183,63 @@ local function buildStrip(model, opts)
         return btn
     end
 
-    local zoomIn = makeButton(prefix .. "ZoomIn", "common-icon-zoomin",
-                              function() applyZoom(strip, 1) end)
-    local zoomOut = makeButton(prefix .. "ZoomOut", "common-icon-zoomout",
-                               function() applyZoom(strip, -1) end)
-    local reset = makeButton(prefix .. "Reset", "common-icon-undo",
-                             function() resetModel(strip) end)
+    buttons = {
+        left = left,
+        right = right,
+        zoomOut = makeButton("DragonUIModelZoomOut", "common-icon-zoomout",
+                             function() addon:ZoomModelView(model, -1) end),
+        zoomIn = makeButton("DragonUIModelZoomIn", "common-icon-zoomin",
+                            function() addon:ZoomModelView(model, 1) end),
+        reset = makeButton("DragonUIModelReset", "common-icon-undo", function()
+            addon:ResetModelView(model)
+            addon:ResetModelRotation(model)
+        end),
+    }
 
-    buttons.zoomOut, buttons.zoomIn, buttons.reset = zoomOut, zoomIn, reset
-    layoutControls(strip)
+    -- Hooked, not set: the model's XML OnMouseUp is what lets an item be dropped onto it to equip.
+    addon:WireModelView(model, { hook = true, pivot = addon.ModelPivot.player })
+    layoutStrip()
 
-    -- Revealed over the model OR the strip, so reaching for a button does not fade it out underneath.
-    -- Nothing standing means nothing to reveal; drag-rotate and wheel-zoom are not buttons and stay.
-    local function show()
-        if not strip.standing or #strip.standing == 0 then return end
-        startFade(strip, 1)
-    end
+    -- Revealed over the model, the strip OR a button: the buttons take the mouse focus, so without
+    -- them the cursor can leave through one and strand the strip lit.
+    local function show() fadeStrip(1) end
     local function hide()
         if bar:IsMouseOver() or model:IsMouseOver() then return end
-        startFade(strip, 0)
+        fadeStrip(0)
     end
     model:HookScript("OnEnter", show)
     model:HookScript("OnLeave", hide)
     bar:EnableMouse(true)
     bar:HookScript("OnEnter", show)
     bar:HookScript("OnLeave", hide)
-    eachButton(buttons, function(btn)
+    eachButton(function(btn)
         btn:HookScript("OnEnter", show)
         btn:HookScript("OnLeave", hide)
     end)
 
     -- The strip and its buttons lie across the model, so the gestures they cover are handed back.
     addon:ForwardModelInput(bar, model)
-    eachButton(buttons, function(btn) addon:ForwardModelInput(btn, model, true) end)
+    eachButton(function(btn) addon:ForwardModelInput(btn, model, true) end)
 
     -- Closing the panel kills the ticker mid-fade, so reset rather than reopen at a frozen alpha.
     bar:HookScript("OnHide", function(self)
         self:SetScript("OnUpdate", nil)
         self:SetAlpha(0)
         self._duiTarget = 0
-        for _, btn in ipairs(strip.standing or {}) do
+        for _, btn in ipairs(standing) do
             if isSibling(btn) then
                 btn:SetAlpha(0)
                 btn:Hide()
             end
         end
-        releaseButtons(buttons)
+        releaseButtons()
     end)
-
-    model:EnableMouse(true)
-    -- The Conquest of Azeroth model's ModelMixin already owns drag-rotate, drag-move and scroll-zoom, so the
-    -- wheel hook and the drag loops below are vanilla-only. Hooked, not set: the model's XML
-    -- OnMouseUp is what lets an item be dropped onto it to equip.
-    if not strip.retail then
-        addon:WireModelView(model, { hook = true })
-    end
 end
 
-CP.BuildModelControls = buildStrip
-
--- Always put every strip away after a re-layout: each bar's own OnHide resets the alphas and
--- unlatches anything left PUSHED, and the next hover brings back whichever buttons survived.
 function CP.RefreshModelControls()
-    for _, strip in pairs(strips) do
-        layoutControls(strip)
-        strip.bar:Hide()
-    end
+    if not bar then return end
+    layoutStrip()
+    bar:Hide()
 end
 
 -- Emptied, not just hidden: the model keeps its OnEnter hook for the session, and the fade only
@@ -380,28 +248,19 @@ function CP.RestoreModelControls()
     if not bar then return end
     bar:SetScript("OnUpdate", nil)
     bar:Hide()
-    for _, strip in pairs(strips) do
-        if strip.buttons then
-            eachButton(strip.buttons, function(btn) btn:Hide() end)
-        end
-    end
-    local standing = {}
-    for _, strip in pairs(strips) do strip.standing = standing end
+    eachButton(function(btn) btn:Hide() end)
+    standing = {}
 
     local model = _G.CharacterModelFrame
     if model then addon:ResetModelView(model) end
-    local vanillaStrip = strips[model]
-    if vanillaStrip and vanillaStrip.buttons then
-        for _, btn in ipairs({ vanillaStrip.buttons.left, vanillaStrip.buttons.right }) do
-            if btn then
-                btn:SetAlpha(1)
-                btn:Show()
-            end
-        end
+    for _, btn in ipairs({ buttons.left, buttons.right }) do
+        btn:SetAlpha(1)
+        btn:Show()
     end
 end
 
--- Scale zoom: an imp and a felguard are framed at distances a depth push cannot serve alike.
+-- Rotate only, and always on: this pane has no room for a hover strip and no zoom buttons to hide.
+-- Hold-to-rotate lives in Model_OnUpdate, which finds its buttons by GLOBAL NAME, so never ours.
 function CP.WirePetModelControls(model)
     if not model or model._duiPetControls then return end
     model._duiPetControls = true
@@ -450,9 +309,4 @@ function CP.WirePetModelControls(model)
     return strip
 end
 
-CP:RegisterBuilder("modelcontrols", function()
-    buildStrip(_G.CharacterModelFrame, {
-        left = _G.CharacterModelFrameRotateLeftButton,
-        right = _G.CharacterModelFrameRotateRightButton,
-    })
-end)
+CP:RegisterBuilder("modelcontrols", build)
