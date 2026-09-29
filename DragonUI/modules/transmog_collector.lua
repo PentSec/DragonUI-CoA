@@ -71,14 +71,37 @@ local lastBagScan   = 0  -- timestamp of last ScanBags to throttle rapid BAG_UPD
 -- BAG SCANNER
 -- =============================================================================
 
+--- Localized class names of the only four item classes that can hold a
+--- transmogrification: Weapon, Armor, Container and Consumable (the first four
+--- entries of GetAuctionItemClasses). Built lazily on first use so the names are
+--- already localized, and memoized because this runs once per bag slot.
+local TRANSMOG_ITEM_CLASSES
+local function GetTransmogItemClasses()
+    if not TRANSMOG_ITEM_CLASSES then
+        local classes = { GetAuctionItemClasses() }
+        TRANSMOG_ITEM_CLASSES = {}
+        for i = 1, 4 do
+            local className = classes[i]
+            if className then
+                TRANSMOG_ITEM_CLASSES[className] = true
+            end
+        end
+    end
+    return TRANSMOG_ITEM_CLASSES
+end
+
 --- Check if an item can be transmog-collected (matches Conquest of Azeroth macro filter).
---- Class IDs < 5 cover Weapon, Armor, Container, and Consumable (macro uses < 5).
+--- GetItemInfo's 3rd return is `quality` in 3.3.5a (name, link, quality, iLevel,
+--- reqLevel, class, ...) — it is NOT a class id, and reading it as one silently
+--- matched nearly every item in the game. Return 6 is the localized class name in
+--- both 3.3.5a and retail/CoA, which makes it the only position safe to trust on
+--- both clients. Same pattern as bags_usability.lua.
 --- If item info isn't cached yet, still try collection.
 local function IsCollectableItem(itemID)
     if not itemID then return false end
-    local _, _, classID = GetItemInfo(itemID)
-    if not classID then return true end  -- not cached, try anyway
-    return classID < 5
+    local className = select(6, GetItemInfo(itemID))
+    if not className then return true end  -- not cached, try anyway
+    return GetTransmogItemClasses()[className] == true
 end
 
 --- Check if the Conquest of Azeroth collection API is available.
@@ -112,9 +135,10 @@ local function ScanQueueProcessor()
     -- a later scan, rather than being marked 'processed' and skipped forever.
     if IsCollectionAvailable() then
         -- Mark BEFORE calling to prevent re-entry; API is server-idempotent.
-        -- Cached even when not collectable: a false from IsCollectableItem means
-        -- classID is known and >= 5 (e.g. trade goods), so it can never become
-        -- collectable. Caching it keeps ScanBags from re-queueing it every cycle.
+        -- Cached even when not collectable: a false from IsCollectableItem means the
+        -- item class is already known and is not one of Weapon/Armor/Container/
+        -- Consumable (e.g. trade goods), so it can never become collectable. Caching
+        -- it keeps ScanBags from re-queueing it every cycle.
         knownCache[guid] = true
 
         if IsCollectableItem(itemID) then

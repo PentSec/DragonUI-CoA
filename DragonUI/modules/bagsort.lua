@@ -1595,14 +1595,27 @@ local function CollectAllTransmogAppearances()
         return
     end
 
+    -- Only Weapon, Armor, Container and Consumable can hold a transmogrification:
+    -- the first four entries of GetAuctionItemClasses. GetItemInfo's 3rd return is
+    -- `quality` in 3.3.5a (name, link, quality, iLevel, reqLevel, class, ...), not a
+    -- class id; return 6 is the localized class name on both 3.3.5a and retail/CoA.
+    local auctionClasses = { GetAuctionItemClasses() }
+    local transmogClasses = {}
+    for i = 1, 4 do
+        local className = auctionClasses[i]
+        if className then
+            transmogClasses[className] = true
+        end
+    end
+
     for bag = 0, NUM_BAG_SLOTS or 4 do
         local numSlots = GetContainerNumSlots(bag)
         if numSlots then
             for slot = 1, numSlots do
                 local itemID = GetContainerItemID(bag, slot)
                 if itemID then
-                    local _, _, classID = GetItemInfo(itemID)
-                    if not classID or classID < 5 then
+                    local className = select(6, GetItemInfo(itemID))
+                    if not className or transmogClasses[className] then
                         local guid = GetContainerItemGUID(bag, slot)
                         if guid then
                             C_AppearanceCollection.CollectItemAppearance(guid)
