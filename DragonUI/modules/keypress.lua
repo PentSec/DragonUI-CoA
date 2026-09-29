@@ -25,9 +25,10 @@ local FRAME_REFS = {
     totemcall = "MultiCastSummonSpellButton",
 }
 
+-- No ESCAPE: open windows claim it with priority bindings; a mirrored copy would outlive them.
 local NAMED_KEYS = [[
     UP DOWN LEFT RIGHT HOME END PAGEUP PAGEDOWN INSERT DELETE
-    BACKSPACE ENTER ESCAPE TAB SPACE PAUSE NUMLOCK SCROLLLOCK
+    BACKSPACE ENTER TAB SPACE PAUSE NUMLOCK SCROLLLOCK
     NUMPADDECIMAL NUMPADDIVIDE NUMPADMINUS NUMPADMULTIPLY NUMPADPLUS
 ]]
 
@@ -87,6 +88,7 @@ local KeyPressModule = { initialized = false, applied = false }
 local active = false
 local hooked = false
 local selfInitiated = false
+local rebuildPending = false
 
 local keyList, keySet
 local proxies = {}
@@ -296,7 +298,13 @@ local function AccelerateCurrent(key)
 end
 
 local function Rebuild()
-    if InCombatLockdown() then return end
+    -- A refused rebuild would otherwise keep stale proxies until the next binding change.
+    if InCombatLockdown() then
+        rebuildPending = true
+        owner:RegisterEvent("PLAYER_REGEN_ENABLED")
+        return
+    end
+    rebuildPending = false
     CallQuietly(ClearOverrideBindings, owner)
     if not active then
         owner:UnregisterEvent("UPDATE_BINDINGS")
@@ -308,8 +316,9 @@ local function Rebuild()
     end
 end
 
-local function OnOtherOverrideSet(_, _, key)
-    if not active or selfInitiated or InCombatLockdown() then return end
+-- Priority overrides belong to their owner for as long as it holds them (e.g. a window's Esc).
+local function OnOtherOverrideSet(_, isPriority, key)
+    if isPriority or not active or selfInitiated or InCombatLockdown() then return end
     EnsureKeyList()
     if not keySet[key] then return end
     CallQuietly(SetOverrideBinding, owner, false, key, nil)
@@ -367,6 +376,7 @@ owner:SetScript("OnEvent", function(self, event)
     elseif event == "PLAYER_REGEN_ENABLED" then
         self:UnregisterEvent("PLAYER_REGEN_ENABLED")
         Refresh()
+        if rebuildPending then Rebuild() end
     elseif event == "PLAYER_LOGIN" then
         Refresh()
     end
