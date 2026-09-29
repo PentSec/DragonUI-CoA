@@ -89,7 +89,8 @@
 
     <!-- Retail-style character window reskin -->
     <Include file="characterpanel\characterpanel.xml"/>
-
+    <!-- Spellbook module (own window; takes over the book's keys, micro button and Blizzard's frame after login) -->
+    <Include file="spellbook\spellbook.xml"/>
     <!-- Chat Mods module -->
     <Script file="chatmods.lua"/>
     
