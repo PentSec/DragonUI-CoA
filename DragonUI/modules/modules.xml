@@ -141,6 +141,10 @@
 
     <!-- Merchant — retail-style vendor window chrome (uses worldmap's PanelChrome/NineSlice libs) -->
     <Include file="merchant\merchant.xml"/>
+
     <!-- Low HP Alert (screen-edge flash and sound on low health) -->
     <Script file="hp_low_alert.lua"/>
+
+    <!-- Low HP Alert (screen-edge flash and sound on low health) -->
+    <Script file="levelupenhance.lua"/>
 </Ui>
