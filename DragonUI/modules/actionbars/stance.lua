@@ -73,13 +73,6 @@ local HOLDER_EDGE = 37
 -- Module frames (created only when enabled)
 local anchor, stancebar
 
--- Initialize MultiBar references
-local MultiBarBottomLeft = _G["MultiBarBottomLeft"]
-local MultiBarBottomRight = _G["MultiBarBottomRight"]
-
--- Simple initialization tracking
-local stanceBarInitialized = false;
-
 -- SIMPLE STATIC POSITIONING - NO DYNAMIC LOGIC
 local function updateStanceBar()
     if not IsModuleEnabled() or not anchor then return end
@@ -430,10 +423,6 @@ local STANCE_EVENT_ACTIONS = {
     UPDATE_SHAPESHIFT_FORMS = RebuildFormSlots,
     ACTIVE_TALENT_GROUP_CHANGED = RebuildFormSlots,
     CHARACTER_POINTS_CHANGED = RebuildFormSlots,
-    PLAYER_ENTERING_WORLD = function(frame, eventName)
-        frame:UnregisterEvent(eventName)
-        RestyleFormSlots()
-    end,
 }
 
 local function OnEvent(self, event)
@@ -462,8 +451,6 @@ local function InitializeStanceBar()
     if stancebar then
         stancebar:Show()
     end
-    
-    stanceBarInitialized = true
 end
 
 -- ============================================================================
@@ -616,10 +603,7 @@ local function RestoreStanceSystem()
     
     -- Clear global reference
     _G.DragonUI_StanceBar = nil
-    
-    -- Reset variables
-    stanceBarInitialized = false
-    
+
     StanceModule.applied = false
 end
 
