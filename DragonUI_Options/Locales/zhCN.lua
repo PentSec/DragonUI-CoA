@@ -821,6 +821,7 @@ L["Use new DragonUI object icons on the minimap. When disabled, uses classic Bli
 L["Use newer-style minimap blip icons."] = "使用新样式的小地图图标。"
 L["Animated Border"] = "动画边框"
 L["Minimap Decorations"] = "小地图装饰"
+L["Border presets from SexyMap by funkydude, used with permission."] = "边框预设来自 funkydude 的 SexyMap，已获授权使用。"
 L["Adds decorative animated texture layers around the DragonUI minimap."] = "在 DragonUI 小地图周围添加装饰性动画材质层。"
 L["Enable Animated Border"] = "启用动画边框"
 L["Enable Minimap Decorations"] = "启用小地图装饰"
