@@ -68,7 +68,24 @@ local function buildChrome(root)
     local portrait = chrome:CreateTexture(nil, "ARTWORK")
     portrait:SetSize(57, 57)
     portrait:SetPoint("TOPLEFT", root, "TOPLEFT", -3, 6)
-    portrait:SetTexture(addon._dir .. "ClassIcons\\" .. select(2, UnitClass("player")))
+
+    -- BLOCK FOR CONQUEST OF AZEROTH CUSTOM CLASSES: replicates
+    local _, classFile = UnitClass("player")
+    if classFile and addon.UF and addon.UF.ApplyClassPortraitIcon then
+        if not addon.UF.ApplyClassPortraitIcon(portrait, classFile, true) then
+            portrait:SetTexture("Interface\\TargetingFrame\\UI-Classes-Circles")
+            local coords = CLASS_ICON_TCOORDS and CLASS_ICON_TCOORDS[classFile]
+            if coords then portrait:SetTexCoord(unpack(coords)) end
+        end
+    else
+        portrait:SetTexture("Interface\\TargetingFrame\\UI-Classes-Circles")
+        if classFile then
+            local coords = CLASS_ICON_TCOORDS and CLASS_ICON_TCOORDS[classFile]
+            if coords then portrait:SetTexCoord(unpack(coords)) end
+        else
+            portrait:SetTexture(addon._dir .. "ClassIcons\\WARRIOR")
+        end
+    end
 
     local band = CreateFrame("Frame", nil, root)
     band:SetAllPoints(root)
