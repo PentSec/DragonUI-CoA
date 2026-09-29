@@ -878,9 +878,12 @@ local COA_DEFAULT_FACING = 0.45
 -- One click of a rotate button, matching Blizzard's own 0.15-per-press step.
 local COA_ROTATE_STEP = 0.15
 -- Draw order; the settings decide which of these actually stand.
-local COA_STRIP_ORDER = { "left", "right", "zoomOut", "zoomIn", "reset" }
-local COA_PLATE_SHEET = addon._dir .. "CharacterPanel\commonbuttons"
-local COA_ICON_SHEET = addon._dir .. "CharacterPanel\commonicons"
+-- Layout order, not creation order: the vanilla strip is rotate-left, rotate-right,
+-- zoom-out, zoom-in, reset. Keys MUST match the ones buildCoAModelStrip passes to
+-- makeRotate/makeButton, otherwise every lookup below resolves to nil.
+local COA_STRIP_ORDER = { "RotateLeft", "RotateRight", "ZoomOut", "ZoomIn", "Reset" }
+local COA_PLATE_SHEET = addon._dir .. "CharacterPanel\\commonbuttons"
+local COA_ICON_SHEET = addon._dir .. "CharacterPanel\\commonicons"
 
 -- Keyed by the model itself, which makes the builder idempotent: the first run builds, every later
 -- one re-lays out. That is what a settings change needs -- CP.Apply re-runs every builder, while
@@ -982,7 +985,7 @@ local function coaLayout(strip)
     if not cfg.hide_model_controls then
         for _, key in ipairs(COA_STRIP_ORDER) do order[#order + 1] = buttons[key] end
     elseif cfg.model_controls_reset_only then
-        order[1] = buttons.reset
+        order[1] = buttons.Reset
     end
 
     coaReleaseButtons(strip)
