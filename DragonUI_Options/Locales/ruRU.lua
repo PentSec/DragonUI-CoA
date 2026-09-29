@@ -881,6 +881,7 @@ L["Use new DragonUI object icons on the minimap. When disabled, uses classic Bli
 L["Use newer-style minimap blip icons."] = "Использовать значки миникарты нового стиля."
 L["Animated Border"] = "Анимированная рамка"
 L["Minimap Decorations"] = "Декорации миникарты"
+L["Border presets from SexyMap by funkydude, used with permission."] = "Стили рамки из SexyMap от funkydude, используются с разрешения автора."
 L["Adds decorative animated texture layers around the DragonUI minimap."] = "Добавляет декоративные анимированные слои текстур вокруг миникарты DragonUI."
 L["Enable Animated Border"] = "Включить анимированную рамку"
 L["Enable Minimap Decorations"] = "Включить декорации миникарты"

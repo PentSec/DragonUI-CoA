@@ -889,6 +889,7 @@ L["Use new DragonUI object icons on the minimap. When disabled, uses classic Bli
 L["Use newer-style minimap blip icons."] = "새로운 스타일의 미니맵 아이콘 사용"
 L["Animated Border"] = "애니메이션 테두리"
 L["Minimap Decorations"] = "미니맵 장식"
+L["Border presets from SexyMap by funkydude, used with permission."] = "funkydude의 SexyMap 테두리 프리셋을 허락을 받아 사용합니다."
 L["Adds decorative animated texture layers around the DragonUI minimap."] = "DragonUI 미니맵 주변에 장식용 애니메이션 텍스처 레이어를 추가합니다."
 L["Enable Animated Border"] = "애니메이션 테두리 활성화"
 L["Enable Minimap Decorations"] = "미니맵 장식 활성화"

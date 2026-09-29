@@ -952,6 +952,7 @@ L["Use new DragonUI object icons on the minimap. When disabled, uses classic Bli
 L["Use newer-style minimap blip icons."] = "Usar iconos de puntos del minimapa de estilo más nuevo."
 L["Animated Border"] = "Borde Animado"
 L["Minimap Decorations"] = "Decoraciones del minimapa"
+L["Border presets from SexyMap by funkydude, used with permission."] = "Estilos de borde de SexyMap, de funkydude, usados con su permiso."
 L["Adds decorative animated texture layers around the DragonUI minimap."] = "Añade capas decorativas animadas alrededor del minimapa de DragonUI."
 L["Enable Animated Border"] = "Activar Borde Animado"
 L["Enable Minimap Decorations"] = "Activar decoraciones del minimapa"
