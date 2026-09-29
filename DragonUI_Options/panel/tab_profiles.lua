@@ -783,7 +783,7 @@ local function BuildProfilesTab(scroll)
             exportBtn:SetText(LO["Exporting..."] or "Exporting...")
 
             -- Defer to next frame so the UI refreshes before serialization
-            C_Timer.After(0.1, function()
+            addon:After(0.1, function()
                 local exportStr = ExportProfileToString(db.profile)
                 if exportStr then
                     ShowProfileExportFrame(exportStr)
@@ -897,7 +897,7 @@ local function BuildProfilesTab(scroll)
             presetExportBtn:SetDisabled(true)
             presetExportBtn:SetText(LO["Exporting..."] or "Exporting...")
 
-            C_Timer.After(0.1, function()
+            addon:After(0.1, function()
                 local exportStr = PP:ExportToString(selectedPreset)
                 if exportStr then
                     -- Reuse the existing profile export frame (dark popup) but
@@ -952,7 +952,7 @@ local function BuildProfilesTab(scroll)
             shareBtn:SetDisabled(true)
             shareBtn:SetText(LO["Sending..."] or "Sending...")
 
-            C_Timer.After(0.1, function()
+            addon:After(0.1, function()
                 if shareChannel == "Whisper" then
                     -- Use a simple popup to ask for the target
                     StaticPopupDialogs["DRAGONUI_WHISPER_TARGET"] = StaticPopupDialogs["DRAGONUI_WHISPER_TARGET"] or {
@@ -982,7 +982,7 @@ local function BuildProfilesTab(scroll)
                     DragonUI.SendProfile(distMap[shareChannel])
                     -- Keep the button showing "Sending..." so the user sees
                     -- the profile actually arrive in chat before re-enabling
-                    C_Timer.After(4.0, function()
+                    addon:After(4.0, function()
                         shareBtn:SetDisabled(false)
                         shareBtn:SetText(LO["Share"] or "Share")
                     end)
