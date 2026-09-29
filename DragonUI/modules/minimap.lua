@@ -55,8 +55,18 @@ end
 
 local blipScale = 1.12
 -- Sampled at load: ReplaceBlizzardFrame runs on every apply and would grow the map each time.
+-- The 1.36 converts the raw frame width into the "default" width, i.e. it is what
+-- DEFAULT_MINIMAP_WIDTH holds on retail (patch 4.2.2+). That global is nil on 3.3.5a and
+-- CoA, so derive it instead of reading it: DEFAULT_* == GetWidth() * 1.36, and GetWidth()
+-- is divided by blipScale here, so the default width is mapUnscaled * blipScale.
 local mapUnscaledWidth = Minimap:GetWidth() * 1.36 / blipScale
 local mapUnscaledHeight = Minimap:GetHeight() * 1.36 / blipScale
+-- Guard on > 0, not truthiness: at ADDON_LOADED the minimap can still report 0, and 0 is
+-- truthy in Lua, so a plain `or` fallback would sail straight through and collapse the map.
+local defaultMapWidth = mapUnscaledWidth * blipScale
+local defaultMapHeight = mapUnscaledHeight * blipScale
+if defaultMapWidth <= 0 then defaultMapWidth = 150 * blipScale end
+if defaultMapHeight <= 0 then defaultMapHeight = 150 * blipScale end
 local BORDER_TO_MAP_RATIO = 284 / mapUnscaledWidth
 
 local DRAGONUI_MINIMAP_MASK = "Interface\\AddOns\\DragonUI\\Textures\\Minimap\\uiminimapmask.tga"
@@ -1125,7 +1135,7 @@ local SQUARE_MAP_SHRINK = 11
 --   * borderFrame:SetScale(scale) matches MinimapCluster:SetScale(scale), so the
 --     cluster scale cancels between border and map — only the fijo blipScale
 --     (1.12) stands between map-local units and border-local units.
---   * map-LOCAL = DEFAULT_MINIMAP_WIDTH / blipScale         (constant)
+--   * map-LOCAL = defaultMapWidth / blipScale               (constant)
 --   * border-LOCAL = mapLocal * blipScale * (512/454) * FIT (constant)
 --   * frameSize is therefore constant — clusterScale never enters the formula.
 -- This mirrors UpdateMinimapCircleSize, where Minimap.Circle is a child of the
@@ -1140,7 +1150,7 @@ local function UpdateSquareBorderFrameSize()
     -- map size, NOT the live map size: the map itself is shrunk to fit inside
     -- the border (see UpdateMinimapBorderShape), and deriving the border from the
     -- live map would rescale border + map together, cancelling the shrink.
-    local mapLocalShrunk = (DEFAULT_MINIMAP_WIDTH / blipScale) - SQUARE_MAP_SHRINK
+    local mapLocalShrunk = (defaultMapWidth / blipScale) - SQUARE_MAP_SHRINK
 
     -- The square border must render inside the minimap's own strata: the cluster
     -- lives in BACKGROUND, so keeping the border on UIParent's default MEDIUM
@@ -1184,8 +1194,8 @@ local function UpdateMinimapBorderShape()
         if circle then circle:Hide() end
         -- Shrink the minimap ~8px so the square border sits flush around it
         -- instead of overlapping the map corners.
-        local mapW = (DEFAULT_MINIMAP_WIDTH / blipScale) - SQUARE_MAP_SHRINK
-        local mapH = (DEFAULT_MINIMAP_HEIGHT / blipScale) - SQUARE_MAP_SHRINK
+        local mapW = (defaultMapWidth / blipScale) - SQUARE_MAP_SHRINK
+        local mapH = (defaultMapHeight / blipScale) - SQUARE_MAP_SHRINK
         if Minimap:GetWidth() ~= mapW then Minimap:SetWidth(mapW) end
         if Minimap:GetHeight() ~= mapH then Minimap:SetHeight(mapH) end
         if borderFrame then
@@ -1213,8 +1223,8 @@ local function UpdateMinimapBorderShape()
         -- Restore the round DragonUI border.
         if circle then circle:Show() end
         if Minimap then
-            local mapW = DEFAULT_MINIMAP_WIDTH / blipScale
-            local mapH = DEFAULT_MINIMAP_HEIGHT / blipScale
+            local mapW = defaultMapWidth / blipScale
+            local mapH = defaultMapHeight / blipScale
             if Minimap:GetWidth() ~= mapW then Minimap:SetWidth(mapW) end
             if Minimap:GetHeight() ~= mapH then Minimap:SetHeight(mapH) end
         end
