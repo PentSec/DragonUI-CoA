@@ -49,6 +49,7 @@ L["Follow the client language"] = "跟随客户端语言"
 
 L["Commands: /dragonui, /dui, /pi — /dragonui edit (editor) — /dragonui help"] = "命令：/dragonui, /dui, /pi — /dragonui edit (编辑) — /dragonui help"
 L["GitHub (select and Ctrl+C to copy):"] = "GitHub (选中后按Ctrl+C复制)："
+L["Help me on GitHub (select and Ctrl+C to copy):"] = "在GitHub上寻求帮助 (选中后按Ctrl+C复制)："
 L["All"] = "全部"
 L["Error:"] = "错误："
 L["Error: DragonUI addon not found!"] = "错误：未找到DragonUI插件！"
@@ -539,6 +540,7 @@ L["Button Spacing"] = "按钮间距"
 -- 姿态条
 L["Stance Bar"] = "姿态条"
 L["X Position"] = "水平位置"
+L["Horizontal position of stance bar from screen center. Negative values move left, positive values move right."] = "姿态条距屏幕中心的水平位置。负值向左移动，正值向右移动。"
 L["Y Position"] = "垂直位置"
 
 -- 宠物动作条

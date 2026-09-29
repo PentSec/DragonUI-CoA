@@ -48,6 +48,7 @@ L["Follow the client language"] = true
 
 L["Commands: /dragonui, /dui, /pi \226\128\148 /dragonui edit (editor) \226\128\148 /dragonui help"] = true
 L["GitHub (select and Ctrl+C to copy):"] = true
+L["Help me on GitHub (select and Ctrl+C to copy):"] = true
 L["All"] = true
 L["Error:"] = true
 L["Error: DragonUI addon not found!"] = true
@@ -683,6 +684,7 @@ L["Stance Bar"] = true
 L["Warriors, Druids, Death Knights"] = true
 L["Show Stance Bar"] = true
 L["X Position"] = true
+L["Horizontal position of stance bar from screen center. Negative values move left, positive values move right."] = true
 L["Y Position"] = true
 
 -- Pet Bar

@@ -83,7 +83,7 @@ local function BuildAdditionalBarsTab(scroll)
     })
 
     C:AddSlider(stance, {
-        label = LO["Y Offset"],
+        label = LO["Y Position"],
         dbPath = "additional.stance.y_offset",
         min = -200, max = 200, step = 1,
         width = 200,

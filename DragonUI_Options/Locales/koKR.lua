@@ -55,6 +55,7 @@ L["Follow the client language"] = "클라이언트 언어 따르기"
 
 L["Commands: /dragonui, /dui, /pi — /dragonui edit (editor) — /dragonui help"] = "명령어: /dragonui, /dui, /pi — /dragonui edit (편집) — /dragonui help"
 L["GitHub (select and Ctrl+C to copy):"] = "GitHub (선택 후 Ctrl+C로 복사):"
+L["Help me on GitHub (select and Ctrl+C to copy):"] = "GitHub에서 도와주세요 (선택 후 Ctrl+C로 복사):"
 L["All"] = "전체"
 L["Error:"] = "오류:"
 L["Error: DragonUI addon not found!"] = "오류: DragonUI 애드온을 찾을 수 없습니다!"
@@ -587,6 +588,7 @@ L["Button Spacing"] = "버튼 간격"
 -- Stance Bar
 L["Stance Bar"] = "태세바"
 L["X Position"] = "가로 위치"
+L["Horizontal position of stance bar from screen center. Negative values move left, positive values move right."] = "화면 중앙에서 태세 바의 가로 위치입니다. 음수는 왼쪽, 양수는 오른쪽으로 이동합니다."
 L["Y Position"] = "세로 위치"
 
 -- Pet Bar

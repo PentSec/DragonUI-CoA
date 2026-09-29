@@ -135,7 +135,7 @@ local function BuildBNetToastTab(scroll)
     })
 
     C:AddSlider(posSection, {
-        label = LO["Y Offset"],
+        label = LO["Y Position"],
         desc = LO["Vertical offset of the BNet toast frame. Negative values move down, positive values move up."] or "Vertical offset of the BNet toast frame. Negative values move down, positive values move up.",
         getFunc = function() return GetModuleField("bnettoast", "y_offset") or 200 end,
         setFunc = function(val)

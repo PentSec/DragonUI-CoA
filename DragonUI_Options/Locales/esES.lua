@@ -46,6 +46,7 @@ L["Follow the client language"] = "Seguir el idioma del cliente"
 
 L["Commands: /dragonui, /dui, /pi \226\128\148 /dragonui edit (editor) \226\128\148 /dragonui help"] = "Comandos: /dragonui, /dui, /pi \226\128\148 /dragonui edit (editor) \226\128\148 /dragonui help"
 L["GitHub (select and Ctrl+C to copy):"] = "GitHub (selecciona y Ctrl+C para copiar):"
+L["Help me on GitHub (select and Ctrl+C to copy):"] = "Ayúdame en GitHub (selecciona y Ctrl+C para copiar):"
 L["All"] = "Todo"
 L["Error:"] = "Error:"
 L["Error: DragonUI addon not found!"] = "Error: ¡No se encontró el addon DragonUI!"
@@ -613,6 +614,7 @@ L["Button Spacing"] = "Espaciado de Botones"
 -- Stance Bar
 L["Stance Bar"] = "Barra de Postura"
 L["X Position"] = "Posición X"
+L["Horizontal position of stance bar from screen center. Negative values move left, positive values move right."] = "Posición horizontal de la barra de actitud desde el centro de la pantalla. Valores negativos mueven a la izquierda, positivos a la derecha."
 L["Y Position"] = "Posición Y"
 
 -- Pet Bar
