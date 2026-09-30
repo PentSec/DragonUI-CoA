@@ -448,11 +448,12 @@ local function EngineOnUpdate(_, elapsed)
     NP.widgets.UpdateComboTargetPlate()
     -- Re-show combo if target plate returned without a pointer change.
     if UnitExists("target") and NP.module.comboTargetPlate then
-        local host = NP.module.comboTargetPlate._comboHost
+local host = NP.module.comboTargetPlate._comboHost
         local points = NP.widgets.GetPlayerComboPoints()
         -- maxStacks is provider-dependent (native=5; custom classes may stack to 6+).
         -- We only need to know "non-zero & capped at a sane upper bound" here so the
         -- re-show guard fires for Conquest of Azeroth class stacks as well as native combo points.
+        -- With the option off the host stays hidden, and re-syncing it would reflow the plate every frame.
         if points > 0 and points <= 20 and host and host.IsShown and not host:IsShown()
             and NP.config.GetCfg().showComboPoints ~= false then
             NP.widgets.SyncComboPoints(NP.module.comboTargetPlate)
