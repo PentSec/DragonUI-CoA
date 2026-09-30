@@ -12,8 +12,8 @@ addon:RegisterModule("spellbook", Book, tr["Spellbook"], tr["Learned spells book
     { lifecyclePrefix = "Spellbook", loadOnce = true })
 
 -- Category ids double as secure attribute suffixes and as the tab catchers' IDs.
-Book.CLASS, Book.GENERAL, Book.PET = 1, 2, 3
-Book.CATEGORIES = 3
+Book.CLASS, Book.GENERAL, Book.PET, Book.PROFESSION = 1, 2, 3, 4
+Book.CATEGORIES = 4
 Book.SLOTS = 54
 
 Book.models, Book.dirty, Book.labels, Book.bound = {}, {}, {}, {}
@@ -96,7 +96,7 @@ function Book.MarkDirty(...)
 end
 
 function Book.MarkAllDirty()
-    Book.MarkDirty(Book.CLASS, Book.GENERAL, Book.PET)
+    Book.MarkDirty(Book.CLASS, Book.GENERAL, Book.PET, Book.PROFESSION)
 end
 
 -- The page reset waits for the rebuild so no click can resolve page 1 while page N is drawn.

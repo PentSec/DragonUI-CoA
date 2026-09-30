@@ -16,9 +16,10 @@ local SEARCH_W, SEARCH_MIN = 220, 90
 local CORNER_SPEED = 32
 
 -- Left to right on screen; the category ids behind them (and the secure data) keep their numbers.
-local TAB_ORDER = { Book.GENERAL, Book.CLASS, Book.PET }
+local TAB_ORDER = { Book.GENERAL, Book.CLASS, Book.PET, Book.PROFESSION }
 local TAB_BINDINGS = { [Book.CLASS] = "TOGGLESPELLBOOK", [Book.GENERAL] = "TOGGLESPELLBOOK",
-    [Book.PET] = "TOGGLEPETBOOK" }
+    [Book.PET] = "TOGGLEPETBOOK",
+    [Book.PROFESSION] = "TOGGLETRADE_SKILL" }
 
 local tabs, flagged = {}, {}
 local drawn = {}
