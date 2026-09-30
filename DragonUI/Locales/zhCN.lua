@@ -704,6 +704,8 @@ L["Details! is not installed."] = "未安装Details!。"
 -- MERCHANT MODULE
 L["Merchant"] = "商人"
 L["Retail-style vendor window chrome"] = "商人窗口现代风格"
+L["Quest Dialog"] = "任务对话框"
+L["Retail-style quest and gossip window chrome"] = "任务与对话窗口现代风格"
 L["Sell all junk items"] = "出售所有垃圾物品"
 L["Sell all of your junk (gray) items?"] = "出售你所有的垃圾(灰色)物品？"
 L["You are about to sell all junk items and will not be able to buy them back.\n\nAre you sure you want to proceed?"] = "您即将出售所有垃圾物品，且无法再购买回来。\n\n确定要继续吗？"
