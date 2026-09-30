@@ -453,7 +453,8 @@ local function EngineOnUpdate(_, elapsed)
         -- maxStacks is provider-dependent (native=5; custom classes may stack to 6+).
         -- We only need to know "non-zero & capped at a sane upper bound" here so the
         -- re-show guard fires for Conquest of Azeroth class stacks as well as native combo points.
-        if points > 0 and points <= 20 and host and host.IsShown and not host:IsShown() then
+        if points > 0 and points <= 20 and host and host.IsShown and not host:IsShown()
+            and NP.config.GetCfg().showComboPoints ~= false then
             NP.widgets.SyncComboPoints(NP.module.comboTargetPlate)
         end
     end
@@ -565,7 +566,8 @@ local function EngineOnEvent(_, event, unit, ...)
     end
     if event == "UNIT_TARGET" and unit then
         if unit:match("^party%d+$") or unit:match("^raid%d+$") then
-            NP.identity.RefreshGroupTargetMatches()
+            -- A raid fires this many times a second; the engine tick runs one pass before the queues drain.
+            NP.identity.RequestGroupTargetRefresh()
             E.QueueMass(CB.OnUpdateCastbar)
             return
         end
@@ -714,7 +716,10 @@ local function EngineOnEvent(_, event, unit, ...)
         return
     end
     if event == "UNIT_THREAT_SITUATION_UPDATE" then
-        E.QueueMass(CB.OnUpdateThreatSituation)
+        -- The glow is player-relative, and ProcessThreatTransitions already polls every plate in combat.
+        if unit == "player" then
+            E.QueueMass(CB.OnUpdateThreatSituation)
+        end
         return
     end
     if event == "COMBAT_LOG_EVENT_UNFILTERED" then
