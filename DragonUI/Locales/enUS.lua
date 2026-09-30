@@ -698,6 +698,8 @@ L["Details! is not installed."] = true
 --MERCHANT MODULE
 L["Merchant"] = true
 L["Retail-style vendor window chrome"] = true
+L["Quest Dialog"] = true
+L["Retail-style quest and gossip window chrome"] = true
 L["Sell all junk items"] = true
 L["You are about to sell all junk items and will not be able to buy them back.\n\nAre you sure you want to proceed?"] = true
 L["Sold %d junk item(s)."] = true

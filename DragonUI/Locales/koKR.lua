@@ -741,6 +741,8 @@ L["Details! is not installed."] = "Details!가 설치되어 있지 않습니다.
 -- MERCHANT MODULE
 L["Merchant"] = "상인"
 L["Retail-style vendor window chrome"] = "상인 창 모던 스타일"
+L["Quest Dialog"] = "퀘스트 대화창"
+L["Retail-style quest and gossip window chrome"] = "퀘스트 및 대화 창 모던 스타일"
 L["Sell all junk items"] = "모든 잡동사니 아이템 판매"
 L["Sell all of your junk (gray) items?"] = "모든 잡동사니(회색) 아이템을 판매하시겠습니까?"
 L["You are about to sell all junk items and will not be able to buy them back.\n\nAre you sure you want to proceed?"] = "모든 잡동사니 아이템을 판매하게 되며 다시 구매할 수 없습니다.\n\n계속 진행하시겠습니까?"

@@ -735,6 +735,8 @@ L["Details! is not installed."] = "Details! не установлен."
 -- MERCHANT MODULE
 L["Merchant"] = "Торговец"
 L["Retail-style vendor window chrome"] = "Современный интерфейс окна торговца"
+L["Quest Dialog"] = "Диалог заданий"
+L["Retail-style quest and gossip window chrome"] = "Современный интерфейс окон заданий и диалогов"
 L["Sell all junk items"] = "Продать весь хлам"
 L["Sell all of your junk (gray) items?"] = "Продать весь твой хлам (серый)?"
 L["You are about to sell all junk items and will not be able to buy them back.\n\nAre you sure you want to proceed?"] = "Вы собираетесь продать весь хлам и не сможете купить его обратно.\n\nВы уверены, что хотите продолжить?"

@@ -955,6 +955,8 @@ L["Details! is not installed."] = "Details! n'est pas installé."
 -- MERCHANT MODULE
 L["Merchant"] = "Marchand"
 L["Retail-style vendor window chrome"] = "Cadre de fenêtre de vendeur style Retail"
+L["Quest Dialog"] = "Dialogue de quête"
+L["Retail-style quest and gossip window chrome"] = "Cadre style Retail pour les fenêtres de quête et de dialogue"
 L["Sell all junk items"] = "Vendre tous les objets poubelle"
 L["Sell all of your junk (gray) items?"] = "Vendre tous vos objets poubelle (gris) ?"
 L["You are about to sell all junk items and will not be able to buy them back.\n\nAre you sure you want to proceed?"] = "Vous êtes sur le point de vendre tous les objets poubelle et vous ne pourrez pas les racheter.\n\nÊtes-vous sûr de vouloir continuer ?"
