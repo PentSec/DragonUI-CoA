@@ -812,6 +812,7 @@ L["Enabled — click to toggle"] = true
 L["Disabled — click to toggle"] = true
 L["Glyph of "] = true
 L["Not learned"] = true
+L["Professions"] = true
 
 -- ============================================================================
 -- SPELLBOOK MODULE

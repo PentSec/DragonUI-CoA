@@ -1070,6 +1070,7 @@ L["Enabled — click to toggle"] = "Activé – cliquez pour basculer"
 L["Disabled — click to toggle"] = "Désactivé – cliquez pour basculer"
 L["Glyph of "] = "Glyphe de "
 L["Not learned"] = "Non appris"
+L["Professions"] = "Métiers"
 
 -- ============================================================================
 -- SPELLBOOK MODULE

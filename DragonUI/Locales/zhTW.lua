@@ -1067,6 +1067,7 @@ L["Enabled — click to toggle"] = "已啟用——點擊切換"
 L["Disabled — click to toggle"] = "已停用——點擊切換"
 L["Glyph of "] = ""
 L["Not learned"] = "未學習"
+L["Professions"] = "專業技能"
 
 -- ============================================================================
 -- SPELLBOOK MODULE
