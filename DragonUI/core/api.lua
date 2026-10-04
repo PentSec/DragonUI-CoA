@@ -266,13 +266,10 @@ function addon.CreateUIFrame(width, height, frameName)
     frame:EnableMouse(false)
     frame:SetMovable(false)
 
-    frame:SetScript("OnDragStart", function(self, button)
-<<<<<<< HEAD
-        if not EditorActive() then return end
-=======
-        self.DragonUI_LayoutOffset = nil
->>>>>>> fe79d9a (fix(actionbars): stop pet bar overlap, add PvP icon toggles #505 #416)
-        self:StartMoving()
+     frame:SetScript("OnDragStart", function(self, button)
+         if not EditorActive() then return end
+         self.DragonUI_LayoutOffset = nil
+         self:StartMoving()
         -- Ensure this frame is the selected one
         if addon.selectedEditorFrame ~= self then
             addon.SelectEditorFrame(self)
