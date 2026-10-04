@@ -2243,6 +2243,14 @@ local function CreateFocusCastbarAnchorFrame()
     return CastbarModule.focusAnchor
 end
 
+local function IsPlayerCastbarAtDefault(widgetConfig)
+    local defaults = addon.defaults and addon.defaults.profile.widgets.playerCastbar
+    if not defaults or (widgetConfig.anchor or "BOTTOM") ~= defaults.anchor then
+        return false
+    end
+    return math.abs(widgetConfig.posX - defaults.posX) <= 1 and math.abs(widgetConfig.posY - defaults.posY) <= 1
+end
+
 local function ApplyWidgetPosition()
     if not CastbarModule.anchor then
         return
@@ -2253,11 +2261,15 @@ local function ApplyWidgetPosition()
     end
     
     local widgetConfig = addon.db.profile.widgets.playerCastbar
-    
+
     if widgetConfig and widgetConfig.posX and widgetConfig.posY then
         local anchor = widgetConfig.anchor or "BOTTOM"
+        local lift = IsPlayerCastbarAtDefault(widgetConfig) and addon.GetPetbarStackLift
+            and addon.GetPetbarStackLift() or 0
+        -- SaveUIFramePosition subtracts this, so leaving the editor never stores the lifted spot.
+        CastbarModule.anchor.DragonUI_LayoutOffset = lift > 0 and { 0, lift } or nil
         CastbarModule.anchor:ClearAllPoints()
-        CastbarModule.anchor:SetPoint(anchor, UIParent, anchor, widgetConfig.posX, widgetConfig.posY)
+        CastbarModule.anchor:SetPoint(anchor, UIParent, anchor, widgetConfig.posX, widgetConfig.posY + lift)
     else
         CastbarModule.anchor:ClearAllPoints()
         CastbarModule.anchor:SetPoint("BOTTOM", UIParent, "BOTTOM", 0, 270)
@@ -2788,6 +2800,8 @@ local function OnEvent(self, event, unit, ...)
         CastbarModule:HandleCastingEvent(event, unit, ...)
     end
 end
+
+addon.ApplyPlayerCastbarPosition = ApplyWidgetPosition
 
 function addon.ApplyCastbarWidgetPositions()
     ApplyWidgetPosition()
