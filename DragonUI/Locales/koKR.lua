@@ -855,6 +855,7 @@ L["Save this build to your talent profiles."] = "이 빌드를 특성 프로필�
 L["Enabled — click to toggle"] = "활성화됨 - 클릭하여 전환"
 L["Disabled — click to toggle"] = "비활성화됨 - 클릭하여 전환"
 L["Glyph of "] = ""
+L["Not learned"] = "미학습"
 
 -- ============================================================================
 -- SPELLBOOK MODULE

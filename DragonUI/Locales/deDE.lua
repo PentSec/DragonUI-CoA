@@ -843,6 +843,7 @@ L["Save this build to your talent profiles."] = "Diesen Build in deinen Talentpr
 L["Enabled — click to toggle"] = "Aktiviert – zum Umschalten klicken"
 L["Disabled — click to toggle"] = "Deaktiviert – zum Umschalten klicken"
 L["Glyph of "] = ""
+L["Not learned"] = "Nicht gelernt"
 
 -- ============================================================================
 -- SPELLBOOK MODULE

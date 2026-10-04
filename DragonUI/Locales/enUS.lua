@@ -811,6 +811,7 @@ L["Save this build to your talent profiles."] = true
 L["Enabled — click to toggle"] = true
 L["Disabled — click to toggle"] = true
 L["Glyph of "] = true
+L["Not learned"] = true
 
 -- ============================================================================
 -- SPELLBOOK MODULE

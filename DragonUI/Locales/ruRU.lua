@@ -849,6 +849,7 @@ L["Save this build to your talent profiles."] = "Сохранить эту сб�
 L["Enabled — click to toggle"] = "Включено — щёлкните для переключения"
 L["Disabled — click to toggle"] = "Выключено — щёлкните для переключения"
 L["Glyph of "] = "Символ "
+L["Not learned"] = "Не изучено"
 
 -- ============================================================================
 -- SPELLBOOK MODULE
