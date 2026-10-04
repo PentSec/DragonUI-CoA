@@ -118,7 +118,7 @@ end
 
 -- Left edge, bottom and button height of the bar while it sits at its default spot with forms to show.
 function addon.GetDefaultStanceRow()
-    if not IsModuleEnabled() or not anchor or not CLASSES_WITH_FORM_BAR[class] then return end
+    if not IsModuleEnabled() or not anchor then return end
     if (GetNumShapeshiftForms() or 0) < 1 then return end
     local x_position, final_y, atDefault = ResolveStancePosition()
     if not atDefault then return end
