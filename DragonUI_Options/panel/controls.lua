@@ -333,7 +333,49 @@ local function SkinSlider(widget)
         SafeSetFont(widget.editbox, 11, "")
     end
     if widget.label then
+<<<<<<< HEAD
         SafeSetFont(widget.label, 12, "")
+=======
+        if tint then
+            widget.label:SetTextColor(tint, tint, tint)
+        else
+            widget.label:SetTextColor(1, 0.82, 0)
+        end
+    end
+    SyncPlaceholder(widget)
+end
+
+-- Pullouts hang from UIParent, so the window's layering pass never reaches them: lift on every open.
+local function LiftPullout(po)
+    local frame = po.frame
+    frame:SetFrameStrata("TOOLTIP")
+    frame:Raise()
+    FUI.EnforceLayering(frame)
+end
+
+local function SkinPullout(widget)
+    local po = widget.pullout
+    local frame = po and po.frame
+    if not frame then return end
+    if not po._dragonOpenWrapped then
+        po._dragonOpenWrapped = true
+        local original = po.Open
+        po.Open = function(self, ...)
+            original(self, ...)
+            LiftPullout(self)
+        end
+    end
+    if frame._dragonSkinned then return end
+    frame._dragonSkinned = true
+    FUI.SkinMenuBackground(frame, "bg")
+    if po.slider then
+        po.slider:SetBackdrop(nil)
+        FUI.SkinScrollBar(po.slider)
+        -- Items end 12 short of the edge, under the bar's art, and would take its clicks.
+        if po.scrollFrame then
+            po.slider:SetFrameLevel(po.scrollFrame:GetFrameLevel() + 10)
+        end
+>>>>>>> 1ef4b16 (feat(ui): whole-second cooldowns, sharper absorb shields, smarter random mount, dragon menu button, mana percentage alignment and pullout click fixes #515 #511 #514)
     end
 end
 
