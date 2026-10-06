@@ -1518,7 +1518,7 @@ function BarProto:ApplyAnchorPosition()
         self.anchor:SetPoint(anchorPoint, UIParent, anchorPoint, widgetConfig.posX or 0, widgetConfig.posY or 0)
     else
         local cfg = Bar_GetConfig(self) or {}
-        self.anchor:SetPoint("CENTER", UIParent, "CENTER", cfg.x_position or 0, cfg.y_position or 260)
+        self.anchor:SetPoint("CENTER", UIParent, "CENTER", cfg.x_position or 0, cfg.y_position or 0)
     end
 end
 
