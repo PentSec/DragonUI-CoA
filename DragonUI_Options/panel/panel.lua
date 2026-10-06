@@ -26,7 +26,12 @@ addon.OptionsPanel = Panel
 Panel.frame      = nil    -- raw Frame
 Panel.tabs       = {}     -- { key = { text, builder, order } }
 Panel.tabOrder   = {}     -- ordered keys
+<<<<<<< HEAD
 Panel.tabButtons = {}     -- visual tab buttons
+=======
+Panel.tabButtons = {}     -- category list buttons
+Panel.groupHeaders = {}   -- category list banners after the first
+>>>>>>> 1df2efc (feat(ui): grouped options menu, Auras sub-tabs, sectioned Modules list and a scroll bar that no longer drags backwards #516)
 Panel.currentTab = nil
 Panel.scrollWidget = nil  -- current AceGUI ScrollFrame inside content
 
@@ -51,6 +56,7 @@ local T = {
     font      = (addon.Fonts and addon.Fonts.NARROW) or "Interface\\AddOns\\DragonUI_Options\\fonts\\PTSansNarrow.ttf",
 }
 
+<<<<<<< HEAD
 -- Translated labels overrun the pixel sizes below, which were picked against English.
 local TAB_MIN_WIDTH   = 136
 local TAB_MAX_WIDTH   = 196
@@ -58,6 +64,37 @@ local TAB_TEXT_INSET  = 22
 local PILL_MIN_WIDTH  = 104
 local PILL_MAX_WIDTH  = 190
 local PILL_TEXT_INSET = 18
+=======
+-- The inner frame art draws its list divider at a fixed 197 from the left edge.
+local LIST_WIDTH       = 197
+local LIST_GAP         = 16
+local LIST_MARGIN_TOP  = 12
+local LIST_HEADER_H    = 30
+local ROW_X            = 7
+local ROW_WIDTH        = 183
+local ROW_HEIGHT       = 20
+local GROUP_GAP        = 12
+-- Row text starts where the "DragonUI" header text does (header label x 20 minus ROW_X).
+local ROW_LABEL_INSET  = 13
+
+local INSET_SIDE       = 17
+local INSET_VERTICAL   = 106
+local CONTAINER_RIGHT  = 5
+local HEADER_HEIGHT    = 50
+local SCROLL_MARGIN    = 6
+
+-- Content width the AceGUI flow layout gets: container minus the margins and its own scroll bar.
+local SCROLL_CONTENT_OFFSET = 32
+
+local FOOTER_LEFT        = 22
+local FOOTER_RIGHT       = 16
+local FOOTER_GAP         = 6
+local FOOTER_BUTTON_W    = 110
+local FOOTER_BUTTON_PAD  = 28
+local FOOTER_BUTTON_MAX  = 190
+local CLOSE_BUTTON_W     = 96
+local FOOTER_TEXT_MARGIN = 14
+>>>>>>> 1df2efc (feat(ui): grouped options menu, Auras sub-tabs, sectioned Modules list and a scroll bar that no longer drags backwards #516)
 
 local function PanelControls()
     return addon.PanelControls
@@ -507,6 +544,56 @@ end
 -- BUILD TAB BUTTONS (vertical strip)
 -- ============================================================================
 
+<<<<<<< HEAD
+=======
+local function ShowTabTooltip(self)
+    if self.fullText and self.Label:GetText() ~= self.fullText then
+        GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
+        GameTooltip:SetText(self.fullText, 1, 1, 1)
+        GameTooltip:Show()
+    end
+end
+
+local function HideTabTooltip()
+    GameTooltip:Hide()
+end
+
+-- Banners of the category list; a tab missing here is listed at the end of the last section.
+local TAB_GROUPS = {
+    { label = "Core", tabs = { "general", "modules", "enhancements", "profiles" } },
+    { label = "Frames", tabs = { "unitframes", "nameplates", "auras" } },
+    { label = "Bars", tabs = { "actionbars", "additionalbars", "xprepbars", "castbars" } },
+    { label = "Interface", tabs = { "minimap", "questtracker", "chat", "micromenu", "bags", "panels" } },
+}
+
+local function GroupedTabs()
+    local placed, groups = {}, {}
+    for _, group in ipairs(TAB_GROUPS) do
+        local keys = {}
+        for _, key in ipairs(group.tabs) do
+            if Panel.tabs[key] then
+                keys[#keys + 1] = key
+                placed[key] = true
+            end
+        end
+        if #keys > 0 then
+            groups[#groups + 1] = { label = group.label, keys = keys }
+        end
+    end
+    local last = groups[#groups]
+    if not last then
+        last = { label = TAB_GROUPS[1].label, keys = {} }
+        groups[1] = last
+    end
+    for _, key in ipairs(Panel.tabOrder) do
+        if not placed[key] then
+            table.insert(last.keys, key)
+        end
+    end
+    return groups
+end
+
+>>>>>>> 1df2efc (feat(ui): grouped options menu, Auras sub-tabs, sectioned Modules list and a scroll bar that no longer drags backwards #516)
 local function BuildTabButtons()
     -- Clear old
     for _, btn in pairs(Panel.tabButtons) do
@@ -514,7 +601,13 @@ local function BuildTabButtons()
         btn:SetParent(nil)
     end
     wipe(Panel.tabButtons)
+    for _, header in ipairs(Panel.groupHeaders) do
+        header:Hide()
+        header:SetParent(nil)
+    end
+    wipe(Panel.groupHeaders)
 
+<<<<<<< HEAD
     local strip = Panel.frame.tabStrip
     local yOff = -8
 
@@ -591,6 +684,60 @@ local function BuildTabButtons()
             btn:SetWidth(width)
             PC.ClampText(btn.text, width - TAB_TEXT_INSET)
         end
+=======
+    local frame = Panel.frame
+    local list = frame.tabStrip
+    local PC = PanelControls()
+    local y = 0
+
+    for index, group in ipairs(GroupedTabs()) do
+        local header = frame.listHeader
+        if index > 1 then
+            header = FUI.CreateCategoryHeader(list)
+            Panel.groupHeaders[#Panel.groupHeaders + 1] = header
+        end
+        header:ClearAllPoints()
+        header:SetPoint("TOPLEFT", list, "TOPLEFT", 0, y)
+        header:SetIndex(index)
+        header:SetLabel(LO[group.label])
+        header:Show()
+        y = y - (LIST_HEADER_H + 4)
+
+        for _, key in ipairs(group.keys) do
+            local tabInfo = Panel.tabs[key]
+            local btn = FUI.CreateCategoryButton(list)
+            btn:SetSize(ROW_WIDTH, ROW_HEIGHT)
+            btn:SetPoint("TOPLEFT", list, "TOPLEFT", ROW_X, y)
+            btn:SetLabelLeft(ROW_LABEL_INSET)
+            btn:SetText(tabInfo.text)
+            btn.fullText = tabInfo.text
+            btn.tabKey = key
+            if PC then
+                PC.ClampText(btn.Label, ROW_WIDTH - ROW_LABEL_INSET - 6)
+            end
+
+            btn:SetScript("OnClick", function(self)
+                if Panel.currentTab ~= self.tabKey then
+                    PlaySound("igMainMenuOptionCheckBoxOn")
+                end
+                Panel:SelectTab(self.tabKey)
+            end)
+            btn:HookScript("OnEnter", ShowTabTooltip)
+            btn:HookScript("OnLeave", HideTabTooltip)
+
+            Panel.tabButtons[key] = btn
+            y = y - ROW_HEIGHT
+        end
+        y = y - GROUP_GAP
+    end
+
+    -- Every category must stay reachable: the list has no scroll of its own.
+    local needed = INSET_VERTICAL + 2 * LIST_MARGIN_TOP - (y + GROUP_GAP)
+    local minHeight = math.max(WINDOW_MIN_HEIGHT, needed)
+    frame:SetMinResize(WINDOW_MIN_WIDTH, minHeight)
+    if frame:GetHeight() < minHeight then
+        frame:SetHeight(minHeight)
+>>>>>>> 1df2efc (feat(ui): grouped options menu, Auras sub-tabs, sectioned Modules list and a scroll bar that no longer drags backwards #516)
     end
 end
 
