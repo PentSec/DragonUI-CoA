@@ -18,6 +18,7 @@
     
     <!-- Pets & Mounts window (its micro button must exist before micromenu.lua loads) -->
     <Script file="..\data\companion_traits.lua"/>
+    <Script file="..\data\mount_speeds.lua"/>
     <Include file="collections\collections.xml"/>
 
     <!-- Micro Menu & Bag module -->
@@ -48,6 +49,7 @@
     <Script file="castbar.lua"/>               
     
     <!-- Game Menu module -->
+    <Script file="gamemenu_dragons.lua"/>
     <Script file="gamemenu.lua"/>
     
     <!-- Editor Mode module -->
