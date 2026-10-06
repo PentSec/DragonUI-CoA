@@ -421,6 +421,11 @@ function UF.GetCompanionDrop()
     return UF.GetLevelSpot("target") and 12 or 0
 end
 
+function UF.GetNameSpotJustify()
+    local config = UnitFrameConfig()
+    return config and config.center_names and "CENTER" or "LEFT"
+end
+
 -- "auto" (or anything unknown) follows the frame art, like the level and PvP styles.
 function UF.GetDragonSet()
     local config = UnitFrameConfig()
