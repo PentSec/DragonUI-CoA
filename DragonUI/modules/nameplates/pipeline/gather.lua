@@ -835,6 +835,7 @@ function NP.gather.SyncName(plateData, unit)
     local allowEnemyNameClass = cfg.enemyPlayerClassColors ~= false and cfg.enemyNameClassColors == true
     local allowFriendlyNameClass = cfg.friendlyNameClassColors == true
         and (cfg.friendlyClassColors == true or cfg.partyClassColors == true)
+    local tinted = false
     if cfg.nameReactionColors then
         local skipFriendlyClass = isFriendlyPlayer and not allowFriendlyNameClass
         r, g, b = NP.gather.GetHealthBarColor(plateData, skipFriendlyClass)
@@ -845,17 +846,23 @@ function NP.gather.SyncName(plateData, unit)
                 r, g, b = 1, 0.1, 0.1
             end
         end
+<<<<<<< HEAD
     elseif isEnemyPlayer and allowEnemyNameClass and classColor then
+=======
+        tinted = true
+    elseif isEnemyPlayer and allowEnemyNameClass then
+>>>>>>> d0de133 (fix(nameplates): name colour options and raid marker in headline mode #517)
         r, g, b = classColor.r, classColor.g, classColor.b
+        tinted = true
     elseif isFriendlyPlayer and allowFriendlyNameClass then
         local cr, cg, cb = NP.gather.GetFriendlyPlayerClassColor(plateData)
         if cr then
             r, g, b = cr, cg, cb
+            tinted = true
         end
     end
-    -- Headline mode base name color (white by default); class color overrides it
-    -- below when enabled and resolved.
-    if headline then
+    -- Headline base colour only when no name colour option above tinted it; headline class colour still wins below.
+    if headline and not tinted then
         local nc = cfg.friendlyNameOnlyColor
         if nc then
             r, g, b = nc.r or 1, nc.g or 1, nc.b or 1
