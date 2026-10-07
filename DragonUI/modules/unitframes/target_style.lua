@@ -393,7 +393,7 @@ function UF.TargetStyle.Create(opts)
             end
             NameText:SetPoint("LEFT", frameElements.background, "TOPLEFT", name.x, name.y)
             NameText:SetWidth(name.w)
-            NameText:SetJustifyH("LEFT")
+            NameText:SetJustifyH(UF.GetNameSpotJustify())
         elseif centerName then
             NameText:SetPoint("BOTTOM", HealthBar, "TOP", 0, 3)
             NameText:SetJustifyH("CENTER")
