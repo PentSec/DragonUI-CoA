@@ -846,12 +846,8 @@ function NP.gather.SyncName(plateData, unit)
                 r, g, b = 1, 0.1, 0.1
             end
         end
-<<<<<<< HEAD
-    elseif isEnemyPlayer and allowEnemyNameClass and classColor then
-=======
         tinted = true
-    elseif isEnemyPlayer and allowEnemyNameClass then
->>>>>>> d0de133 (fix(nameplates): name colour options and raid marker in headline mode #517)
+    elseif isEnemyPlayer and allowEnemyNameClass and classColor then
         r, g, b = classColor.r, classColor.g, classColor.b
         tinted = true
     elseif isFriendlyPlayer and allowFriendlyNameClass then
