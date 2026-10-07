@@ -1,8 +1,15 @@
 ## Interface: 30300
+<<<<<<< HEAD
 ## Title: |cff1784d1DragonUI-CoA|r
 ## Notes: |cffcaf7faDragonflight-style UI for 3.3.5a with mixed third-party licensing|r
 ## Version: 3.1.4
 ## Author: PentSec, NeticSoul
+=======
+## Title: |cff1784d1DragonUI|r
+## Notes: |cffcaf7faRetail-inspired modular UI addon for WoW 3.3.5a (WotLK).|r
+## Version: 2.5
+## Author: NeticSoul
+>>>>>>> b5d6eeb (chore(toc): update the addon description to "Retail-inspired modular UI addon for WoW 3.3.5a (WotLK)")
 ## SavedVariables: DragonUIDB
 ## OptionalDeps: Blizzard_TimeManager, Details
 ## X-License: MIT for project-authored code; Blizzard art, fonts and bundled libraries keep their own terms (see THIRD_PARTY_NOTICES)
