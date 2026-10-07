@@ -119,7 +119,7 @@ EOF
 
 # make_conflict_pr <sha> <conflicting files>   -> prints the draft PR url (or nothing)
 make_conflict_pr() {
-  local c="$1" files="$2" s7="${1:0:7}" br="conflict/${1:0:7}" wt url subject
+  local c="$1" files="$2" s7="${1:0:7}" br="conflict/${1:0:7}" wt url subject err
   wt="$TMP/wt-${s7}"
   if is_dry; then log "(dry-run) would open a draft PR from ${br}"; return 0; fi
   if [ "$OPEN_CONFLICT_PRS" -ge "$MAX_OPEN_CONFLICT_PRS" ]; then
@@ -163,7 +163,14 @@ make_conflict_pr() {
     } > "$TMP/conflict_body.md"
     url="$(gh pr create -R "$REPO" --draft --base "$DEFAULT_BRANCH" --head "$br" \
              --title "[CONFLICT] ${s7} ${subject}" --body-file "$TMP/conflict_body.md" \
-             --label upstream-conflict 2>/dev/null | tail -n 1)" || url=""
+             --label upstream-conflict 2>"$TMP/pr_err" | tail -n 1)" || {
+      err="$(sed -n '1,2p' "$TMP/pr_err" | tr -d '\r' | tr '\n' ' ')" || err=""
+      [ -n "$err" ] || err="(gh pr create failed without printing a reason)"
+      err="${err:0:400}"
+      log "gh pr create failed for ${br}: ${err}"
+      echo "::error::Draft PR for ${br} was NOT created: ${err}"
+      url=""
+    }
     if [ -n "$url" ]; then OPEN_CONFLICT_PRS=$((OPEN_CONFLICT_PRS + 1)); fi
   fi
   printf '%s' "$url"
