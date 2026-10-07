@@ -27,7 +27,7 @@ concurrency:
 
 jobs:
   sync:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     timeout-minutes: 20
     env:
       GIT_USER_NAME: PentSec
@@ -37,7 +37,7 @@ jobs:
       DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
       DEFAULT_BRANCH: ${{ github.event.repository.default_branch || 'main' }}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
         with:
           fetch-depth: 0
           token: ${{ secrets.SYNC_TOKEN || secrets.GITHUB_TOKEN }}
