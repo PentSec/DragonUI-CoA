@@ -409,6 +409,11 @@ function NP.native_style.GetPlateReaction(plateData)
     if not reaction then
         return nil, nil
     end
+    -- Sanctuaries and PvE realms paint unattackable enemy-faction players in a friendly colour (#517).
+    -- The faction verdict wins over bar colour before the attackability correction below.
+    if plateData._enemyFaction and reaction == "FRIENDLY" then
+        return "HOSTILE", "PLAYER"
+    end
     local unit = ResolvePlateTokenForReaction(plateData)
     if unit and UnitIsPlayer(unit) then
         plateData._lastCanAttack = UnitCanAttack("player", unit)
@@ -440,10 +445,11 @@ function NP.native_style.CaptureBarColor(plateData)
         return
     end
     local r, g, b = bar:GetStatusBarColor()
-    -- Bar-color change busts headline/totem gate memos.
+    -- Bar-color change busts headline/totem gate memos and the faction verdict (duels, mind control).
     if (r ~= plateData.barR or g ~= plateData.barG or b ~= plateData.barB)
         and NP.gather and NP.gather.InvalidatePlateGates then
         NP.gather.InvalidatePlateGates(plateData)
+        plateData._enemyFaction = nil
     end
     plateData.barR, plateData.barG, plateData.barB = r, g, b
     plateData.classKey = NP.native_style.ClassKeyFromBarColor(r, g, b)
