@@ -30,7 +30,9 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 20
     env:
-      GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      GIT_USER_NAME: PentSec
+      GIT_USER_EMAIL: 11955573+PentSec@users.noreply.github.com
+      GH_TOKEN: ${{ secrets.SYNC_TOKEN || secrets.GITHUB_TOKEN }}
       GH_REPO: ${{ github.repository }}
       DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
       DEFAULT_BRANCH: ${{ github.event.repository.default_branch || 'main' }}
@@ -38,6 +40,7 @@ jobs:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
+          token: ${{ secrets.SYNC_TOKEN || secrets.GITHUB_TOKEN }}
 
       - name: Install Lua (syntax check)
         run: sudo apt-get update -qq && sudo apt-get install -y -qq lua5.1

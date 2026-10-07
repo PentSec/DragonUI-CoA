@@ -271,8 +271,8 @@ EOF
 }
 
 # ------------------------------------------------------------------ setup ---
-git config user.name  "github-actions[bot]"
-git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+git config user.name  "${GIT_USER_NAME:-github-actions[bot]}"
+git config user.email "${GIT_USER_EMAIL:-41898282+github-actions[bot]@users.noreply.github.com}"
 if ! git remote get-url upstream >/dev/null 2>&1; then git remote add upstream "$UPSTREAM_URL"; fi
 
 retry git fetch -q --no-tags upstream "+refs/heads/${UPSTREAM_BRANCH}:refs/remotes/upstream/${UPSTREAM_BRANCH}" \
