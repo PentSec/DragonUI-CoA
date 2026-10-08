@@ -1408,6 +1408,9 @@ local defaults = {
                 flashOpacity = 0.35, -- Max alpha of the flash (0.0–1.0)
                 flashExtent = 40,  -- Pixels from screen edges toward center
             },
+            addonmanager = {
+                 enabled = true 
+            },
         },
 
         -- LAYOUT PRESETS (user-saved UI snapshots within this profile)
