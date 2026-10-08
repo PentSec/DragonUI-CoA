@@ -1163,6 +1163,7 @@ function UF.TargetStyle.Create(opts)
         if not InCombatLockdown() then
             BlizzFrame:SetClampedToScreen(false)
             BlizzFrame:SetScale(config.scale or 1)
+            addon.SetEditorBoxScale(Module.overlay, config.scale or 1)
         end
         ApplyWidgetPosition()
 
@@ -1524,6 +1525,7 @@ function UF.TargetStyle.Create(opts)
         local config = GetConfig()
         if not InCombatLockdown() then
             BlizzFrame:SetScale(config.scale or 1)
+            addon.SetEditorBoxScale(Module.overlay, config.scale or 1)
         end
 
         if frameElements.border then
@@ -1579,6 +1581,7 @@ function UF.TargetStyle.Create(opts)
         if not InCombatLockdown() then
             BlizzFrame:ClearAllPoints()
             BlizzFrame:SetScale(config.scale or 1)
+            addon.SetEditorBoxScale(Module.overlay, config.scale or 1)
         end
         ApplyWidgetPosition()
     end
