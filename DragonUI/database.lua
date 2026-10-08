@@ -193,21 +193,6 @@ local defaults = {
                 relativePoint = "CENTER",
                 custom_position = false
             },
-            attackbarPlayer = {
-                anchor = "BOTTOM",
-                posX = 0,
-                posY = 255,
-            },
-            attackbarOffhand = {
-                anchor = "BOTTOM",
-                posX = 0,
-                posY = 275,
-            },
-            attackbarEnemy = {
-                anchor = "BOTTOM",
-                posX = 0,
-                posY = 295,
-            },
             bnToast = {
                 anchor = "CENTER",
                 posX = 0,
@@ -1330,17 +1315,6 @@ local defaults = {
             },
             transmog_collector = {
                 enabled = false, -- Auto-collect transmog appearances on loot (Conquest of Azeroth)
-            },
-            attackbar = {
-                enabled = false, -- Attack bar swing timer (opt-in module)
-                showMainHand = true,
-                showOffHand = true,
-                showRanged = true,
-                showEnemy = true,
-                showTimer = true,
-                showInfo = true,
-                borderStyle = "standard", -- "standard", "thin", "none"
-                scale = 1.0,
             },
             collections = {
                 enabled = true, -- Dedicated Pets & Mounts window opened from the micro menu

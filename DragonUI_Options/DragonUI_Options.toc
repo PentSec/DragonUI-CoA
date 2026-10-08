@@ -45,5 +45,4 @@ panel\tab_detailsskin.lua
 panel\tab_worldmap.lua
 panel\tab_chat.lua
 panel\tab_profiles.lua
-panel\tab_attackbar.lua
 panel\search.lua
