@@ -859,7 +859,6 @@ function UF.TargetStyle.Create(opts)
 
         local r, g, b
         local isTapDenied = false
-        -- Tap-denied check (target only)
         if opts.hasTapDenied
            and UnitIsTapped(unitToken)
            and not UnitIsTappedByPlayer(unitToken) then
