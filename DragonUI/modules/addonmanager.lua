@@ -884,6 +884,99 @@ end
 -- SETUP
 -- ============================================================================
 
+-- Conquest of Azeroth uses its own Esc menu (EscapeMenu) with renamed buttons.
+local function IsCoAMenuEnvironment()
+    return (_G.EscapeMenu or _G.EscapeMenuButton1) and true or false
+end
+
+local function GetCoAMenuHost()
+    if _G.EscapeMenu then return _G.EscapeMenu end
+    if _G.EscapeMenuButton1 then return _G.EscapeMenuButton1:GetParent() end
+    return nil
+end
+
+-- Finds CoA's native AddOns button in the menu by its label.
+local function FindNativeAddonsButton(host)
+    if not host then return nil end
+    for i = 1, 40 do
+        local btn = _G["EscapeMenuButton" .. i]
+        if btn and btn.GetText and btn:GetText() == ADDONS then return btn end
+    end
+    return _G.EscapeMenuButton12
+end
+
+-- Opens the addon manager window and hides the Esc menu that launched it.
+local function OpenAddonManager()
+    PlaySound("igMainMenuOption")
+
+    local host = GetCoAMenuHost() or _G.GameMenuFrame
+    -- HideUIPanel keeps the client panel state consistent when the menu is a registered panel.
+    if host then HideUIPanel(host) end
+
+    if AddonListFrame and AddonListFrame:IsShown() then return end
+    if not AddonListFrame then BuildWindow() end
+
+    TakeSnapshot()
+    outOfDateCheck:SetChecked(snapshotCheckVersion == "0")
+    searchText = ""
+    if searchBox then searchBox:SetText("") end
+    BuildHierarchy()
+    ScanLiveIcons()
+    ApplyFilter()
+    ApplyScale()
+    UpdateAddonList()
+
+    AddonListFrame:Show()
+end
+
+local coaAddonsButton
+local coaHookInstalled = false
+
+-- Overlays our button on the native AddOns slot and hides the native one.
+local function ApplyCoAAddonsButton()
+    local host = GetCoAMenuHost()
+    if not host then return false end
+
+    local native = FindNativeAddonsButton(host)
+    if not native then return false end
+
+    if not coaAddonsButton then
+        coaAddonsButton = CreateFrame("Button", "GameMenuButtonDragonUIAddons", host, "GameMenuButtonTemplate")
+        coaAddonsButton:SetText(ADDONS)
+        coaAddonsButton:SetScript("OnClick", OpenAddonManager)
+        if addon.ForeverUI and addon.ForeverUI.SkinButton then
+            addon.ForeverUI.SkinButton(coaAddonsButton)
+        end
+    end
+
+    coaAddonsButton:SetParent(host)
+    coaAddonsButton:ClearAllPoints()
+    coaAddonsButton:SetAllPoints(native)
+    native:Hide()
+    coaAddonsButton:Show()
+    return true
+end
+
+-- Re-applies the overlay a few times; the CoA client re-lays out the menu asynchronously.
+local function QueueApplyCoAAddonsButton()
+    for _, delay in ipairs({ 0, 0.05, 0.15, 0.35, 0.7 }) do
+        addon:After(delay, function()
+            local host = GetCoAMenuHost()
+            if host and host:IsShown() then ApplyCoAAddonsButton() end
+        end)
+    end
+end
+
+local function InstallCoAMenuHook()
+    if coaHookInstalled then return end
+    if not (_G.EscapeMenu and _G.EscapeMenu.HookScript) then return end
+    _G.EscapeMenu:HookScript("OnShow", function()
+        ApplyCoAAddonsButton()
+        QueueApplyCoAAddonsButton()
+    end)
+    coaHookInstalled = true
+end
+
 local initFrame = CreateFrame("Frame")
 initFrame:RegisterEvent("ADDON_LOADED")
 initFrame:RegisterEvent("PLAYER_LOGIN")
@@ -899,46 +992,57 @@ initFrame:SetScript("OnEvent", function(self, event)
         if ldb then ldb.UnregisterCallback(brokerWatcher, "LibDataBroker_DataObjectCreated") end
         return
     end
-    if _G.GameMenuButtonAddons then return end
 
-    local menuBtn = CreateFrame("Button", "GameMenuButtonDragonUIAddons", GameMenuFrame, "GameMenuButtonTemplate")
-    -- 140 like gamemenu.lua: at the template's 144 the Forever skin looks wider than the stock buttons.
-    menuBtn:SetWidth(140)
-    menuBtn:SetText(ADDONS)
+    local attempts = 0
+    local function install()
+        attempts = attempts + 1
 
-    if addon.ForeverUI and addon.ForeverUI.SkinButton then
-        addon.ForeverUI.SkinButton(menuBtn)
+        if IsCoAMenuEnvironment() then
+            InstallCoAMenuHook()
+            ApplyCoAAddonsButton()
+            QueueApplyCoAAddonsButton()
+            AddonManagerModule.initialized = true
+            AddonManagerModule.applied = true
+            return
+        end
+
+        if _G.GameMenuFrame then
+            if _G.GameMenuButtonAddons then return end
+
+            local menuBtn = CreateFrame("Button", "GameMenuButtonDragonUIAddons", GameMenuFrame, "GameMenuButtonTemplate")
+            -- 140 like gamemenu.lua: at the template's 144 the Forever skin looks wider than the stock buttons.
+            menuBtn:SetWidth(140)
+            menuBtn:SetText(ADDONS)
+
+            if addon.ForeverUI and addon.ForeverUI.SkinButton then
+                addon.ForeverUI.SkinButton(menuBtn)
+            end
+
+            if GameMenuButtonMacros then
+                menuBtn:SetPoint("TOP", GameMenuButtonMacros, "BOTTOM", 0, -1)
+            else
+                menuBtn:SetPoint("TOP", GameMenuFrame, "TOP", 0, -200)
+            end
+            if GameMenuButtonRatings then
+                GameMenuButtonRatings:ClearAllPoints()
+                GameMenuButtonRatings:SetPoint("TOP", menuBtn, "BOTTOM", 0, -1)
+            end
+            if GameMenuButtonLogout then
+                GameMenuButtonLogout:ClearAllPoints()
+                GameMenuButtonLogout:SetPoint("TOP", menuBtn, "BOTTOM", 0, -1)
+            end
+            GameMenuFrame:SetHeight(GameMenuFrame:GetHeight() + menuBtn:GetHeight() + 1)
+            AddonManagerModule.initialized = true
+            AddonManagerModule.applied = true
+
+            menuBtn:SetScript("OnClick", OpenAddonManager)
+            return
+        end
+
+        if attempts < 20 then addon:After(0.5, install) end
     end
 
-    menuBtn:SetPoint("TOP", GameMenuButtonMacros, "BOTTOM", 0, -1)
-    if GameMenuButtonRatings then
-        GameMenuButtonRatings:ClearAllPoints()
-        GameMenuButtonRatings:SetPoint("TOP", menuBtn, "BOTTOM", 0, -1)
-    end
-    GameMenuButtonLogout:ClearAllPoints()
-    GameMenuButtonLogout:SetPoint("TOP", menuBtn, "BOTTOM", 0, -1)
-    GameMenuFrame:SetHeight(GameMenuFrame:GetHeight() + menuBtn:GetHeight() + 1)
-    AddonManagerModule.initialized = true
-    AddonManagerModule.applied = true
-
-    menuBtn:SetScript("OnClick", function()
-        PlaySound("igMainMenuOption")
-        HideUIPanel(GameMenuFrame)
-        if AddonListFrame and AddonListFrame:IsShown() then return end
-        if not AddonListFrame then BuildWindow() end
-
-        TakeSnapshot()
-        outOfDateCheck:SetChecked(snapshotCheckVersion == "0")
-        searchText = ""
-        if searchBox then searchBox:SetText("") end
-        BuildHierarchy()
-        ScanLiveIcons()
-        ApplyFilter()
-        ApplyScale()
-        UpdateAddonList()
-
-        AddonListFrame:Show()
-    end)
+    install()
 end)
 WatchBrokers()
 
