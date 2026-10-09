@@ -140,8 +140,6 @@ local function BuildGeneralTab(scroll)
         width = 200,
         callback = function() Panel:SelectTab("micromenu", { dbPath = "micromenu.grayscale_icons" }) end,
     })
-<<<<<<< HEAD
-=======
 
     C:AddSpacer(scroll)
 
@@ -318,7 +316,6 @@ local function BuildGeneralTab(scroll)
         getFunc = function() return Panel:GetScale() end,
         setFunc = function(val) Panel:SetScale(val) end,
     })
->>>>>>> e4c5e28 (feat(addonmanager): resizable, scalable addon list with each addon's own icon #533)
 end
 
 -- Register the tab
