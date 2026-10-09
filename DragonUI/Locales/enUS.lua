@@ -1107,3 +1107,5 @@ L["Disable All"] = true
 L["OK / Reload"] = true
 L["Parent Disabled"] = true
 L["Protected"] = true
+L["Turn it back on from the AddOns button in the Esc menu."] = true
+L["Turn it back on from the AddOns list at character selection."] = true
