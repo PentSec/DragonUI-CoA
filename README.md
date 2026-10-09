@@ -1,10 +1,5 @@
 # 🐉 DragonUI for Conquest Of AzerothCore servers
 
-
-### Join Discord: ⬎
-
-[![](https://dcbadge.limes.pink/api/server/https://discord.gg/uVsEaAUGcx)](https://discord.gg/uVsEaAUGcx)
-
 ### Support me ❤️ ⬎
 
 [![ko-fi](https://ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/D5R327PO99)
