@@ -723,16 +723,6 @@ L["Weighted score of your equipped gear."] = "Взвешенная оценка 
 L["Reset stat order"] = "Сбросить порядок"
 L["Restore the stat categories to their default order?"] = "Вернуть категориям характеристик порядок по умолчанию?"
 
--- ============================================================================
--- DAMAGE METER SKIN (DETAILS!)
--- ============================================================================
-
-L["Damage Meter Skin"] = "Скин измерителя урона"
-L["A retail-styled theme for the Details! Damage Meter: gold-titled header bar, class-coloured bars and abbreviated numbers."] = "Тема в стиле актуальной версии для измерителя урона Details!: золотая полоса заголовка, полосы с цветами классов и сокращённые числа."
-L["Details! skin applied."] = "Скин Details! применён."
-L["Could not apply the skin - Details! is not ready yet."] = "Не удалось применить скин - Details! ещё не готов."
-L["Details! is not installed."] = "Details! не установлен."
-
 -- MERCHANT MODULE
 L["Merchant"] = "Торговец"
 L["Retail-style vendor window chrome"] = "Современный интерфейс окна торговца"

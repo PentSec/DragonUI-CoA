@@ -785,8 +785,6 @@ local defaults = {
                 classcolor = false,
                 classColorName = false, -- Use class color for target name text
                 centerName = false, -- Center the target name above the health bar
-                show_buffs = true, -- Show buff icons on target frame
-                show_debuffs = true, -- Show debuff icons on target frame
                 classPortrait = false, -- Show class icon instead of character portrait
                 alternativeClassIcons = false, -- Use DragonUI alternative class icons for class portraits
                 breakUpLargeNumbers = true,
@@ -992,9 +990,6 @@ local defaults = {
             mainbars = {
                 enabled = true, -- Apply DragonUI main action bars, status bars (XP/Rep), scaling, and positioning system
                 disable_form_page_switching = false -- When true, the main action bar stays on the same page regardless of stance/form changes (druid shapeshift, warrior stance, CoA custom classes, etc.)
-            },
-            merchant = {
-                enabled = true -- Retail-style vendor window chrome, sell-all-junk button, and buyback undo arrow
             },
             merchant = {
                 enabled = true -- Retail-style vendor window chrome, sell-all-junk button, and buyback undo arrow
@@ -1317,9 +1312,6 @@ local defaults = {
                 glow_alpha = 1, -- Quality ring opacity
                 show_quality_filter = true, -- Rarity filter dots centered on the bottom band
             },
-            bags_skin = {
-                enabled = true -- Experimental retail-style bag window skin
-            },
             loot_skin = {
                 enabled = true, -- Retail-style skin for the Blizzard loot window
                 animated_reflow = true, -- Compact collected loot with animated rows and panel resizing
@@ -1350,16 +1342,6 @@ local defaults = {
                 enabled = true, -- CoA talent tree viewer in inspect frame
                 scale = 0.75, -- Scale of the inspector panel
             },
-            hp_low_alert = {
-                enabled = true, -- Screen flash and sound when HP drops below threshold
-                threshold = 30, -- HP percentage threshold to trigger warning
-                soundEnabled = false, -- Play warning sound (repeats every 3 sec)
-                flashEnabled = true, -- Flash screen edges red
-                flashColor = { r = 1, g = 0, b = 0 }, -- Color of the screen edge flash
-                useClassColor = false, -- Use player class color instead of flashColor
-                flashOpacity = 0.35, -- Max alpha of the flash (0.0–1.0)
-                flashExtent = 40,  -- Pixels from screen edges toward center
-            },
             bags_skin = {
                 enabled = true, -- Retail-style textures for bags
             },
@@ -1368,10 +1350,6 @@ local defaults = {
             },
             collections = {
                 enabled = true, -- Dedicated Pets & Mounts window opened from the micro menu
-            },
-            detailsskin = {
-                enabled = true, -- Details! Damage Meter theme: registers the DragonUI skin and restores the player's choice
-                chosen = false, -- true once the player applies the skin; cleared when another skin is picked or the module turns off
             },
             spellbook = {
                 enabled = true, -- Modern spellbook window with learned spells, pets, categories, search

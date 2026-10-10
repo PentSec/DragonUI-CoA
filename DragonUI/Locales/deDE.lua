@@ -718,16 +718,6 @@ L["Weighted score of your equipped gear."] = "Gewichtete Wertung deiner angelegt
 L["Reset stat order"] = "Reihenfolge zurücksetzen"
 L["Restore the stat categories to their default order?"] = "Die Wertekategorien auf ihre Standardreihenfolge zurücksetzen?"
 
--- ============================================================================
--- DAMAGE METER SKIN (DETAILS!)
--- ============================================================================
-
-L["Damage Meter Skin"] = "Schadensmeter-Skin"
-L["A retail-styled theme for the Details! Damage Meter: gold-titled header bar, class-coloured bars and abbreviated numbers."] = "Retail-inspiriertes Design für das Details!-Schadensmeter: goldene Titelleiste, klassenfarbene Balken und abgekürzte Zahlen."
-L["Details! skin applied."] = "Details!-Skin angewendet."
-L["Could not apply the skin - Details! is not ready yet."] = "Der Skin konnte nicht angewendet werden - Details! ist noch nicht bereit."
-L["Details! is not installed."] = "Details! ist nicht installiert."
-
 -- MERCHANT MODULE
 L["Merchant"] = "Händler"
 L["Retail-style vendor window chrome"] = "Retail-Style Vendor-Fenster-Rahmen"

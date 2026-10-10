@@ -139,9 +139,6 @@
     <!-- Conquest of Azeroth WildCard Dice movability widget -->
     <Script file="wildcarddice.lua"/>
 
-    <!-- Details! Damage Meter skin (inert until applied; requires the Details! addon) -->
-    <Script file="detailsskin.lua"/>
-
     <!-- Merchant — retail-style vendor window chrome (uses worldmap's PanelChrome/NineSlice libs) -->
     <Include file="merchant\merchant.xml"/>
 
