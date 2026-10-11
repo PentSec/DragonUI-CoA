@@ -689,6 +689,7 @@ end
 local function DarkenMicroMenuBorders(tint)
     local microNames = {
         "CharacterMicroButton",
+        "ProfessionMicroButton",
         "SpellbookMicroButton",
         "TalentMicroButton",
         "AchievementMicroButton",
