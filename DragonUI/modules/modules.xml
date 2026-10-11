@@ -98,12 +98,9 @@
     <Script file="questdialog.lua"/>
     <!-- Spellbook module (own window; takes over the book's keys, micro button and Blizzard's frame after login) -->
     <Include file="spellbook\spellbook.xml"/>
-<<<<<<< HEAD
-=======
     <!-- Professions module (Forever professions window built on Blizzard's TradeSkillFrame) -->
     <Include file="professions\professions.xml"/>
 
->>>>>>> 626f689 (feat(professions): Forever-style professions window built on the stock trade skill frame)
     <!-- Chat Mods module -->
     <Script file="chatmods.lua"/>
 

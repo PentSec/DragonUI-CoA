@@ -100,13 +100,10 @@ if isCoAServer then
     EIGHTH_STEM, NINTH_STEM, TENTH_STEM = "Collections", "PathToAscension", "Challenges"
 end
 
-<<<<<<< HEAD
 -- The tenth slot is nil on every client but Conquest of Azeroth. Both readers below nil-check
 -- before use and the strip geometry is computed from CollectPresentMicroButtons(), so
 -- the hole costs nothing; a table constructor keeps # at twelve either way.
-=======
 -- A nil slot for a button missing at load keeps # at twelve; Professions follows Character, as in Forever.
->>>>>>> 626f689 (feat(professions): Forever-style professions window built on the stock trade skill frame)
 local MICRO_BUTTONS = {
     MicroButtonFor("Character"), MicroButtonFor("Profession"), MicroButtonFor("Spellbook"), MicroButtonFor("Talent"),
     MicroButtonFor("Achievement"), MicroButtonFor("QuestLog"), MicroButtonFor("Socials"),
