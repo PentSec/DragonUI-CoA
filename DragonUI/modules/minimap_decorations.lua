@@ -169,6 +169,14 @@ local function IsHybridModeActive()
     return mode == "hybrid" or mode == "sexymap"
 end
 
+<<<<<<< HEAD
+=======
+local function IsSquareStyle()
+    local config = GetMinimapConfig()
+    return config and (config.style == "dragonui_square" or config.style == "forever_square")
+end
+
+>>>>>>> eb2cc84 (feat(minimap): DragonUI and Forever square styles with their own frames #542)
 local function IsEffectEnabled()
     local config = GetMinimapConfig()
     return IsModuleEnabled()
@@ -207,6 +215,10 @@ local function GetPresetName()
 end
 
 local function ShouldHideDragonUIBorder()
+<<<<<<< HEAD
+=======
+    if not IsEffectEnabled() then return false end
+>>>>>>> eb2cc84 (feat(minimap): DragonUI and Forever square styles with their own frames #542)
     local config = GetMinimapConfig()
     return config and config.animated_border_hide_dragonui_border == true
 end
@@ -473,6 +485,15 @@ local function UpdateDragonUIBorderVisibility()
     MinimapDecorationsModule.originalStates.minimapToggleButtonAlpha = nil
     MinimapDecorationsModule.originalStates.minimapToggleButtonShown = nil
     MinimapDecorationsModule.originalStates.minimapToggleButtonEnabled = nil
+<<<<<<< HEAD
+=======
+
+    if circle and circle:GetAlpha() == 0 then
+        circle:SetAlpha(1)
+        circle:Show()
+        EnsureDragonUICirclePriority()
+    end
+>>>>>>> eb2cc84 (feat(minimap): DragonUI and Forever square styles with their own frames #542)
 end
 
 local function EnsureBackdrop()
@@ -652,7 +673,11 @@ function MinimapDecorationsModule:Restore()
         end
         if circle then
             local circleAlpha = self.originalStates.minimapCircleAlpha
+<<<<<<< HEAD
             if circleAlpha == nil then
+=======
+            if circleAlpha == nil or circleAlpha == 0 then
+>>>>>>> eb2cc84 (feat(minimap): DragonUI and Forever square styles with their own frames #542)
                 circleAlpha = 1
             end
             circle:SetAlpha(circleAlpha)

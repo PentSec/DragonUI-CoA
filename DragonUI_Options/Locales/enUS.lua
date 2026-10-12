@@ -161,6 +161,17 @@ L["Buff Border Color"] = true
 L["Detailed"] = true
 L["Rounded"] = true
 L["Square"] = true
+<<<<<<< HEAD
+=======
+L["DragonUI Square"] = true
+L["Forever Square"] = true
+L["Square Border"] = true
+L["Forever Frame"] = true
+L["Thin Line"] = true
+L["Top Arrow"] = true
+L["Rounded Corners"] = true
+L["Decorations are only available for circular minimap styles."] = true
+>>>>>>> eb2cc84 (feat(minimap): DragonUI and Forever square styles with their own frames #542)
 L["When enabled, a 'Weapon Enchants' mover appears in Editor Mode that you can drag to any position on screen."] = true
 L["Positions"] = true
 L["Player Buffs & Debuffs"] = true

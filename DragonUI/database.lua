@@ -610,7 +610,14 @@ local defaults = {
         -- MINIMAP SETTINGS
         minimap = {
             scale = 1,
+<<<<<<< HEAD
             style = "dragonui", -- "dragonui" or "forever" (WoW Forever's ring, north pointer and day/night badge)
+=======
+            style = "dragonui", -- "dragonui", "dragonui_square", "forever" or "forever_square"
+            forever_square_border = "frame", -- "frame" (the Forever ring made square) or "thin" (a thin box border)
+            forever_square_rounded = false, -- Forever frame on the square: rounded corners instead of right angles
+            square_top_arrow = true, -- Forever square: north pointer on the top edge
+>>>>>>> eb2cc84 (feat(minimap): DragonUI and Forever square styles with their own frames #542)
             border_alpha = 1,
             square_border = false, -- true = square minimap border (MinimapSquareBorder.blp)
             blip_skin = true, -- true = new/modern style, false = old/classic Blizzard style

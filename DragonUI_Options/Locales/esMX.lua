@@ -1498,6 +1498,14 @@ L["Showing top %d results. Type at least 3 characters for the full list."] = "Mo
 L["Detailed"] = "Detallado"
 L["Rounded"] = "Redondeado"
 L["Square"] = "Cuadrado"
+L["DragonUI Square"] = "DragonUI (cuadrado)"
+L["Forever Square"] = "Forever (cuadrado)"
+L["Square Border"] = "Borde cuadrado"
+L["Forever Frame"] = "Marco Forever"
+L["Thin Line"] = "Línea delgada"
+L["Top Arrow"] = "Flecha superior"
+L["Rounded Corners"] = "Esquinas redondeadas"
+L["Decorations are only available for circular minimap styles."] = "Las decoraciones solo están disponibles para los estilos de minimapa circulares."
 
 -- Range Indicator colors
 L["Out of Range Color"] = "Color fuera de rango"

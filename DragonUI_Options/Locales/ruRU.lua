@@ -1402,6 +1402,17 @@ L["Showing top %d results. Type at least 3 characters for the full list."] = "П
 L["Detailed"] = "Детальный"
 L["Rounded"] = "Скруглённый"
 L["Square"] = "Прямоугольный"
+<<<<<<< HEAD
+=======
+L["DragonUI Square"] = "DragonUI (квадратная)"
+L["Forever Square"] = "Forever (квадратная)"
+L["Square Border"] = "Рамка квадратной миникарты"
+L["Forever Frame"] = "Рамка Forever"
+L["Thin Line"] = "Тонкая линия"
+L["Top Arrow"] = "Стрелка сверху"
+L["Rounded Corners"] = "Скруглённые углы"
+L["Decorations are only available for circular minimap styles."] = "Декорации доступны только для круглых стилей миникарты."
+>>>>>>> eb2cc84 (feat(minimap): DragonUI and Forever square styles with their own frames #542)
 
 -- Range Indicator colors
 L["Out of Range Color"] = "Цвет вне досягаемости"

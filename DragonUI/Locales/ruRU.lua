@@ -1058,6 +1058,16 @@ L["Enable Aura Borders"] = "Включить рамки аур"
 L["Detailed"] = "Детальный"
 L["Rounded"] = "Скруглённый"
 L["Square"] = "Прямоугольный"
+<<<<<<< HEAD
+=======
+L["DragonUI Square"] = "DragonUI (квадратная)"
+L["Forever Square"] = "Forever (квадратная)"
+L["Square Border"] = "Рамка квадратной миникарты"
+L["Forever Frame"] = "Рамка Forever"
+L["Thin Line"] = "Тонкая линия"
+L["Top Arrow"] = "Стрелка сверху"
+L["Rounded Corners"] = "Скруглённые углы"
+>>>>>>> eb2cc84 (feat(minimap): DragonUI and Forever square styles with their own frames #542)
 L["Aura Tooltips"] = "Подсказки аур"
 L["Debuff Icon Scale"] = "Масштаб иконки дебаффа"
 L["Debuffs Per Row"] = "Дебаффов в ряду"
