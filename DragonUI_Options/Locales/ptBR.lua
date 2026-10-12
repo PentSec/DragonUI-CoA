@@ -1487,6 +1487,8 @@ L["Commands: /dragonui, /dui, /pi \226\128\148 /dragonui edit (editor) \226\128\
 L["Language"] = "Idioma"
 L["Choose the language used by the DragonUI interface."] = "Escolha o idioma usado pela interface do DragonUI."
 L["Follow the client language"] = "Seguir o idioma do cliente"
+L["Settings Window"] = "Janela de configurações"
+L["Size of this window on top of your UI scale; 1.0 matches the other panels. It never grows past the screen."] = "Tamanho desta janela sobre a sua escala de interface; 1.0 é o dos outros painéis. Nunca passa do tamanho da tela."
 
 -- Quest nameplate icons (loot providers + Questie coexistence)
 L["Resolve By Name"] = "Resolver por nome"
