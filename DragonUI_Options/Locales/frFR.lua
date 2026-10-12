@@ -743,6 +743,16 @@ L["Show the rarity filter dots at the bottom of the bag frame."] = "Affiche les 
 L["Detailed"] = "Détaillé"
 L["Rounded"] = "Arrondi"
 L["Square"] = "Carré"
+<<<<<<< HEAD
+=======
+L["DragonUI Square"] = "DragonUI (carré)"
+L["Forever Square"] = "Forever (carré)"
+L["Square Border"] = "Bordure carrée"
+L["Forever Frame"] = "Cadre Forever"
+L["Thin Line"] = "Ligne fine"
+L["Top Arrow"] = "Flèche du haut"
+L["Rounded Corners"] = "Coins arrondis"
+>>>>>>> 9376848 (feat(minimap): SexyMap square decorations for the square styles)
 
 -- Range Indicator colors
 L["Out of Range Color"] = "Couleur hors de portée"

@@ -272,6 +272,7 @@ local function UpdateMinimapMaskForRotation()
     end
 
     local minimapConfig = addon.db and addon.db.profile and addon.db.profile.minimap
+<<<<<<< HEAD
     local desiredMask
     if IsSquareMinimap() then
         desiredMask = SQUARE_MINIMAP_MASK
@@ -280,6 +281,18 @@ local function UpdateMinimapMaskForRotation()
         desiredMask = useVanillaMask and VANILLA_MINIMAP_MASK
             or (IsForeverStyle() and FOREVER_MINIMAP_MASK or DRAGONUI_MINIMAP_MASK)
     end
+=======
+    local isSquare = IsSquareStyle()
+    local useVanillaMask = not isSquare
+        and minimapConfig
+        and minimapConfig.animated_border_enabled == true
+        and minimapConfig.animated_border_hide_dragonui_border == true
+    local decorations = addon.MinimapDecorations
+    local presetMask = isSquare and decorations and decorations.GetSquareMask and decorations:GetSquareMask()
+    local desiredMask = isSquare and (presetMask or SQUARE_MINIMAP_MASK)
+        or (useVanillaMask and VANILLA_MINIMAP_MASK
+            or (IsForeverStyle() and FOREVER_MINIMAP_MASK or DRAGONUI_MINIMAP_MASK))
+>>>>>>> 9376848 (feat(minimap): SexyMap square decorations for the square styles)
 
     if MinimapModule.activeMask ~= desiredMask then
         Minimap:SetMaskTexture(desiredMask)
@@ -597,6 +610,97 @@ local function RescaleLaunchers()
     end
 end
 
+<<<<<<< HEAD
+=======
+local function GetLibDBIcon()
+    if not LibStub or not LibStub.GetLibrary then return nil end
+    local ok, libDBIcon = pcall(LibStub.GetLibrary, LibStub, "LibDBIcon-1.0", true)
+    if ok and libDBIcon and type(libDBIcon.SetButtonRadius) == "function" then
+        return libDBIcon
+    end
+end
+
+-- LibDBIcon repositions every button with the current shape when its radius is set.
+local function SyncLibDBIconShape()
+    local shape = GetMinimapShape and GetMinimapShape() or "ROUND"
+    if MinimapModule.libDBIconShape == shape then return end
+    MinimapModule.libDBIconShape = shape
+    local libDBIcon = GetLibDBIcon()
+    local radius = libDBIcon and tonumber(libDBIcon.radius)
+    if radius then
+        libDBIcon:SetButtonRadius(radius)
+    end
+end
+
+local function EnsureSquareBorder()
+    if not MinimapModule.squareBorder then
+        local border = addon.ForeverUI.AttachBoxBorder(Minimap)
+        border:SetFrameLevel(Minimap:GetFrameLevel() + 5)
+        border:EnableMouse(false)
+        MinimapModule.squareBorder = border
+    end
+    return MinimapModule.squareBorder
+end
+
+-- Decorations' Hide DragonUI Border takes the thin line too, as it does the frames it stands in for.
+local function SyncThinSquareBorder()
+    local decorations = addon.MinimapDecorations
+    local hidden = decorations and decorations.HidesDragonUIBorder and decorations:HidesDragonUIBorder()
+    if IsThinSquareBorder() and not hidden and IsDragonUIMinimapControlling() then
+        EnsureSquareBorder():Show()
+    elseif MinimapModule.squareBorder then
+        MinimapModule.squareBorder:Hide()
+    end
+end
+MinimapModule.SyncThinSquareBorder = SyncThinSquareBorder
+
+local function UpdateMailPosition()
+    if not MiniMapMailFrame or not MiniMapTracking then return end
+    MiniMapMailFrame:ClearAllPoints()
+    if IsSquareLayout() then
+        MiniMapMailFrame:SetPoint("RIGHT", MiniMapTracking, "LEFT", -3, 0)
+    else
+        MiniMapMailFrame:SetPoint("TOP", MiniMapTracking, "BOTTOM", 0, -3)
+    end
+end
+
+local function UpdateCornerIconsPosition()
+    -- SexyMap places these in hybrid mode.
+    if IsHybridMinimapModeActive() then return end
+
+    UpdateMailPosition()
+
+    local isSquare = IsSquareLayout()
+
+    local difficulty = MiniMapInstanceDifficulty
+    if difficulty then
+        difficulty:ClearAllPoints()
+        -- Forever hangs the banner over its day/night badge, which the square frame keeps in that corner.
+        if isSquare and (not IsForeverLayout() or IsThinSquareBorder()) then
+            difficulty:SetPoint("TOPRIGHT", Minimap, "TOPRIGHT", -4, -4)
+            difficulty:SetScale(0.85)
+        else
+            if MinimapBorderTop then
+                difficulty:SetPoint("TOP", MinimapBorderTop, 'BOTTOMRIGHT', -20, 6)
+            else
+                difficulty:SetPoint("TOPRIGHT", Minimap, 'TOPRIGHT', -20, 6)
+            end
+            difficulty:SetScale(0.85)
+        end
+    end
+
+    local pvpButton = MiniMapBattlefieldFrame
+    if pvpButton then
+        pvpButton:ClearAllPoints()
+        if isSquare then
+            pvpButton:SetPoint("BOTTOMRIGHT", Minimap, "BOTTOMRIGHT", -4, 4)
+        else
+            pvpButton:SetPoint("BOTTOMLEFT", Minimap, "BOTTOMLEFT", 0, 18)
+        end
+    end
+end
+
+>>>>>>> 9376848 (feat(minimap): SexyMap square decorations for the square styles)
 local function UpdateForeverStyle()
     local circle = Minimap and Minimap.Circle
     if not circle then return end
@@ -604,7 +708,28 @@ local function UpdateForeverStyle()
     local active = IsForeverActive()
     if active ~= (MinimapModule.foreverShown == true) then
         MinimapModule.foreverShown = active
+<<<<<<< HEAD
         circle:SetTexture(active and FOREVER_MINIMAP_CIRCLE or DRAGONUI_MINIMAP_CIRCLE)
+=======
+        RescaleLaunchers()
+    end
+
+    local thin = IsThinSquareBorder()
+    SyncThinSquareBorder()
+
+    -- An empty ring rather than a hidden one: decorations and restores Show() the circle on their own.
+    local rounded = addon.db.profile.minimap.forever_square_rounded == true
+    local foreverSquare = rounded and FOREVER_SQUARE_FRAME_ROUNDED or FOREVER_SQUARE_FRAME
+    local texture = (thin and "") or (active and (square and foreverSquare or FOREVER_MINIMAP_CIRCLE))
+        or (square and DRAGONUI_SQUARE_FRAME or DRAGONUI_MINIMAP_CIRCLE)
+    if MinimapModule.circleTexture ~= texture then
+        MinimapModule.circleTexture = texture
+        if thin then
+            circle:SetTexture(nil)
+        else
+            circle:SetTexture(texture)
+        end
+>>>>>>> 9376848 (feat(minimap): SexyMap square decorations for the square styles)
         circle:SetTexCoord(0, 1, 0, 1)
         if foreverFrame then foreverFrame.pointer:SetTexCoord(0, 1, 0, 1) end
         RescaleLaunchers()

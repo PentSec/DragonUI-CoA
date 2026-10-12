@@ -161,6 +161,16 @@ L["Buff Border Color"] = true
 L["Detailed"] = true
 L["Rounded"] = true
 L["Square"] = true
+<<<<<<< HEAD
+=======
+L["DragonUI Square"] = true
+L["Forever Square"] = true
+L["Square Border"] = true
+L["Forever Frame"] = true
+L["Thin Line"] = true
+L["Top Arrow"] = true
+L["Rounded Corners"] = true
+>>>>>>> 9376848 (feat(minimap): SexyMap square decorations for the square styles)
 L["When enabled, a 'Weapon Enchants' mover appears in Editor Mode that you can drag to any position on screen."] = true
 L["Positions"] = true
 L["Player Buffs & Debuffs"] = true

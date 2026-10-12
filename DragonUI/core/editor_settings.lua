@@ -1434,6 +1434,14 @@ end
 local function DecorationsOff()
     local mode = SexyMapMode()
     return GetDB("minimap.animated_border_enabled") ~= true or mode == "hybrid" or mode == "sexymap"
+<<<<<<< HEAD
+=======
+end
+
+-- Round and square styles offer different presets, so each keeps its own choice.
+local function DecorationPresetPath()
+    return SquareMinimap() and "minimap.animated_border_square_preset" or "minimap.animated_border_preset"
+>>>>>>> 9376848 (feat(minimap): SexyMap square decorations for the square styles)
 end
 
 local function NoDecorations()
@@ -1456,7 +1464,7 @@ end
 local function ApplyDecorationAutoScale()
     if GetDB("minimap.animated_border_scale_auto") == false then return end
     local hidden = GetDB("minimap.animated_border_hide_dragonui_border") == true
-    SetDB("minimap.animated_border_scale", hidden and 1 or 0.9)
+    SetDB("minimap.animated_border_scale", (hidden or SquareMinimap()) and 1 or 0.9)
     SetDB("minimap.animated_border_scale_auto", true)
 end
 
@@ -1525,7 +1533,12 @@ E.Register("minimap", { settings = {
             E.Rebuild()
         end }),
     Drop(T("Preset"), "minimap.animated_border_preset", DecorationPresets, R.minimapDecor, {
-        hidden = NoDecorations, disabled = DecorationsOff }),
+        hidden = NoDecorations, disabled = DecorationsOff,
+        get = function() return GetDB(DecorationPresetPath()) end,
+        set = function(value)
+            SetDB(DecorationPresetPath(), value)
+            Immediate(R.minimapDecor)
+        end }),
     Check(T("Animated Effects"), "minimap.animated_border_animations", R.minimapDecor, {
         hidden = NoDecorations, disabled = DecorationsOff }),
     Check(T("Hide DragonUI Border"), "minimap.animated_border_hide_dragonui_border", R.minimapDecor, {

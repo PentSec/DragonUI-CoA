@@ -1420,6 +1420,16 @@ L["Showing top %d results. Type at least 3 characters for the full list."] = "�
 L["Detailed"] = "정교한"
 L["Rounded"] = "둥근 모서리"
 L["Square"] = "각진 모서리"
+<<<<<<< HEAD
+=======
+L["DragonUI Square"] = "DragonUI (사각형)"
+L["Forever Square"] = "Forever (사각형)"
+L["Square Border"] = "사각형 테두리"
+L["Forever Frame"] = "Forever 테두리"
+L["Thin Line"] = "얇은 선"
+L["Top Arrow"] = "상단 화살표"
+L["Rounded Corners"] = "둥근 모서리"
+>>>>>>> 9376848 (feat(minimap): SexyMap square decorations for the square styles)
 
 -- Range Indicator colors
 L["Out of Range Color"] = "사거리 초과 색상"

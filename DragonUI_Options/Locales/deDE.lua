@@ -1417,6 +1417,16 @@ L["Showing top %d results. Type at least 3 characters for the full list."] = "Ze
 L["Detailed"] = "Detailliert"
 L["Rounded"] = "Abgerundet"
 L["Square"] = "Eckig"
+<<<<<<< HEAD
+=======
+L["DragonUI Square"] = "DragonUI (eckig)"
+L["Forever Square"] = "Forever (eckig)"
+L["Square Border"] = "Eckiger Rahmen"
+L["Forever Frame"] = "Forever-Rahmen"
+L["Thin Line"] = "Dünne Linie"
+L["Top Arrow"] = "Pfeil oben"
+L["Rounded Corners"] = "Abgerundete Ecken"
+>>>>>>> 9376848 (feat(minimap): SexyMap square decorations for the square styles)
 
 -- Range Indicator colors
 L["Out of Range Color"] = "Farbe außer Reichweite"

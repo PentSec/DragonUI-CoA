@@ -1374,6 +1374,16 @@ L["Showing top %d results. Type at least 3 characters for the full list."] = "�
 L["Detailed"] = "精細"
 L["Rounded"] = "圓角"
 L["Square"] = "方形"
+<<<<<<< HEAD
+=======
+L["DragonUI Square"] = "DragonUI（方形）"
+L["Forever Square"] = "Forever（方形）"
+L["Square Border"] = "方形邊框"
+L["Forever Frame"] = "Forever 邊框"
+L["Thin Line"] = "細線"
+L["Top Arrow"] = "頂部箭頭"
+L["Rounded Corners"] = "圓角"
+>>>>>>> 9376848 (feat(minimap): SexyMap square decorations for the square styles)
 
 -- Range Indicator colors
 L["Out of Range Color"] = "超出範圍顏色"

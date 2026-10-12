@@ -1517,6 +1517,16 @@ L["Showing top %d results. Type at least 3 characters for the full list."] = "Mo
 L["Detailed"] = "Detallado"
 L["Rounded"] = "Redondeado"
 L["Square"] = "Cuadrado"
+<<<<<<< HEAD
+=======
+L["DragonUI Square"] = "DragonUI (cuadrado)"
+L["Forever Square"] = "Forever (cuadrado)"
+L["Square Border"] = "Borde cuadrado"
+L["Forever Frame"] = "Marco Forever"
+L["Thin Line"] = "Línea fina"
+L["Top Arrow"] = "Flecha superior"
+L["Rounded Corners"] = "Esquinas redondeadas"
+>>>>>>> 9376848 (feat(minimap): SexyMap square decorations for the square styles)
 
 -- Range Indicator colors
 L["Out of Range Color"] = "Color fuera de rango"

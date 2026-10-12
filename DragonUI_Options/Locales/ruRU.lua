@@ -1402,6 +1402,16 @@ L["Showing top %d results. Type at least 3 characters for the full list."] = "П
 L["Detailed"] = "Детальный"
 L["Rounded"] = "Скруглённый"
 L["Square"] = "Прямоугольный"
+<<<<<<< HEAD
+=======
+L["DragonUI Square"] = "DragonUI (квадратная)"
+L["Forever Square"] = "Forever (квадратная)"
+L["Square Border"] = "Рамка квадратной миникарты"
+L["Forever Frame"] = "Рамка Forever"
+L["Thin Line"] = "Тонкая линия"
+L["Top Arrow"] = "Стрелка сверху"
+L["Rounded Corners"] = "Скруглённые углы"
+>>>>>>> 9376848 (feat(minimap): SexyMap square decorations for the square styles)
 
 -- Range Indicator colors
 L["Out of Range Color"] = "Цвет вне досягаемости"

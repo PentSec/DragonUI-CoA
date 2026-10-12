@@ -47,7 +47,9 @@ local function GetMinimapSettingsTable()
 end
 
 local function GetRecommendedAnimatedBorderScale(settings)
-    if settings and settings.animated_border_hide_dragonui_border == true then
+    -- Square presets frame the map at their own size; only round ones tuck inside the ring.
+    local square = settings and (settings.style == "dragonui_square" or settings.style == "forever_square")
+    if settings and (settings.animated_border_hide_dragonui_border == true or square) then
         return AUTO_SCALE_BORDER_HIDDEN
     end
     return AUTO_SCALE_BORDER_VISIBLE
@@ -311,6 +313,17 @@ local function BuildMinimapTab(scroll)
     C:AddDescription(animatedBorder, LO["Border presets from SexyMap by funkydude, used with permission."])
     local animatedBorderWidgets = {}
     local animatedBorderScaleSlider
+<<<<<<< HEAD
+=======
+    local presetDropdown
+
+    -- Round and square styles offer different presets, so each keeps its own choice.
+    local function GetPresetPath()
+        local style = C:GetDBValue("minimap.style")
+        local square = style == "dragonui_square" or style == "forever_square"
+        return square and "minimap.animated_border_square_preset" or "minimap.animated_border_preset"
+    end
+>>>>>>> 9376848 (feat(minimap): SexyMap square decorations for the square styles)
 
     local function IsAnimatedBorderEnabled()
         return C:GetDBValue("minimap.animated_border_enabled") == true
@@ -324,6 +337,17 @@ local function BuildMinimapTab(scroll)
                 widget:SetDisabled(not enabled)
             end
         end
+<<<<<<< HEAD
+=======
+        if presetDropdown and presetDropdown.SetList then
+            presetDropdown:SetList(GetAnimatedBorderPresets())
+            presetDropdown:SetValue(C:GetDBValue(GetPresetPath()))
+        end
+        local _, recommendedScale = ApplyAnimatedBorderAutoScaleIfNeeded()
+        if recommendedScale and animatedBorderScaleSlider and animatedBorderScaleSlider.SetValue then
+            animatedBorderScaleSlider:SetValue(recommendedScale)
+        end
+>>>>>>> 9376848 (feat(minimap): SexyMap square decorations for the square styles)
         SetSectionVisualState(animatedBorder, enabled)
     end
 
@@ -347,13 +371,16 @@ local function BuildMinimapTab(scroll)
         end,
     })
 
-    animatedBorderWidgets[#animatedBorderWidgets + 1] = C:AddDropdown(animatedBorder, {
+    presetDropdown = C:AddDropdown(animatedBorder, {
         label = LO["Preset"],
         values = GetAnimatedBorderPresets(),
         width = 260,
         dbPath = "minimap.animated_border_preset",
+        getFunc = function() return C:GetDBValue(GetPresetPath()) end,
+        setFunc = function(value) C:SetDBValue(GetPresetPath(), value) end,
         callback = RefreshAnimatedBorder,
     })
+    animatedBorderWidgets[#animatedBorderWidgets + 1] = presetDropdown
 
     animatedBorderWidgets[#animatedBorderWidgets + 1] = C:AddToggle(animatedBorder, {
         label = LO["Animated Effects"],
