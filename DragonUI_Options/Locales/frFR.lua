@@ -738,6 +738,8 @@ L["Quest Item Glow"] = "Lueur des objets de quête"
 L["Highlight quest items with a golden border."] = "Met en évidence les objets de quête avec une bordure dorée."
 L["Glow Intensity"] = "Intensité de la lueur"
 L["Opacity of the quality ring on item slots."] = "Opacité de l'anneau de qualité sur les cases d'objets."
+L["Item Count in Tooltip"] = "Nombre d'objets dans l'infobulle"
+L["Show how many of the hovered item you own in total, across your bags and bank."] = "Affiche combien d'exemplaires de l'objet survolé vous possédez au total, dans vos sacs et votre banque."
 L["Quality Filter Row"] = "Rangée de filtre de qualité"
 L["Show the rarity filter dots at the bottom of the bag frame."] = "Affiche les points de filtre de rareté en bas de la fenêtre des sacs."
 L["Detailed"] = "Détaillé"
@@ -1490,6 +1492,13 @@ L["Commands: /dragonui, /dui, /pi \226\128\148 /dragonui edit (editor) \226\128\
 L["Language"] = "Langue"
 L["Choose the language used by the DragonUI interface."] = "Choisissez la langue utilisée par l'interface de DragonUI."
 L["Follow the client language"] = "Suivre la langue du client"
+<<<<<<< HEAD
+=======
+L["Number Abbreviations"] = "Abréviation des nombres"
+L["How unit frames, nameplates and the resource display shorten large numbers."] = "Façon dont les fenêtres d'unité, les plaques de nom et l'affichage des ressources abrègent les grands nombres."
+L["Settings Window"] = "Fenêtre des réglages"
+L["Size of this window on top of your UI scale; 1.0 matches the other panels. It never grows past the screen."] = "Taille de cette fenêtre, en plus de votre échelle d'interface ; 1.0 correspond aux autres panneaux. Elle ne dépasse jamais de l'écran."
+>>>>>>> 81461ce (feat(bagster,unitframes): total owned count on Bagster tooltips and a k/M choice for koKR/zh numbers)
 
 -- Quest nameplate icons (loot providers + Questie coexistence)
 L["Resolve By Name"] = "Résoudre par nom"

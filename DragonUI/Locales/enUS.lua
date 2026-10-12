@@ -596,8 +596,12 @@ L["Micro menu and bags system styling and positioning"] = true
 L["%s's Inventory"] = true
 L["%s's Bank"] = true
 L["Bags"] = true
+<<<<<<< HEAD
 L["Bag Skin"] = true
 L["Retail-style textures for bags (Combuctor + default)"] = true
+=======
+L["Bank"] = true
+>>>>>>> 81461ce (feat(bagster,unitframes): total owned count on Bagster tooltips and a k/M choice for koKR/zh numbers)
 L["|cff00ff00Left-Click|r to toggle bag display"] = true
 L["|cff00ff00Right-Click|r to toggle inventory"] = true
 L["|cff00ff00Right-Click|r to toggle bank"] = true
