@@ -1094,7 +1094,6 @@ L["Debuff Vertical Gap"] = true
 L["Debuff Attached Offset Y"] = true
 L["Preview Debuff Count"] = true
 L["Anchor to Cursor"] = true
-L["ANCHOR_CURSOR"] = true
 L["Cursor Anchor Offset X"] = true
 L["Cursor Anchor Offset Y"] = true
 L["Class-Colored Border"] = true
