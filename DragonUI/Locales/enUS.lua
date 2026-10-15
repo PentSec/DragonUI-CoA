@@ -1055,6 +1055,11 @@ L["Debuff Vertical Gap"] = true
 L["Debuff Attached Offset Y"] = true
 L["Preview Debuff Count"] = true
 L["Anchor to Cursor"] = true
+<<<<<<< HEAD
+=======
+L["Cursor Anchor Offset X"] = true
+L["Cursor Anchor Offset Y"] = true
+>>>>>>> 00197f22 (fix(tooltip): cursor anchor offsets only move default-anchored tooltips, default 20/20 #565)
 L["Class-Colored Border"] = true
 L["Class-Colored Name"] = true
 L["Target of Target"] = true

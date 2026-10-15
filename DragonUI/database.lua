@@ -1262,6 +1262,11 @@ local defaults = {
                 player_stats = true, -- Show item level / PvE-PvP power / prestige line (players only)
                 health_bar = true, -- Show health bar on tooltip
                 anchor_cursor = false, -- Anchor tooltip to cursor
+<<<<<<< HEAD
+=======
+                anchor_cursor_x = 20, -- X offset from the cursor
+                anchor_cursor_y = 20, -- Y offset from the cursor
+>>>>>>> 00197f22 (fix(tooltip): cursor anchor offsets only move default-anchored tooltips, default 20/20 #565)
                 show_aura_source = true, -- Show caster name on buff/debuff tooltips
                 show_aura_spell_id = false, -- Show spell ID on buff/debuff tooltips
             },

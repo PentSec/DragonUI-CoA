@@ -840,6 +840,7 @@ local function BuildEnhancementsTab(scroll)
         requiresReload = false,
     })
 
+<<<<<<< HEAD
     -- ====================================================================
     -- TRANSMOG COLLECTOR (Conquest of Azeroth)
     -- ====================================================================
@@ -847,6 +848,41 @@ local function BuildEnhancementsTab(scroll)
     local tmSection = C:AddSection(scroll, LO["Transmog Collector"])
 
     C:AddDescription(tmSection, LO["Automatically collect transmog appearances when looting new items. Works with Conquest of Azeroth's Ctrl+Alt+Click appearance system."])
+=======
+    C:AddSlider(ttSection, {
+        label = LO["Cursor Anchor Offset X"],
+        desc = LO["Horizontal offset from the cursor."],
+        min = -128, max = 128, step = 1,
+        getFunc = function()
+            return tonumber(GetModuleField("tooltip", "anchor_cursor_x")) or 20
+        end,
+        setFunc = function(val)
+            EnsureModuleTable("tooltip").anchor_cursor_x = val
+        end,
+        disabled = function()
+            return not IsEnabled("tooltip")
+                or GetModuleField("tooltip", "anchor_cursor") ~= true
+        end,
+        requiresReload = false,
+    })
+
+    C:AddSlider(ttSection, {
+        label = LO["Cursor Anchor Offset Y"],
+        desc = LO["Vertical offset from the cursor."],
+        min = -128, max = 128, step = 1,
+        getFunc = function()
+            return tonumber(GetModuleField("tooltip", "anchor_cursor_y")) or 20
+        end,
+        setFunc = function(val)
+            EnsureModuleTable("tooltip").anchor_cursor_y = val
+        end,
+        disabled = function()
+            return not IsEnabled("tooltip")
+                or GetModuleField("tooltip", "anchor_cursor") ~= true
+        end,
+        requiresReload = false,
+    })
+>>>>>>> 00197f22 (fix(tooltip): cursor anchor offsets only move default-anchored tooltips, default 20/20 #565)
 
     C:AddToggle(tmSection, {
         label = LO["Enable Transmog Collector"],
