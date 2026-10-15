@@ -3,6 +3,11 @@ name: Sync upstream
 on:
   schedule:
     - cron: "*/30 * * * *"
+  # Re-sync right after a PR lands on the default branch: merging a conflict
+  # resolution or the sync PR moves main, which can unblock/retire open
+  # conflicts before the next cron tick (see WORKFLOW-RULES §4/§5.5).
+  pull_request:
+    types: [closed]
   workflow_dispatch:
     inputs:
       retry_sha:
@@ -27,6 +32,15 @@ concurrency:
 
 jobs:
   sync:
+    # On pull_request events only run when the PR actually merged into the
+    # default branch (stack PRs merged into another branch don't move main),
+    # from a branch of this same repo — fork PRs run without secrets, so they
+    # are left to the schedule.
+    if: >-
+      github.event_name != 'pull_request' ||
+      (github.event.pull_request.merged == true &&
+      github.event.pull_request.base.ref == github.event.repository.default_branch &&
+      github.event.pull_request.head.repo.full_name == github.repository)
     runs-on: ubuntu-24.04
     timeout-minutes: 20
     env:
@@ -40,6 +54,10 @@ jobs:
       - uses: actions/checkout@v5
         with:
           fetch-depth: 0
+          # pull_request events check out refs/pull/N/merge by default, which
+          # on a closed PR can be stale or gone; the script copy must come
+          # from the default branch.
+          ref: ${{ github.event.repository.default_branch || 'main' }}
           token: ${{ secrets.SYNC_TOKEN || secrets.GITHUB_TOKEN }}
 
       - name: Install Lua (syntax check)
@@ -62,8 +80,11 @@ jobs:
       - name: Notify recovery
         if: success()
         run: |
-          PREV=$(gh run list --workflow sync-upstream.yml --status completed --limit 1 \
-                   --json conclusion --jq '.[0].conclusion // ""' || true)
+          # Only success/failure count as "previous": skipped runs (closed PRs)
+          # must not break the anti-spam or hide a recovery.
+          PREV=$(gh run list --workflow sync-upstream.yml --status completed --limit 20 \
+                   --json conclusion \
+                   --jq '[.[] | select(.conclusion=="success" or .conclusion=="failure")][0].conclusion // ""' || true)
           if [ "$PREV" = "failure" ] && [ -n "${DISCORD_WEBHOOK:-}" ]; then
             jq -n --arg c "✅ **DragonUI sync** is working again." '{content: $c}' \
               | curl -fsS -H "Content-Type: application/json" -d @- "$DISCORD_WEBHOOK" || true
@@ -73,8 +94,11 @@ jobs:
       - name: Notify failure
         if: failure()
         run: |
-          PREV=$(gh run list --workflow sync-upstream.yml --status completed --limit 1 \
-                   --json conclusion --jq '.[0].conclusion // ""' || true)
+          # Only success/failure count as "previous": skipped runs (closed PRs)
+          # must not break the anti-spam or hide a recovery.
+          PREV=$(gh run list --workflow sync-upstream.yml --status completed --limit 20 \
+                   --json conclusion \
+                   --jq '[.[] | select(.conclusion=="success" or .conclusion=="failure")][0].conclusion // ""' || true)
           if [ "$PREV" != "failure" ] && [ -n "${DISCORD_WEBHOOK:-}" ]; then
             jq -n --arg c "🔴 **DragonUI sync failed** — ${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/actions/runs/${GITHUB_RUN_ID}" \
                   '{content: $c}' \
