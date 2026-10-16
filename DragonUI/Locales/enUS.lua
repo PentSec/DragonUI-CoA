@@ -1201,5 +1201,3 @@ L["Mail"] = true
 L["Retail-style mail window with Open All button"] = true
 L["Open All"] = true
 L["Opening..."] = true
-L["Loot all mail attachments and gold (skips COD mail)"] = true
-L["Inventory is full."] = true
