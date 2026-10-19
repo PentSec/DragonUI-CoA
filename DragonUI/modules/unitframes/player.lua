@@ -1854,6 +1854,40 @@ function PlayerArt.PlaceRestIcon()
     if not PlayerRestIcon then
         return
     end
+<<<<<<< HEAD
+=======
+    local iconShown = (PlayerLeaderIcon and PlayerLeaderIcon:IsShown()) or (PlayerGuideIcon and PlayerGuideIcon:IsShown())
+        or (PlayerMasterIcon and PlayerMasterIcon:IsShown())
+    if UF.IsCompact("player") then
+        local dragon = PlayerArt.CompactDragon()
+        local x, y, size = UF.CompactRestSpot(dragon)
+        local ink, spots = UF.COMPACT.restInk, UF.GetPlayerIcons()
+        local tab = _G.DragonUIPlayerGroupIndicator
+        -- The tab hangs by its BOTTOMRIGHT, growing left with its text; x on PlayerFrame to the health bar's (100 in).
+        local tabLimit = tab and tab:IsShown() and spots.tab.x - tab:GetWidth() - 1 - 100 - ink[2] * size
+        -- The crown and looter share the corner's row: the ink rises right after them, or left if the tab is there.
+        if iconShown and not (dragon and dragon.nose) then
+            local leader = (PlayerLeaderIcon and PlayerLeaderIcon:IsShown()) or (PlayerGuideIcon and PlayerGuideIcon:IsShown())
+            local last = (PlayerMasterIcon and PlayerMasterIcon:IsShown()) and spots.master or spots.leader
+            x = last.x + last.w + 1 - 100 - ink[1] * size
+            if tabLimit and x > tabLimit then
+                local right = (leader and spots.leader or spots.master).x - 1
+                local badge = _G.DragonUIPlayerPvPCircle
+                if badge and badge:IsShown() then
+                    right = math.min(right, UF.COMPACT.player.badgeLeft - 1)
+                end
+                x = right - 100 - ink[2] * size
+            end
+        end
+        if tabLimit then
+            x = math.min(x, tabLimit)
+        end
+        PlayerRestIcon:SetSize(size, size)
+        PlayerRestIcon:ClearAllPoints()
+        PlayerRestIcon:SetPoint("TOPLEFT", PlayerFrameHealthBar, "TOPLEFT", x, y)
+        return
+    end
+>>>>>>> 17dbd69c (fix(unitframes): portrait-off player's Zzz and group icons make room for each other)
     local config = GetPlayerConfig()
     local decoration = config and UF.PLAYER_DECORATIONS[config.dragon_decoration or "none"]
     local place = decoration and select(6, UF.GetDragon("player", decoration.kind, decoration.set))
@@ -2328,6 +2362,19 @@ local function CreatePlayerFrameTextures()
         groupIndicator.text = text
         groupIndicator.backgroundTexture = bgTexture
         groupIndicator:Hide()
+<<<<<<< HEAD
+=======
+        -- Portrait off, the crown, looter and Zzz share the tab's row: they make room for it while it shows.
+        local function OnTabToggled()
+            if UF.IsCompact("player") and IsPlayerModuleEnabled() then
+                UpdateLeaderIconPosition()
+                UpdateMasterIconPosition()
+                PlayerArt.PlaceRestIcon()
+            end
+        end
+        hooksecurefunc(groupIndicator, "Show", OnTabToggled)
+        hooksecurefunc(groupIndicator, "Hide", OnTabToggled)
+>>>>>>> 17dbd69c (fix(unitframes): portrait-off player's Zzz and group icons make room for each other)
 
         _G[PlayerFrame:GetName() .. 'GroupIndicator'] = groupIndicator
         _G[PlayerFrame:GetName() .. 'GroupIndicatorText'] = text
