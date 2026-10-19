@@ -160,7 +160,15 @@ make_conflict_pr() {
       return 0
     fi
     git -C "$wt" add -A
-    git -C "$wt" commit -q --no-verify -C "$c"      # original message + author, NO trailer on purpose
+    # `git add -A` can leave the tree identical to HEAD: the mirror delete/modify conflict, where the
+    # picked commit deletes a file the default branch still has. There is nothing to hand out then,
+    # and the empty commit's failure would abort the whole run under `set -e`.
+    if ! git -C "$wt" commit -q --no-verify -C "$c"; then   # original message + author, NO trailer
+      git worktree remove --force "$wt" >/dev/null 2>&1 || true
+      git branch -q -D "$br" >/dev/null 2>&1 || true
+      log "${s7} conflicts, but staging it leaves nothing to show; no draft PR"
+      return 0
+    fi
     if ! git -C "$wt" push -q origin "$br" >/dev/null 2>&1; then log "could not push ${br}"; fi
     git worktree remove --force "$wt" >/dev/null 2>&1 || true
     git branch -q -D "$br" >/dev/null 2>&1 || true
