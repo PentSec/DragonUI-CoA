@@ -12,7 +12,8 @@
 #    or it is <= .upstream-baseline, or it is listed in .upstream-ignore.
 #  - A commit that conflicts / breaks Lua syntax / touches .github/workflows is SKIPPED,
 #    gets one issue (label upstream-conflict) and the run continues with the rest.
-#  - A commit that conflicts also gets a branch conflict/<sha7> (conflict markers committed)
+#  - A commit that conflicts also gets a branch conflict/<sha7> (its conflicted state committed, which
+#    does not always carry conflict markers: a delete/modify conflict has none)
 #    and a DRAFT PR, so it can be resolved right there. Drafts can't be merged by accident.
 #  - Once a skipped commit is applied (trailer) or ignored, its issue and draft PR close themselves.
 #  - Every run ALSO re-checks commits whose issue is still open: when several commits touch the same
@@ -168,7 +169,8 @@ make_conflict_pr() {
   url="$(gh pr list -R "$REPO" --head "$br" --state open --json url --jq '.[0].url // empty' 2>/dev/null || true)"
   if [ -z "$url" ]; then
     {
-      echo "> ⚠️ **DRAFT — this branch contains conflict markers.** Don't merge until they are resolved."
+      echo "> ⚠️ **DRAFT — this branch is an unresolved conflict.** Don't merge until it is resolved."
+      echo "> A delete/modify conflict (the default branch does not have a file the commit touches) leaves no markers, so having none is not proof that it is resolved."
       echo
       echo "Upstream commit: [${BT}${s7}${BT}](${UP_WEB}/commit/${c}) — ${subject}"
       echo
@@ -236,18 +238,48 @@ cleanup_resolved() {
 # matching check into a non-matching one. Redirections and loop-reads only.
 
 # "Intact" = the branch is still exactly what make_conflict_pr() pushed: over the default branch it
-# holds exactly ONE commit that ADDS conflict markers and has NO "cherry picked from" trailer. If
-# any of that fails, the branch carries human work: never deleted, never force-pushed, never closed.
+# holds exactly ONE commit, with the picked commit's message untouched (so no "cherry picked from"
+# trailer) and a diff that is only what `git add -A` leaves on the pick's leftovers. That diff has
+# two shapes:
+#   - conflict markers, on the paths git could merge textually; or
+#   - a path resolved verbatim to the picked commit's own version. This is the delete/modify
+#     conflict, where the default branch does not have a file the commit touches: git writes NO
+#     markers for it and staging cannot annotate it, so testing for markers alone called the bot's
+#     own branch "manual work" for ever and kept its commit masked by the open issue.
+# If any check fails, the branch carries human work: never deleted, never force-pushed, never closed.
 branch_intact() {
-  local ref="$1" n f
+  local ref="$1" s7 c n f path changed
   if ! git rev-parse -q --verify "$ref" >/dev/null 2>&1; then return 1; fi
   n="$(git rev-list --count "origin/${DEFAULT_BRANCH}..${ref}" 2>/dev/null || echo 0)"
   if [ "$n" != "1" ]; then return 1; fi
+
+  # The upstream commit the branch was picked from, named by the branch itself: conflict/<sha7>.
+  s7="${ref##*/}"
+  c="$(git rev-parse -q --verify "${s7}" 2>/dev/null || true)"
+  if [ -z "$c" ] || ! git merge-base --is-ancestor "$c" "upstream/${UPSTREAM_BRANCH}" 2>/dev/null; then
+    return 1
+  fi
+
   f="$TMP/intact.log"
   git log -1 --format=%B "$ref" > "$f" 2>/dev/null || true
   if grep -qF 'cherry picked from commit' "$f"; then return 1; fi
+  # `git commit -C <picked>` copies the message verbatim; a human resolution rewrites it.
+  if [ "$(cat "$f")" != "$(git log -1 --format=%B "$c")" ]; then return 1; fi
+
+  changed="$(git diff-tree --no-commit-id --name-only -r "$ref" 2>/dev/null || true)"
+  [ -n "$changed" ] || return 1
+
   git show --format= --unified=0 "$ref" > "$f" 2>/dev/null || true
-  if ! grep -q '^+<<<<<<<' "$f"; then return 1; fi
+  if grep -q '^+<<<<<<<' "$f"; then return 0; fi
+
+  # No markers at all: every path it touched must be the picked commit's version, byte for byte.
+  while IFS= read -r path; do
+    [ -n "$path" ] || continue
+    if [ "$(git rev-parse -q --verify "$ref:$path" 2>/dev/null || true)" \
+         != "$(git rev-parse -q --verify "$c:$path" 2>/dev/null || true)" ]; then
+      return 1
+    fi
+  done <<< "$changed"
   return 0
 }
 
