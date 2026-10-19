@@ -160,7 +160,18 @@ make_conflict_pr() {
       return 0
     fi
     git -C "$wt" add -A
-    git -C "$wt" commit -q --no-verify -C "$c"      # original message + author, NO trailer on purpose
+    # `git add -A` can leave the index identical to HEAD: the mirror delete/modify conflict, where the
+    # picked commit deletes a file the default branch still has. There is nothing to hand out then.
+    if git -C "$wt" diff --cached --quiet; then
+      git -C "$wt" cherry-pick --abort >/dev/null 2>&1 || true
+      git worktree remove --force "$wt" >/dev/null 2>&1 || true
+      git branch -q -D "$br" >/dev/null 2>&1 || true
+      log "${s7} conflicts, but staging it leaves nothing to show; no draft PR"
+      return 0
+    fi
+    # Original message + author, NO trailer on purpose. A failure here is a real error, not a conflict
+    # shape: let it abort the run instead of reporting it as "nothing to show".
+    git -C "$wt" commit -q --no-verify -C "$c"
     if ! git -C "$wt" push -q origin "$br" >/dev/null 2>&1; then log "could not push ${br}"; fi
     git worktree remove --force "$wt" >/dev/null 2>&1 || true
     git branch -q -D "$br" >/dev/null 2>&1 || true
