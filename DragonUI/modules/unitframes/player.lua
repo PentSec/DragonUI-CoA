@@ -1085,7 +1085,13 @@ end
 
 local function UpdateMasterIconPosition()
     if PlayerMasterIcon then
+<<<<<<< HEAD
         PlacePlayerIcon(PlayerMasterIcon, UF.PLAYER_ICONS.master)
+=======
+        PlacePlayerIcon(PlayerMasterIcon, UF.GetPlayerIcons().master)
+        PlayerMasterIcon:SetTexture(UF.STATUS_ICONS.file)
+        PlayerMasterIcon:SetTexCoord(unpack(UF.STATUS_ICONS.master[UF.GetStatusIconStyle()]))
+>>>>>>> 0098cfaa (feat(unitframes): HD master looter bag on the player and party frames)
     end
 end
 
