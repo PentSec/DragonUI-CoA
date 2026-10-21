@@ -834,6 +834,7 @@ L["Latency Color"] = true
 L["Latency Alpha"] = true
 L["Opacity of the latency indicator."] = true
 
+<<<<<<< HEAD
 -- ============================================================================
 -- BNET TOAST TAB
 -- ============================================================================
@@ -852,6 +853,29 @@ L["Position & Scale"] = true
 L["Scale of the BNet toast frame."] = true
 L["Horizontal position of the BNet toast from the screen center. Negative values move left, positive values move right."] = true
 L["Vertical offset of the BNet toast frame. Negative values move down, positive values move up."] = true
+=======
+-- Global cooldown indicator (player only)
+L["Global Cooldown"] = true
+L["Enable GCD Indicator"] = true
+L["Show a global cooldown readout above the player cast bar."] = true
+L["GCD Height"] = true
+L["Thickness of the GCD bar in pixels."] = true
+L["GCD Width"] = true
+L["Width of the GCD bar as a percentage of the cast bar."] = true
+L["GCD Color"] = true
+L["Always Show GCD Track"] = true
+L["Keep the empty GCD bar visible while no global cooldown is running."] = true
+L["Reset GCD Position"] = true
+L["GCD indicator reset to the cast bar."] = true
+L["GCD Style"] = true
+L["Fill texture of the GCD bar."] = true
+L["GCD Background"] = true
+L["What is drawn behind the GCD bar."] = true
+L["Show GCD Spark"] = true
+L["Show a spark on the moving edge of the GCD bar."] = true
+L["Flat"] = true
+L["Framed"] = true
+>>>>>>> 12258e58 (feat(castbar): global cooldown bar styles and backgrounds #581)
 
 -- ============================================================================
 -- ENHANCEMENTS TAB

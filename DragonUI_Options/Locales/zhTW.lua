@@ -650,6 +650,31 @@ L["Latency Color"] = "延遲顏色"
 L["Latency Alpha"] = "延遲透明度"
 L["Opacity of the latency indicator."] = "延遲指示器的透明度。"
 
+<<<<<<< HEAD
+=======
+-- Global cooldown indicator (player only)
+L["Global Cooldown"] = "全域冷卻"
+L["Enable GCD Indicator"] = "啟用全域冷卻指示器"
+L["Show a global cooldown readout above the player cast bar."] = "在玩家施法條上方顯示全域冷卻進度。"
+L["GCD Height"] = "全域冷卻高度"
+L["Thickness of the GCD bar in pixels."] = "全域冷卻長條的粗細（像素）。"
+L["GCD Width"] = "全域冷卻寬度"
+L["Width of the GCD bar as a percentage of the cast bar."] = "全域冷卻長條寬度相對於施法條的百分比。"
+L["GCD Color"] = "全域冷卻顏色"
+L["Always Show GCD Track"] = "始終顯示全域冷卻軌道"
+L["Keep the empty GCD bar visible while no global cooldown is running."] = "沒有全域冷卻時也保持顯示空的冷卻條。"
+L["Reset GCD Position"] = "重置全域冷卻位置"
+L["GCD indicator reset to the cast bar."] = "全域冷卻指示器已重置到施法條位置。"
+L["GCD Style"] = "全域冷卻樣式"
+L["Fill texture of the GCD bar."] = "全域冷卻條的填充材質。"
+L["GCD Background"] = "全域冷卻背景"
+L["What is drawn behind the GCD bar."] = "全域冷卻條後面繪製的背景。"
+L["Show GCD Spark"] = "顯示全域冷卻火花"
+L["Show a spark on the moving edge of the GCD bar."] = "在全域冷卻條移動的邊緣顯示火花。"
+L["Flat"] = "純色"
+L["Framed"] = "帶邊框"
+
+>>>>>>> 12258e58 (feat(castbar): global cooldown bar styles and backgrounds #581)
 -- ============================================================================
 -- 增強功能標籤頁
 -- ============================================================================
