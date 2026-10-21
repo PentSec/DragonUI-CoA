@@ -262,12 +262,16 @@ local function BuildPlayerCastbar(scroll)
     -- ================================================================
     local gcd = C:AddSection(scroll, LO["Global Cooldown"])
 
+    local function gcdRefresh()
+        if addon.RefreshGCD then addon.RefreshGCD() end
+    end
+
     C:AddToggle(gcd, {
         label = LO["Enable GCD Indicator"],
         desc  = LO["Show a global cooldown readout above the player cast bar."],
         dbPath = "castbar.gcd.enabled",
         callback = function()
-            refresh()
+            gcdRefresh()
             -- Rebuild so the dependent controls pick up the new enabled state.
             Panel:SelectTab("castbars")
         end,
@@ -284,7 +288,7 @@ local function BuildPlayerCastbar(scroll)
         min = 1, max = 12, step = 1,
         width = 200,
         disabled = gcdDisabled,
-        callback = refresh,
+        callback = gcdRefresh,
     })
 
     C:AddSlider(gcd, {
@@ -295,7 +299,7 @@ local function BuildPlayerCastbar(scroll)
         width = 200,
         isPercent = true,
         disabled = gcdDisabled,
-        callback = refresh,
+        callback = gcdRefresh,
     })
 
     C:AddColorPicker(gcd, {
@@ -303,7 +307,7 @@ local function BuildPlayerCastbar(scroll)
         dbPath = "castbar.gcd.color",
         hasAlpha = true,
         disabled = gcdDisabled,
-        callback = refresh,
+        callback = gcdRefresh,
     })
 
     C:AddToggle(gcd, {
@@ -311,7 +315,7 @@ local function BuildPlayerCastbar(scroll)
         desc  = LO["Keep the empty GCD bar visible while no global cooldown is running."],
         dbPath = "castbar.gcd.alwaysShow",
         disabled = gcdDisabled,
-        callback = refresh,
+        callback = gcdRefresh,
     })
 
     C:AddDropdown(gcd, {
@@ -325,7 +329,7 @@ local function BuildPlayerCastbar(scroll)
             smooth = LO["Smooth"],
         },
         disabled = gcdDisabled,
-        callback = refresh,
+        callback = gcdRefresh,
     })
 
     C:AddDropdown(gcd, {
@@ -339,7 +343,7 @@ local function BuildPlayerCastbar(scroll)
             none = LO["None"],
         },
         disabled = gcdDisabled,
-        callback = refresh,
+        callback = gcdRefresh,
     })
 
     C:AddToggle(gcd, {
@@ -347,7 +351,7 @@ local function BuildPlayerCastbar(scroll)
         desc  = LO["Show a spark on the moving edge of the GCD bar."],
         dbPath = "castbar.gcd.spark",
         disabled = gcdDisabled,
-        callback = refresh,
+        callback = gcdRefresh,
     })
 
     C:AddButton(gcd, {

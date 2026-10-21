@@ -47,6 +47,7 @@
 
     <!-- Cast Bar module -->
     <Script file="castbar.lua"/>
+    <Script file="gcd.lua"/>
 
     <!-- Game Menu module -->
     <Script file="gamemenu_dragons.lua"/>
