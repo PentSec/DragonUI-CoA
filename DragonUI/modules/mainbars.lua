@@ -334,6 +334,35 @@ local noAutoFormPaging = {
     WARLOCK = true,
 }
 
+-- The same pages keyed by form spell for "Page by Form": classless heroes' forms leave GetBonusBarOffset at 0.
+local FORM_SPELL_PAGES = {
+    [2457] = 7, [71] = 8, [2458] = 9, -- Battle, Defensive, Berserker Stance
+    [768] = 7, [33891] = 8, [5487] = 9, [9634] = 9, [24858] = 10, -- Cat, Tree of Life, Bear, Dire Bear, Moonkin
+    [1784] = 7, [51713] = 8, -- Stealth, Shadow Dance
+    [15473] = 7, -- Shadowform
+}
+
+local function IsPageByForm()
+    local db = addon.db and addon.db.profile and addon.db.profile.mainbars
+    return db and db.page_by_form == true
+end
+
+-- Matched by name, as a stance slot's index shifts with the forms known and auras share the bar.
+local function GetFormPageClauses()
+    local pageByName = {}
+    for spellID, page in pairs(FORM_SPELL_PAGES) do
+        local name = GetSpellInfo(spellID)
+        if name then pageByName[name] = page end
+    end
+    local parts = {}
+    for index = 1, GetNumShapeshiftForms() do
+        local _, name = GetShapeshiftFormInfo(index)
+        local page = name and pageByName[name]
+        if page then parts[#parts + 1] = "[stance:" .. index .. "] " .. page .. ";" end
+    end
+    return table.concat(parts, " ")
+end
+
 local function GetMainBarPageCondition()
     -- When the user opts out of form/stance-based page switching, return
     -- only the shared condition (bonusbar:5, bars 2-6). The main action bar
@@ -359,9 +388,21 @@ local function GetMainBarPageCondition()
     end
 
     local parts = { PAGE_CLAUSES_SHARED }
-    parts[#parts + 1] = classCondition
+    -- CoA: "Page by Form" is an opt-in override that pages by the stance bar's
+    -- form spell names. When it is off, the known class clauses and the runtime
+    -- fallback for unknown CoA classes (built above) decide the page.
+    if IsPageByForm() then
+        parts[#parts + 1] = GetFormPageClauses()
+    else
+        parts[#parts + 1] = classCondition
+    end
     parts[#parts + 1] = "1"
     return table.concat(parts, " ")
+end
+
+local function RegisterMainBarPageDriver(mainBar)
+    MainbarsModule.pageCondition = GetMainBarPageCondition()
+    RegisterStateDriver(mainBar, "page", MainbarsModule.pageCondition)
 end
 
 -- Main bar pages are driven through ActionButton actionpage attributes.
@@ -594,7 +635,7 @@ local function SetupMainBarPageDriver(mainBar)
             handle:SetAttribute("actionpage", page)
         end
     ]])
-    RegisterStateDriver(mainBar, "page", GetMainBarPageCondition())
+    RegisterMainBarPageDriver(mainBar)
 
     -- Ensure all action buttons refresh their display after the page
     -- driver registers. Without this, ActionButton_Update may never
@@ -640,7 +681,9 @@ local function SetupMainBarPageDriver(mainBar)
         formsFrame:RegisterEvent("UPDATE_SHAPESHIFT_FORMS")
         formsFrame:SetScript("OnEvent", function()
             if GetNumShapeshiftForms() > 0 then
-                RegisterStateDriver(mainBar, 'page', GetMainBarPageCondition())
+                -- Re-register through the wrapper so MainbarsModule.pageCondition
+                -- stays current for SyncMainBarPageCondition.
+                RegisterMainBarPageDriver(mainBar)
                 for i = 1, NUM_ACTIONBAR_BUTTONS do
                     local button = _G["ActionButton" .. i]
                     if button then
@@ -670,8 +713,20 @@ local function RefreshMainBarPageState()
     local mainBar = MainbarsModule.pageDriverFrame
     if not mainBar then return end
 
-    RegisterStateDriver(mainBar, 'page', GetMainBarPageCondition())
+    RegisterMainBarPageDriver(mainBar)
 end
+
+-- Re-registers only when the condition text changed: the form list, the profile or "Page by Form".
+local function SyncMainBarPageCondition()
+    local mainBar = MainbarsModule.pageDriverFrame
+    if not mainBar or GetMainBarPageCondition() == MainbarsModule.pageCondition then return end
+    if InCombatLockdown() then
+        addon.CombatQueue:Add("mainbars_page_condition", SyncMainBarPageCondition)
+        return
+    end
+    RegisterMainBarPageDriver(mainBar)
+end
+addon.RefreshMainBarPaging = SyncMainBarPageCondition
 
 local DIVIDER_PIECES = { top = "dividerTop", mid = "dividerMid", bottom = "dividerBottom" }
 
@@ -2744,6 +2799,7 @@ local function InitializeMainbars()
     mainbarsEventFrame:RegisterEvent("UNIT_EXITED_VEHICLE")
     mainbarsEventFrame:RegisterEvent("UNIT_ENTERED_VEHICLE")
     mainbarsEventFrame:RegisterEvent("PLAYER_LOGIN")
+    mainbarsEventFrame:RegisterEvent("UPDATE_SHAPESHIFT_FORMS")
     mainbarsEventFrame:SetScript("OnEvent", function(self, event, unitOrAddon)
         if event == "PLAYER_ENTERING_WORLD" then
             RefreshMainBarPageState()
@@ -2818,6 +2874,11 @@ local function InitializeMainbars()
             -- Handle vehicle events that affect pet bar - Execute immediately
             if IsModuleEnabled() and unitOrAddon == "player" then
                 addon.UpdatePetBarVisibility()
+            end
+
+        elseif event == "UPDATE_SHAPESHIFT_FORMS" then
+            if IsPageByForm() then
+                SyncMainBarPageCondition()
             end
         end
     end)
@@ -3715,6 +3776,8 @@ function addon.RefreshMainbarsSystem()
     if addon.RefreshXpRepBars then
         addon.RefreshXpRepBars()
     end
+
+    SyncMainBarPageCondition()
 end
 
 -- Alias for compatibility
