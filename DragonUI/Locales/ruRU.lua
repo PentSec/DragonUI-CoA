@@ -224,8 +224,6 @@ L["TargetPrimaryStat"] = "Основной показатель цели"
 L["Primary stat icon movability widget"] = "Виджет перемещения иконки основного показателя"
 L["WildCardDice"] = "Кости WildCard"
 L["Conquest of Azeroth WildCard dice movability widget"] = "Виджет перемещения костей WildCard (Conquest of Azeroth)"
-L["DurabilityFrameWidget"] = "Окно прочности"
-L["Durability frame movability widget"] = "Виджет перемещения окна прочности"
 
 -- Editor mode system messages
 L["All editable frames shown for editing"] = "Все редактируемые фреймы показаны для редактирования"

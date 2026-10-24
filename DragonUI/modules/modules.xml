@@ -62,9 +62,6 @@
     <!-- Player Primary Stat movability widget -->
     <Script file="player_primary_stat.lua"/>
 
-    <!-- DurabilityFrame movability widget -->
-    <Script file="durabilityframe.lua"/>
-
     <Script file="compactframes.lua"/>
 
         <!-- Profile Sync module (AceComm-based profile sharing) -->

@@ -206,12 +206,6 @@ local defaults = {
                 posY = 200,
                 custom_position = false,
             },
-            durabilityframe = {
-                anchor = "TOP",
-                posX = -15,
-                posY = -5,
-                custom_position = false,
-            },
             playerPrimaryStat = {
                 anchor = "TOPLEFT",
                 posX = 80,
@@ -979,9 +973,6 @@ local defaults = {
             },
             playerPrimaryStat = {
                 enabled = true -- Primary stat icon movability widget
-            },
-            durabilityframe = {
-                enabled = true -- Durability frame movability widget
             },
             cooldowns = {
                 enabled = true -- Show cooldown timers on action buttons

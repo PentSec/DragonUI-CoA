@@ -82,8 +82,6 @@ L["TargetPrimaryStat"] = "Atributo Principal (Alvo)"
 L["Primary stat icon movability widget"] = "Widget de mobilidade do ícone de atributo principal"
 L["WildCardDice"] = "Dados WildCard"
 L["Conquest of Azeroth WildCard dice movability widget"] = "Widget de mobilidade dos dados WildCard do Conquest of Azeroth"
-L["DurabilityFrameWidget"] = "Quadro de Durabilidade"
-L["Durability frame movability widget"] = "Widget de mobilidade do quadro de durabilidade"
 
 -- Bag Sort (Sell Scrap)
 L["Sell Scrap"] = "Vender Sucata"

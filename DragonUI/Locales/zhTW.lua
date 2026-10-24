@@ -82,8 +82,6 @@ L["TargetPrimaryStat"] = "目標主屬性"
 L["Primary stat icon movability widget"] = "主屬性圖示可移動元件"
 L["WildCardDice"] = "WildCard 骰子"
 L["Conquest of Azeroth WildCard dice movability widget"] = "Conquest of Azeroth WildCard 骰子可移動元件"
-L["DurabilityFrameWidget"] = "耐久度框架"
-L["Durability frame movability widget"] = "耐久度框架可移動元件"
 
 -- Bag Sort (Sell Scrap)
 L["Sell Scrap"] = "出售垃圾"
