@@ -979,6 +979,45 @@ local function InstallCoAMenuHook()
     coaHookInstalled = true
 end
 
+local menuBtn
+
+-- ACP's button is GameMenuButtonAddOns; ours on top of it read as a restyled ACP button plus a spare row.
+local function HasOtherAddonsButton()
+    return _G.GameMenuButtonAddons or _G.GameMenuButtonAddOns or IsAddOnLoaded("ACP")
+end
+
+local function AddMenuButton()
+    if menuBtn or HasOtherAddonsButton() then return end
+
+    menuBtn = CreateFrame("Button", "GameMenuButtonDragonUIAddons", GameMenuFrame, "GameMenuButtonTemplate")
+    -- 140 like gamemenu.lua: at the template's 144 the Forever skin looks wider than the stock buttons.
+    menuBtn:SetWidth(140)
+    menuBtn:SetText(ADDONS)
+
+    if addon.ForeverUI and addon.ForeverUI.SkinButton then
+        addon.ForeverUI.SkinButton(menuBtn)
+    end
+
+    if GameMenuButtonMacros then
+        menuBtn:SetPoint("TOP", GameMenuButtonMacros, "BOTTOM", 0, -1)
+    else
+        menuBtn:SetPoint("TOP", GameMenuFrame, "TOP", 0, -200)
+    end
+    if GameMenuButtonRatings then
+        GameMenuButtonRatings:ClearAllPoints()
+        GameMenuButtonRatings:SetPoint("TOP", menuBtn, "BOTTOM", 0, -1)
+    end
+    if GameMenuButtonLogout then
+        GameMenuButtonLogout:ClearAllPoints()
+        GameMenuButtonLogout:SetPoint("TOP", menuBtn, "BOTTOM", 0, -1)
+    end
+    GameMenuFrame:SetHeight(GameMenuFrame:GetHeight() + menuBtn:GetHeight() + 1)
+    AddonManagerModule.initialized = true
+    AddonManagerModule.applied = true
+
+    menuBtn:SetScript("OnClick", OpenAddonManager)
+end
+
 local initFrame = CreateFrame("Frame")
 initFrame:RegisterEvent("ADDON_LOADED")
 initFrame:RegisterEvent("PLAYER_LOGIN")
@@ -1009,35 +1048,8 @@ initFrame:SetScript("OnEvent", function(self, event)
         end
 
         if _G.GameMenuFrame then
-            if _G.GameMenuButtonAddons then return end
-
-            local menuBtn = CreateFrame("Button", "GameMenuButtonDragonUIAddons", GameMenuFrame, "GameMenuButtonTemplate")
-            -- 140 like gamemenu.lua: at the template's 144 the Forever skin looks wider than the stock buttons.
-            menuBtn:SetWidth(140)
-            menuBtn:SetText(ADDONS)
-
-            if addon.ForeverUI and addon.ForeverUI.SkinButton then
-                addon.ForeverUI.SkinButton(menuBtn)
-            end
-
-            if GameMenuButtonMacros then
-                menuBtn:SetPoint("TOP", GameMenuButtonMacros, "BOTTOM", 0, -1)
-            else
-                menuBtn:SetPoint("TOP", GameMenuFrame, "TOP", 0, -200)
-            end
-            if GameMenuButtonRatings then
-                GameMenuButtonRatings:ClearAllPoints()
-                GameMenuButtonRatings:SetPoint("TOP", menuBtn, "BOTTOM", 0, -1)
-            end
-            if GameMenuButtonLogout then
-                GameMenuButtonLogout:ClearAllPoints()
-                GameMenuButtonLogout:SetPoint("TOP", menuBtn, "BOTTOM", 0, -1)
-            end
-            GameMenuFrame:SetHeight(GameMenuFrame:GetHeight() + menuBtn:GetHeight() + 1)
-            AddonManagerModule.initialized = true
-            AddonManagerModule.applied = true
-
-            menuBtn:SetScript("OnClick", OpenAddonManager)
+            -- Other addons may add their AddOns button from their own PLAYER_LOGIN, after this one.
+            GameMenuFrame:HookScript("OnShow", AddMenuButton)
             return
         end
 
