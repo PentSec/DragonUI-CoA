@@ -2687,8 +2687,19 @@ local function ShowPlayerCastbarTest()
     end
 end
 
+-- The preview replaced any real cast; pick up one still running, the way a target change does.
+local function ResumeRealCast(unitType)
+    if not IsEnabled(unitType) or not UnitExists(unitType) then return end
+    if UnitCastingInfo(unitType) then
+        CastbarModule:HandleCastingEvent("UNIT_SPELLCAST_START", unitType)
+    elseif UnitChannelInfo(unitType) then
+        CastbarModule:HandleCastingEvent("UNIT_SPELLCAST_CHANNEL_START", unitType)
+    end
+end
+
 local function HidePlayerCastbarTest()
     CastbarModule:HideCastbar("player")
+    ResumeRealCast("player")
 end
 
 local function ShowCastbarTest(unitType)
@@ -2717,6 +2728,7 @@ end
 
 local function HideCastbarTest(unitType)
     CastbarModule:HideCastbar(unitType)
+    ResumeRealCast(unitType)
 end
 
 local function HandleCastbarEditorHide(unitType)

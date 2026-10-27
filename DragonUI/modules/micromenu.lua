@@ -2659,6 +2659,9 @@ end
 -- PUBLIC API
 -- ============================================================================
 
+-- Found by the registry, which still keeps micromenu running until a reload (its restore leaves art behind).
+addon.RestoreMicromenuSystem = RestoreMicromenuSystem
+
 function addon.RefreshMicromenuSystem()
     if IsModuleEnabled() then
         if not MicromenuModule.applied then
