@@ -27,7 +27,6 @@ local function BuildGeneralTab(scroll)
 
     C:AddLabel(about, "|cff" .. C.Theme.accentHex .. LO["DragonUI"] .. " v" .. (addon.RELEASE_VERSION or "?") .. "|r")
     C:AddDescription(about, LO["Bringing the retail WoW look to 3.3.5a, inspired by Dragonflight UI."])
-<<<<<<< HEAD
     C:AddSpacer(about)
     C:AddDescription(about, LO["This Fork is maintained by PentSec for Conquest of Azeroth, based on the original work by NeticSoul."])
     C:AddSpacer(about)
@@ -39,11 +38,6 @@ local function BuildGeneralTab(scroll)
     C:AddSpacer(about)
     C:AddDescription(about, LO["Help me on GitHub (select and Ctrl+C to copy):"])
     C:AddCopyableText(about, "https://github.com/PentSec/DragonUI-CoA")
-=======
-    C:AddDescription(about, LO["Created and maintained by NeticSoul, with community contributions."])
-    C:AddDescription(about, LO["GitHub (select and Ctrl+C to copy):"])
-    C:AddCopyableText(about, "https://github.com/NeticSoul/DragonUI")
->>>>>>> 4c6d332e (feat(core): custom UI scale below Blizzard's 0.64)
 
     C:AddSpacer(scroll)
 
