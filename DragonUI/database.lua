@@ -540,10 +540,6 @@ local defaults = {
             exhaustion_tick = true -- Show exhaustion tick (on by default)
         },
 
-        compatibility = {
-            d3d9ex_warning_seen = false,
-        },
-
         buttons = {
             only_actionbackground = true,
             hide_main_bar_button_background = false,
