@@ -1238,7 +1238,6 @@ local function OnLoginGridPass()
         addon.RefreshButtonGrid()
         addon.RefreshButtons()
     end
-    collectgarbage()
 end
 addon.package:Subscribe(OnLoginGridPass, 'PLAYER_LOGIN')
 
@@ -1247,7 +1246,7 @@ local initFrame = CreateFrame("Frame")
 initFrame:RegisterEvent("ADDON_LOADED")
 initFrame:RegisterEvent("PLAYER_ENTERING_WORLD")
 initFrame:RegisterEvent("PLAYER_REGEN_ENABLED")
-initFrame:RegisterEvent("UPDATE_BINDINGS")  -- CLAVE: Actualizar hotkeys cuando cambien los bindings
+initFrame:RegisterEvent("UPDATE_BINDINGS")
 initFrame:SetScript("OnEvent", function(self, event, addonName)
     if event == "ADDON_LOADED" and addonName == "DragonUI" then
         Initialize()
