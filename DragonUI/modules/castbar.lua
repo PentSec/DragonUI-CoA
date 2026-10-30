@@ -1194,7 +1194,7 @@ local function CreateCastbar(unitType)
     if texture then
         texture:SetVertexColor(1, 1, 1, 1)
     end
-    frames.castbar:SetStatusBarColor(1, 0.7, 0, 1)
+    frames.castbar:SetStatusBarColor(1, 1, 1, 1)
     
     -- Border
     local border = frames.castbar:CreateTexture(nil, 'ARTWORK', nil, 0)
@@ -1548,7 +1548,7 @@ function CastbarModule:HandleCastStart_Simple(unitType, unit, isChanneling)
     -- to prevent a one-frame flash with stale colors on the first cast
     if isChanneling then
         frames.castbar:SetStatusBarTexture(TEXTURES.channel)
-        frames.castbar:SetStatusBarColor(unitType == "player" and 0 or 1, 1, unitType == "player" and 1 or 1, 1)
+        frames.castbar:SetStatusBarColor(1, 1, 1, 1)
         UpdateChannelTicks(frames.castbar, frames.ticks, spell)
         local texture = frames.castbar:GetStatusBarTexture()
         if texture then
@@ -1556,7 +1556,7 @@ function CastbarModule:HandleCastStart_Simple(unitType, unit, isChanneling)
         end
     else
         frames.castbar:SetStatusBarTexture(TEXTURES.standard)
-        frames.castbar:SetStatusBarColor(1, 0.7, 0, 1)
+        frames.castbar:SetStatusBarColor(1, 1, 1, 1)
         local texture = frames.castbar:GetStatusBarTexture()
         if texture then
             texture:SetVertexColor(1, 1, 1, 1)
@@ -1711,7 +1711,7 @@ function CastbarModule:HandleCastStop_Simple(unitType, wasInterrupted, isChannel
             castbar:InvalidateTextureCache()
         end
         castbar:SetStatusBarTexture(TEXTURES.interrupted)
-        castbar:SetStatusBarColor(1, 0, 0, 1)
+        castbar:SetStatusBarColor(1, 1, 1, 1)
         castbar:SetValue(1.0)
         local texture = castbar:GetStatusBarTexture()
         if texture then
@@ -2815,7 +2815,7 @@ function CastbarModule:ShowCastbar(unitType, spellName, currentValue, maxValue, 
         if texture then
             texture:SetVertexColor(1, 1, 1, 1)
         end
-        castbar:SetStatusBarColor(1, 0, 0, 1)
+        castbar:SetStatusBarColor(1, 1, 1, 1)
         SetCastText(unitType, "Interrupted")
         castbar.selfInterrupt = true
     else
@@ -2825,18 +2825,35 @@ function CastbarModule:ShowCastbar(unitType, spellName, currentValue, maxValue, 
             if texture then
                 texture:SetVertexColor(1, 1, 1, 1)
             end
-            castbar:SetStatusBarColor(0, 1, 0, 1)
+            castbar:SetStatusBarColor(1, 1, 1, 1)
         else
             castbar:SetStatusBarTexture(TEXTURES.standard)
             local texture = castbar:GetStatusBarTexture()
             if texture then
                 texture:SetVertexColor(1, 1, 1, 1)
             end
-            castbar:SetStatusBarColor(1, 0.7, 0, 1)
+            castbar:SetStatusBarColor(1, 1, 1, 1)
         end
         SetCastText(unitType, spellName)
     end
-    
+
+    -- The preview never ticks, so it gets the crop and spark that OnUpdate gives a real cast.
+    if castbar.InvalidateTextureCache then
+        castbar:InvalidateTextureCache()
+    end
+    if castbar.UpdateTextureClipping then
+        castbar:UpdateTextureClipping(isInterrupted and 1 or progress, isChanneling)
+    end
+    if frames.spark then
+        if isInterrupted then
+            frames.spark:Hide()
+        else
+            frames.spark:ClearAllPoints()
+            frames.spark:SetPoint('CENTER', castbar, 'LEFT', progress * castbar:GetWidth(), 0)
+            frames.spark:Show()
+        end
+    end
+
     if frames.textBackground then
         frames.textBackground:Show()
     end
