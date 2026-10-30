@@ -989,6 +989,7 @@ L["Always Show Mana Text"] = "Всегда показывать текст ма�
 L["Level Style"] = "Стиль уровня"
 L["Class Portrait"] = "Портрет класса"
 L["Alternative Class Icons"] = "Альтернативные значки классов"
+L["Race Portrait"] = "Портрет расы"
 L["Show PvP Icon"] = "Показывать значок PvP"
 L["PvP Icon Style"] = "Стиль значка PvP"
 L["Fat Health Bar"] = "Широкая полоса здоровья"

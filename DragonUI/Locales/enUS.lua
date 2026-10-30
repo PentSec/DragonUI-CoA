@@ -954,6 +954,7 @@ L["Always Show Mana Text"] = true
 L["Level Style"] = true
 L["Class Portrait"] = true
 L["Alternative Class Icons"] = true
+L["Race Portrait"] = true
 L["Show PvP Icon"] = true
 L["PvP Icon Style"] = true
 L["Fat Health Bar"] = true
