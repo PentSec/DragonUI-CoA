@@ -1340,6 +1340,7 @@ local function RestoreItemLevelSystem()
 
     HideAllTexts()
     HideAllAverages()
+    if repairCostFrame then repairCostFrame:Hide() end
 
     ItemLevelModule.applied = false
 end
