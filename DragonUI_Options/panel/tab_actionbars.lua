@@ -203,9 +203,29 @@ local function BuildGeneralTab(scroll)
     local buttons = C:AddSection(scroll, LO["Button Appearance"])
 
     C:AddToggle(buttons, {
-        label = LO["Hide Secondary Bar Background"],
-        desc = LO["Hide the background of secondary bar buttons (stance, pet, totem, etc.)."],
+        label = LO["Hide Main Bar Art"],
+        desc = LO["Hide the main bar's art and gryphons, leaving only the buttons."],
+        dbPath = "buttons.hide_main_bar_background",
+        callback = function()
+            if addon.RefreshMainBarArt then addon.RefreshMainBarArt() end
+        end,
+    })
+
+    C:AddToggle(buttons, {
+        label = LO["Hide Button Backgrounds"],
+        desc = LO["Hide the slot background of every action bar button, leaving only the frames."],
+        dbPath = "buttons.hide_slot_backgrounds",
+        callback = function()
+            RefreshButtons()
+            Panel:SelectTab("actionbars")
+        end,
+    })
+
+    C:AddToggle(buttons, {
+        label = LO["Main Bar Only Background"],
+        desc = LO["Only the main action bar buttons will have a background."],
         dbPath = "buttons.only_actionbackground",
+        disabled = function() return C:GetDBValue("buttons.hide_slot_backgrounds") end,
         callback = RefreshButtons,
     })
 
@@ -213,15 +233,8 @@ local function BuildGeneralTab(scroll)
         label = LO["Hide Main Bar Button Background"],
         desc = LO["Hide the background of main action bar buttons."],
         dbPath = "buttons.hide_main_bar_button_background",
+        disabled = function() return C:GetDBValue("buttons.hide_slot_backgrounds") end,
         callback = RefreshButtons,
-    })
-
-    C:AddToggle(buttons, {
-        label = LO["Hide Main Bar Background"],
-        desc = LO["Hide the main bar's art and gryphons, leaving only the buttons."],
-        dbPath = "buttons.hide_main_bar_background",
-        requiresReload = true,
-        callback = RefreshBars,
     })
 
     -- ====================================================================
