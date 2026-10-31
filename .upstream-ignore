@@ -4,3 +4,9 @@
 # again (RehomePossessBar + state driver) resurfaces the click/keybind-stealing bug fixed by
 # noop + keypress.lua (see f9093c96 and the RETIRED_BAR_PARTS entry from clean-room bd6f1f4f).
 c949e12fe544efc6236c71c96654f36bafbc50c6
+
+# f154bd5 — chore(release): DragonUI 3.0 (upstream force-pushed 8039260 with the same content).
+# Owner decision 2026-10-31: class B — the only delta over 9d08776b (the applied 8039260) is
+# upstream's release CI (.github/update_download_link.py, .github/workflows/update-download-link.yml)
+# and README cosmetics (xs badges, download button pointing at NeticSoul's v3.0 ZIP).
+f154bd5cf4982359619896c354904da1e212ebd3
