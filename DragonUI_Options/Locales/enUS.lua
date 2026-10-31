@@ -44,7 +44,9 @@ L["Change columns, rows, and buttons shown per action bar."] = true
 L["Switch micro menu icons between colored and grayscale style."] = true
 L["About"] = true
 L["Bringing the retail WoW look to 3.3.5a."] = true
+L["Bringing the retail WoW look to 3.3.5a, inspired by Dragonflight UI."] = true
 L["Created and maintained by NeticSoul, with community contributions."] = true
+L["Use the tabs on the left to configure modules, action bars, unit frames, minimap, and more."] = true
 
 -- Language
 L["Language"] = true
@@ -1363,6 +1365,7 @@ L["Profile shared with"] = true
 L["This Fork is maintained by PentSec for Conquest of Azeroth, based on the original work by NeticSoul."] = true
 L["Close"] = true
 L["Enter a name for the imported preset:"] = true
+L["Enter a name for this preset:"] = true
 L["Imported Preset"] = true
 L["Preset imported: "] = true
 L["Invalid preset string."] = true
@@ -1982,3 +1985,16 @@ L["Let the camera zoom out further than the game's own slider allows."] = true
 L["Camera Distance"] = true
 L["Error Messages"] = true
 L["The red errors in the middle of the screen. Yellow quest updates always show."] = true
+
+-- ============================================================================
+-- MISSING STRINGS SYNCED FROM enUS
+-- ============================================================================
+
+L["Choose how DragonUI and SexyMap share the minimap."] = true
+L["Hybrid"] = true
+L["Minimap Mode"] = true
+L["SexyMap"] = true
+L["SexyMap Compatibility"] = true
+L["SexyMap visuals with DragonUI editor and positioning."] = true
+L["Uses DragonUI for the minimap."] = true
+L["Uses SexyMap for the minimap."] = true

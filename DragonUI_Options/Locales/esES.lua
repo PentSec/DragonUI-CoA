@@ -2069,3 +2069,25 @@ L["Farm Mode"] = "Modo farmeo"
 L["Extra scale"] = "Escala extra"
 L["Bigger minimap with the surrounding clutter hidden."] = "Minimapa más grande y sin los elementos de alrededor."
 L["Extra scale applied on top of the minimap scale."] = "Escala extra que se aplica sobre la escala del minimapa."
+
+-- ============================================================================
+-- MISSING STRINGS SYNCED FROM enUS
+-- ============================================================================
+
+L["Activates the modern world map frame. Requires /reload to take effect."] = "Activa el marco moderno del mapa del mundo. Requiere /reload para aplicarse."
+L["Bringing the retail WoW look to 3.3.5a, inspired by Dragonflight UI."] = "Trayendo el aspecto de WoW retail a 3.3.5a, inspirado en la interfaz de Dragonflight."
+L["Choose how DragonUI and SexyMap share the minimap."] = "Elige cómo DragonUI y SexyMap comparten el minimapa."
+L["Draw grey tint over undiscovered zones using account-wide exploration data. Each alt sees your main's exploration immediately."] = "Pinta un tinte gris sobre las zonas no descubiertas usando los datos de exploración de la cuenta. Cada alter ve al instante la exploración de tu personaje principal."
+L["Enable Fog Reveal"] = "Activar revelado de niebla"
+L["Enable Wheel Zoom"] = "Activar zoom con rueda"
+L["Enter a name for this preset:"] = "Introduce un nombre para este preset:"
+L["Hybrid"] = "Híbrido"
+L["Minimap Mode"] = "Modo de minimapa"
+L["Mouse wheel zooms and pans the map canvas."] = "La rueda del ratón acerca y desplaza el lienzo del mapa."
+L["Retail-styled world map with breadcrumb navigation, drag-to-resize and quest log side panel. Requires a full /reload after toggling."] = "Mapa del mundo con estilo retail, navegación por migas de pan, redimensionado arrastrando y panel lateral del registro de misiones. Requiere un /reload completo tras activarlo."
+L["SexyMap"] = "SexyMap"
+L["SexyMap Compatibility"] = "Compatibilidad con SexyMap"
+L["SexyMap visuals with DragonUI editor and positioning."] = "Aspecto de SexyMap con el editor y el posicionamiento de DragonUI."
+L["Use the tabs on the left to configure modules, action bars, unit frames, minimap, and more."] = "Usa las pestañas de la izquierda para configurar módulos, barras de acción, marcos de unidad, minimapa y más."
+L["Uses DragonUI for the minimap."] = "Usa DragonUI para el minimapa."
+L["Uses SexyMap for the minimap."] = "Usa SexyMap para el minimapa."

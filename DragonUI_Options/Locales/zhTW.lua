@@ -2061,3 +2061,19 @@ L["Farm Mode"] = "刷怪模式"
 L["Extra scale"] = "額外縮放"
 L["Bigger minimap with the surrounding clutter hidden."] = "放大小地圖，並隱藏周圍的雜項元素。"
 L["Extra scale applied on top of the minimap scale."] = "在小地圖縮放比例之上額外套用的縮放。"
+
+-- ============================================================================
+-- MISSING STRINGS SYNCED FROM enUS
+-- ============================================================================
+
+L["Bringing the retail WoW look to 3.3.5a, inspired by Dragonflight UI."] = "將 WoW 正式服的外觀帶入 3.3.5a，靈感來自 Dragonflight 介面。"
+L["Choose how DragonUI and SexyMap share the minimap."] = "選擇 DragonUI 與 SexyMap 共用小地圖的方式。"
+L["Enter a name for this preset:"] = "輸入此預設集的名稱："
+L["Hybrid"] = "混合"
+L["Minimap Mode"] = "小地圖模式"
+L["SexyMap"] = "SexyMap"
+L["SexyMap Compatibility"] = "SexyMap 相容"
+L["SexyMap visuals with DragonUI editor and positioning."] = "使用 DragonUI 編輯器與定位的 SexyMap 外觀。"
+L["Use the tabs on the left to configure modules, action bars, unit frames, minimap, and more."] = "使用左側標籤設定模組、動作列、單位框架、小地圖等。"
+L["Uses DragonUI for the minimap."] = "小地圖使用 DragonUI。"
+L["Uses SexyMap for the minimap."] = "小地圖使用 SexyMap。"

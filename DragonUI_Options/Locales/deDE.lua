@@ -2046,3 +2046,25 @@ L["Farm Mode"] = "Farmmodus"
 L["Extra scale"] = "Zusätzliche Skalierung"
 L["Bigger minimap with the surrounding clutter hidden."] = "Größere Minikarte, die Elemente drumherum werden ausgeblendet."
 L["Extra scale applied on top of the minimap scale."] = "Zusätzliche Skalierung, die zur Skalierung der Minikarte hinzukommt."
+
+-- ============================================================================
+-- MISSING STRINGS SYNCED FROM enUS
+-- ============================================================================
+
+L["Activates the modern world map frame. Requires /reload to take effect."] = "Aktiviert den modernen Weltkartenrahmen. Erfordert /reload, damit die Änderung wirksam wird."
+L["Bringing the retail WoW look to 3.3.5a, inspired by Dragonflight UI."] = "Der Retail-WoW-Look für 3.3.5a, inspiriert von der Dragonflight-Oberfläche."
+L["Choose how DragonUI and SexyMap share the minimap."] = "Legt fest, wie sich DragonUI und SexyMap die Minimap teilen."
+L["Draw grey tint over undiscovered zones using account-wide exploration data. Each alt sees your main's exploration immediately."] = "Zeichnet einen grauen Schleier über unentdeckte Zonen anhand der accountweiten Erkundungsdaten. Jeder Twink sieht die Erkundung deines Mains sofort."
+L["Enable Fog Reveal"] = "Nebel-Aufdeckung aktivieren"
+L["Enable Wheel Zoom"] = "Mausrad-Zoom aktivieren"
+L["Enter a name for this preset:"] = "Gib einen Namen für dieses Preset ein:"
+L["Hybrid"] = "Hybrid"
+L["Minimap Mode"] = "Minimap-Modus"
+L["Mouse wheel zooms and pans the map canvas."] = "Das Mausrad zoomt und verschiebt den Kartenausschnitt."
+L["Retail-styled world map with breadcrumb navigation, drag-to-resize and quest log side panel. Requires a full /reload after toggling."] = "Weltkarte im Retail-Stil mit Breadcrumb-Navigation, Größenänderung per Ziehen und Questlog-Seitenleiste. Erfordert nach dem Umschalten ein vollständiges /reload."
+L["SexyMap"] = "SexyMap"
+L["SexyMap Compatibility"] = "SexyMap-Kompatibilität"
+L["SexyMap visuals with DragonUI editor and positioning."] = "SexyMap-Optik mit DragonUI-Editor und -Positionierung."
+L["Use the tabs on the left to configure modules, action bars, unit frames, minimap, and more."] = "Nutze die Tabs links, um Module, Aktionsleisten, Einheitenrahmen, Minimap und mehr einzustellen."
+L["Uses DragonUI for the minimap."] = "Verwendet DragonUI für die Minimap."
+L["Uses SexyMap for the minimap."] = "Verwendet SexyMap für die Minimap."

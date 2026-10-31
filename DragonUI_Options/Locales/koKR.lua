@@ -2044,3 +2044,25 @@ L["Farm Mode"] = "파밍 모드"
 L["Extra scale"] = "추가 크기 비율"
 L["Bigger minimap with the surrounding clutter hidden."] = "미니맵을 크게 키우고 주변 요소를 숨깁니다."
 L["Extra scale applied on top of the minimap scale."] = "미니맵 크기 비율에 추가로 적용되는 비율입니다."
+
+-- ============================================================================
+-- MISSING STRINGS SYNCED FROM enUS
+-- ============================================================================
+
+L["Activates the modern world map frame. Requires /reload to take effect."] = "현대식 세계 지도 창을 활성화합니다. 적용하려면 /reload가 필요합니다."
+L["Bringing the retail WoW look to 3.3.5a, inspired by Dragonflight UI."] = "Dragonflight UI에서 영감을 받은 3.3.5a용 리테일 WoW 스타일입니다."
+L["Choose how DragonUI and SexyMap share the minimap."] = "DragonUI와 SexyMap이 미니맵을 공유하는 방식을 선택합니다."
+L["Draw grey tint over undiscovered zones using account-wide exploration data. Each alt sees your main's exploration immediately."] = "계정 전체 탐험 데이터를 사용해 미탐험 지역에 회색 틴트를 표시합니다. 모든 부캐가 본캐의 탐험 상황을 즉시 볼 수 있습니다."
+L["Enable Fog Reveal"] = "안개 표시 활성화"
+L["Enable Wheel Zoom"] = "휠 확대/축소 활성화"
+L["Enter a name for this preset:"] = "이 프리셋의 이름을 입력하세요:"
+L["Hybrid"] = "하이브리드"
+L["Minimap Mode"] = "미니맵 모드"
+L["Mouse wheel zooms and pans the map canvas."] = "마우스 휠로 지도 화면을 확대/축소하고 이동합니다."
+L["Retail-styled world map with breadcrumb navigation, drag-to-resize and quest log side panel. Requires a full /reload after toggling."] = "경로 표시 탐색, 드래그로 크기 조절, 퀘스트 기록 사이드 패널을 갖춘 리테일 스타일 세계 지도입니다. 전환 후 완전한 /reload가 필요합니다."
+L["SexyMap"] = "SexyMap"
+L["SexyMap Compatibility"] = "SexyMap 호환성"
+L["SexyMap visuals with DragonUI editor and positioning."] = "DragonUI 편집기와 위치 지정을 사용하는 SexyMap 시각 효과."
+L["Use the tabs on the left to configure modules, action bars, unit frames, minimap, and more."] = "왼쪽 탭에서 모듈, 행동 단축바, 유닛 창, 미니맵 등을 설정하세요."
+L["Uses DragonUI for the minimap."] = "미니맵에 DragonUI를 사용합니다."
+L["Uses SexyMap for the minimap."] = "미니맵에 SexyMap을 사용합니다."
