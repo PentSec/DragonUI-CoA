@@ -20,7 +20,7 @@
 <a href="https://ko-fi.com/pentsec"><img alt="Support on Ko-fi" src="https://shieldcn.dev/badge/Support-Ko--fi.svg?logo=kofi&amp;split=true&amp;color=ff5e5b&amp;labelColor=3f3f46&amp;logoColor=fff&amp;labelTextColor=fff&amp;valueTextColor=fff&amp;size=sm"></a>
 
 
-<img width="1917" height="1042" alt="image" src="https://github.com/user-attachments/assets/bd79945d-6b50-40df-a5fa-f3662b42dcc4" />
+<img width="1915" height="1018" alt="Captura de pantalla_20261031_141045" src="https://github.com/user-attachments/assets/41703dda-9d6b-4a33-8567-04fbf2ff8081" />
 **A modular, retail-inspired UI addon for Conquest of AzerothCore Servers, Conquest of Azeroth.**
 
 Found a bug? [Open an issue](https://github.com/PentSec/DragonUI-CoA/issues).
