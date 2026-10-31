@@ -14,6 +14,350 @@ if not addon then return end
 local C = addon.PanelControls
 local Panel = addon.OptionsPanel
 local LO = addon.LO
+<<<<<<< HEAD
+=======
+local FUI = addon.ForeverUI
+
+-- ============================================================================
+-- PRESET SYSTEM HELPERS
+-- ============================================================================
+
+-- Keys to exclude from preset snapshots (they are meta / self-referencing)
+local EXCLUDED_KEYS = { presets = true, version = true, optionsPanelScale = true }
+
+local Serializer = {}
+LibStub("AceSerializer-3.0"):Embed(Serializer)
+local LibDeflate = LibStub("LibDeflate")
+
+-- ============================================================================
+-- EXPORT / IMPORT HELPERS
+-- ============================================================================
+
+local EXPORT_HEADER = "!DUI1!"
+
+local function ExportPresetToString(presetEntry)
+    local serialized = Serializer:Serialize(presetEntry.data)
+    if not serialized then return nil end
+    local compressed = LibDeflate:CompressDeflate(serialized)
+    if not compressed then return nil end
+    local encoded = LibDeflate:EncodeForPrint(compressed)
+    if not encoded then return nil end
+    return EXPORT_HEADER .. encoded
+end
+
+local function ImportPresetFromString(str)
+    if type(str) ~= "string" then return nil, "empty" end
+    str = strtrim(str)
+    if str == "" then return nil, "empty" end
+    if str:sub(1, #EXPORT_HEADER) ~= EXPORT_HEADER then return nil, "header" end
+    local payload = str:sub(#EXPORT_HEADER + 1)
+    if payload == "" then return nil, "payload" end
+    local decoded = LibDeflate:DecodeForPrint(payload)
+    if not decoded then return nil, "decode" end
+    local decompressed = LibDeflate:DecompressDeflate(decoded)
+    if not decompressed then return nil, "decompress" end
+    local ok, data = Serializer:Deserialize(decompressed)
+    if not ok or type(data) ~= "table" then return nil, "deserialize" end
+    return data
+end
+
+-- ============================================================================
+-- IMPORT / EXPORT POPUP FRAME  (shared, reusable)
+-- ============================================================================
+
+local importExportFrame
+
+local function GetImportExportFrame()
+    if importExportFrame then return importExportFrame end
+
+    local f = FUI.CreateDialog("DragonUI_ImportExportFrame", UIParent, {
+        width = 500,
+        height = 350,
+        strata = "FULLSCREEN_DIALOG",
+        closable = true,
+        solid = true,
+    })
+    f:SetPoint("CENTER")
+    C.LiftOnShow(f)
+    tinsert(UISpecialFrames, "DragonUI_ImportExportFrame")
+
+    f.title = f.TitleText
+
+    local content = f.Content
+
+    -- Scrollframe + EditBox
+    local sf = CreateFrame("ScrollFrame", "DragonUI_IEScrollFrame", content, "UIPanelScrollFrameTemplate")
+    sf:SetPoint("TOPLEFT", content, "TOPLEFT", 8, 0)
+    sf:SetPoint("BOTTOMRIGHT", content, "BOTTOMRIGHT", -30, 40)
+
+    local well = content:CreateTexture(nil, "BACKGROUND")
+    well:SetTexture(0, 0, 0, 0.45)
+    well:SetPoint("TOPLEFT", sf, "TOPLEFT", -6, 6)
+    well:SetPoint("BOTTOMRIGHT", sf, "BOTTOMRIGHT", 26, -6)
+
+    local eb = CreateFrame("EditBox", "DragonUI_IEEditBox", sf)
+    eb:SetMultiLine(true)
+    eb:SetAutoFocus(false)
+    eb:SetFontObject(ChatFontNormal)
+    eb:SetWidth(420)
+    eb:SetScript("OnEscapePressed", function(self) self:ClearFocus(); f:Hide() end)
+    sf:SetScrollChild(eb)
+    FUI.SkinScrollBar(sf)
+    f.editBox = eb
+    f.scrollFrame = sf
+
+    -- Bottom button row
+    f.btn1 = FUI.CreateButton(content, nil, 120, 22)
+    f.btn1:SetPoint("BOTTOMLEFT", content, "BOTTOMLEFT", 0, 0)
+
+    f.btn2 = FUI.CreateButton(content, LO["Cancel"] or "Cancel", 120, 22)
+    f.btn2:SetPoint("BOTTOMRIGHT", content, "BOTTOMRIGHT", 0, 0)
+    f.btn2:SetScript("OnClick", function() f:Hide() end)
+
+    importExportFrame = f
+    return f
+end
+
+local function ShowExportFrame(presetName, exportString)
+    local f = GetImportExportFrame()
+    f.title:SetText(LO["Export Preset"] or "Export Preset")
+    f.editBox:SetText(exportString)
+    f.editBox:SetScript("OnTextChanged", function(self)
+        self:SetText(exportString)  -- prevent editing
+    end)
+    f.editBox:SetCursorPosition(0)
+    f.btn1:SetText(LO["Select All"] or "Select All")
+    f.btn1:SetScript("OnClick", function()
+        f.editBox:SetFocus()
+        f.editBox:HighlightText()
+    end)
+    f.btn2:SetText(LO["Close"] or "Close")
+    f.btn2:SetScript("OnClick", function() f:Hide() end)
+    f:Show()
+    f.editBox:SetFocus()
+    f.editBox:HighlightText()
+end
+
+local function ShowImportFrame()
+    local f = GetImportExportFrame()
+    f.title:SetText(LO["Import Preset"] or "Import Preset")
+    f.editBox:SetText("")
+    f.editBox:SetScript("OnTextChanged", nil)  -- allow editing
+    f.btn1:SetText(LO["Import"] or "Import")
+    f.btn1:SetScript("OnClick", function()
+        local text = strtrim(f.editBox:GetText())
+        if text == "" then return end
+        local data, errType = ImportPresetFromString(text)
+        if not data then
+            local msg = LO["Invalid preset string."] or "Invalid preset string."
+            if errType == "header" then
+                msg = LO["Not a valid DragonUI preset string."] or "Not a valid DragonUI preset string."
+            end
+            addon:Error(msg)
+            return
+        end
+        f:Hide()
+        -- Ask for a name
+        local dialog = StaticPopup_Show("DRAGONUI_PRESET_IMPORT_NAME")
+        if dialog then
+            dialog.data = data
+        end
+    end)
+    f.btn2:SetText(LO["Cancel"] or "Cancel")
+    f.btn2:SetScript("OnClick", function() f:Hide() end)
+    f:Show()
+    f.editBox:SetFocus()
+end
+
+-- Create a clean deep copy excluding certain top-level keys
+local function SnapshotProfile()
+    local snapshot = {}
+    for key, value in pairs(addon.db.profile) do
+        if not EXCLUDED_KEYS[key] then
+            if type(value) == "table" then
+                snapshot[key] = addon.DeepCopy(value)
+            else
+                snapshot[key] = value
+            end
+        end
+    end
+    return snapshot
+end
+
+-- Restore a snapshot into the current profile (preserves presets + version)
+local function RestoreSnapshot(snapshot)
+    if not snapshot then return end
+    for key, value in pairs(snapshot) do
+        if not EXCLUDED_KEYS[key] then
+            if type(value) == "table" then
+                addon.db.profile[key] = addon.DeepCopy(value)
+            else
+                addon.db.profile[key] = value
+            end
+        end
+    end
+end
+
+-- Get the presets table, creating it if needed
+local function GetPresets()
+    if not addon.db or not addon.db.profile then return {} end
+    if not addon.db.profile.presets then
+        addon.db.profile.presets = {}
+    end
+    return addon.db.profile.presets
+end
+
+-- Generate a unique preset name to avoid collisions
+local function UniquePresetName(baseName)
+    local presets = GetPresets()
+    if not presets[baseName] then return baseName end
+    local i = 2
+    while presets[baseName .. " (" .. i .. ")"] do
+        i = i + 1
+    end
+    return baseName .. " (" .. i .. ")"
+end
+
+-- ============================================================================
+-- STATIC POPUP: NAME INPUT
+-- ============================================================================
+
+StaticPopupDialogs["DRAGONUI_PRESET_NAME"] = {
+    text = LO["Enter a name for this preset:"],
+    button1 = LO["Save"],
+    button2 = LO["Cancel"],
+    hasEditBox = true,
+    maxLetters = 40,
+    OnShow = function(self)
+        local eb = self.editBox or _G[self:GetName() .. "EditBox"]
+        if eb then
+            eb:SetText(self.data or (LO["Preset"] .. " 1"))
+            eb:HighlightText()
+            eb:SetFocus()
+        end
+    end,
+    OnAccept = function(self)
+        local eb = self.editBox or _G[self:GetName() .. "EditBox"]
+        local name = eb and eb:GetText() and strtrim(eb:GetText())
+        if not name or name == "" then return end
+        -- Sanitize: remove pipe characters to prevent color code injection
+        name = name:gsub("|", "")
+        if name == "" then return end
+        local presets = GetPresets()
+        presets[name] = {
+            data = SnapshotProfile(),
+            date = date("%Y-%m-%d %H:%M"),
+        }
+        addon:Print((LO["Preset saved: "] or "Preset saved: ") .. name)
+        -- Refresh the General tab to show the new preset
+        if Panel.currentTab == "general" then
+            Panel:SelectTab("general")
+        end
+    end,
+    EditBoxOnEnterPressed = function(self)
+        local parent = self:GetParent()
+        StaticPopupDialogs["DRAGONUI_PRESET_NAME"].OnAccept(parent)
+        parent:Hide()
+    end,
+    EditBoxOnEscapePressed = function(self)
+        self:GetParent():Hide()
+    end,
+    timeout = 0,
+    whileDead = 1,
+    hideOnEscape = 1,
+    preferredIndex = 3,
+}
+
+StaticPopupDialogs["DRAGONUI_PRESET_LOAD"] = {
+    text = LO["Load preset '%s'? This will overwrite your current layout settings."],
+    button1 = LO["Load"],
+    button2 = LO["Cancel"],
+    OnAccept = function(self)
+        local name = self.data
+        local presets = GetPresets()
+        if presets[name] and presets[name].data then
+            RestoreSnapshot(presets[name].data)
+            addon:Print((LO["Preset loaded: "] or "Preset loaded: ") .. name)
+            ReloadUI()
+        end
+    end,
+    timeout = 0,
+    whileDead = 1,
+    hideOnEscape = 1,
+    preferredIndex = 3,
+}
+
+StaticPopupDialogs["DRAGONUI_PRESET_DELETE"] = {
+    text = LO["Delete preset '%s'? This cannot be undone."],
+    button1 = LO["Delete"],
+    button2 = LO["Cancel"],
+    OnAccept = function(self)
+        local name = self.data
+        local presets = GetPresets()
+        if presets[name] then
+            presets[name] = nil
+            addon:Print((LO["Preset deleted: "] or "Preset deleted: ") .. name)
+            if Panel.currentTab == "general" then
+                Panel:SelectTab("general")
+            end
+        end
+    end,
+    timeout = 0,
+    whileDead = 1,
+    hideOnEscape = 1,
+    preferredIndex = 3,
+}
+
+-- ============================================================================
+-- STATIC POPUP: IMPORT NAME INPUT
+-- ============================================================================
+
+StaticPopupDialogs["DRAGONUI_PRESET_IMPORT_NAME"] = {
+    text = LO["Enter a name for the imported preset:"],
+    button1 = LO["Save"],
+    button2 = LO["Cancel"],
+    hasEditBox = true,
+    maxLetters = 40,
+    OnShow = function(self)
+        local eb = self.editBox or _G[self:GetName() .. "EditBox"]
+        if eb then
+            eb:SetText(UniquePresetName(LO["Imported Preset"] or "Imported Preset"))
+            eb:HighlightText()
+            eb:SetFocus()
+        end
+    end,
+    OnAccept = function(self)
+        local eb = self.editBox or _G[self:GetName() .. "EditBox"]
+        local name = eb and eb:GetText() and strtrim(eb:GetText())
+        if not name or name == "" then return end
+        name = name:gsub("|", "")
+        if name == "" then return end
+        local importedData = self.data
+        if not importedData or type(importedData) ~= "table" then return end
+        local presets = GetPresets()
+        presets[name] = {
+            data = addon.DeepCopy(importedData),
+            date = date("%Y-%m-%d %H:%M"),
+        }
+        addon:Print((LO["Preset imported: "] or "Preset imported: ") .. name)
+        if Panel.currentTab == "general" then
+            Panel:SelectTab("general")
+        end
+    end,
+    EditBoxOnEnterPressed = function(self)
+        local parent = self:GetParent()
+        StaticPopupDialogs["DRAGONUI_PRESET_IMPORT_NAME"].OnAccept(parent)
+        parent:Hide()
+    end,
+    EditBoxOnEscapePressed = function(self)
+        self:GetParent():Hide()
+    end,
+    timeout = 0,
+    whileDead = 1,
+    hideOnEscape = 1,
+    preferredIndex = 3,
+}
+>>>>>>> 5c280b1f (feat(options): the settings window scale is saved per profile)
 
 -- ============================================================================
 -- GENERAL TAB BUILDER
