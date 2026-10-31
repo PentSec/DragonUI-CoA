@@ -2,7 +2,7 @@
 ## Title: |cff1784d1DragonUI|r |cffff2020C|r|cff1784d1o|r|cffff2020A|r |cffffffffOptions|r
 ## Notes: Configuration UI for DragonUI
 ## Author: DragonUI Team
-## Version: 4.0.0
+## Version: 4.1.0
 ## LoadOnDemand: 1
 ## Dependencies: DragonUI
 ## X-License: MIT for project-authored code; Blizzard art, fonts and bundled libraries keep their own terms (see THIRD_PARTY_NOTICES)
