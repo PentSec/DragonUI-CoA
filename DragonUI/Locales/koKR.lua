@@ -1266,3 +1266,14 @@ L["Mail"] = "우편"
 L["Retail-style mail window with Open All button"] = "모두 열기 버튼이 있는 정식 서버 스타일 우편 창"
 L["Open All"] = "모두 열기"
 L["Opening..."] = "여는 중..."
+
+-- ============================================================================
+-- MISSING STRINGS SYNCED FROM enUS
+-- ============================================================================
+
+L["Class Icons (click to print)"] = "직업 아이콘 (클릭하여 출력)"
+L["Class icons grid opened for debugging."] = "디버깅을 위해 직업 아이콘 격자를 열었습니다."
+L["ModuleRegistry: post-hook failed for"] = "ModuleRegistry: post-hook 실패:"
+L["ModuleRegistry: pre-hook failed for"] = "ModuleRegistry: pre-hook 실패:"
+L["Scale"] = "크기"
+L["Transmog collection API is not available yet. Please try again in a few seconds."] = "형상변환 수집 API를 아직 사용할 수 없습니다. 몇 초 후에 다시 시도하세요."

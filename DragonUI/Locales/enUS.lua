@@ -68,6 +68,8 @@ L["/dragonui kb - Toggle keybind mode"] = true
 L["/dragonui version - Show version info"] = true
 L["/dragonui help - Show this help"] = true
 L["/rl - Reload UI"] = true
+L["Class Icons (click to print)"] = true
+L["Class icons grid opened for debugging."] = true
 
 -- ============================================================================
 -- STATUS DISPLAY
@@ -442,6 +444,8 @@ L["ModuleRegistry: Module already registered -"] = true
 L["ModuleRegistry: Registered module -"] = true
 L["order:"] = true
 L["ModuleRegistry: Refresh failed for"] = true
+L["ModuleRegistry: pre-hook failed for"] = true
+L["ModuleRegistry: post-hook failed for"] = true
 L["ModuleRegistry: Unknown module -"] = true
 L["ModuleRegistry: Enabled -"] = true
 L["ModuleRegistry: Disabled -"] = true
@@ -504,6 +508,7 @@ L["Custom buff frame styling, positioning and toggle button"] = true
 L["Chat Mods"] = true
 L["Chat enhancements: hide buttons, editbox position, URL copy, chat copy, link hover, tell target"] = true
 L["Bag Sort"] = true
+L["Transmog collection API is not available yet. Please try again in a few seconds."] = true
 L["Sort bags and bank items with buttons"] = true
 L["%s any bag slot (item or empty) to lock or unlock it."] = true
 L["Alt"] = true
@@ -1179,6 +1184,7 @@ L["Show cooldown text in whole seconds, without the tenths under 5 seconds."] = 
 
 -- Addon Manager
 L["Addon Manager"] = true
+L["Scale"] = true
 L["Enable and disable your addons in game from an AddOns button in the Esc menu"] = true
 L["Load out of date AddOns"] = true
 L["Search..."] = true

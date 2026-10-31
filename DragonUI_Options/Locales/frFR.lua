@@ -2478,3 +2478,23 @@ L["Farm Mode"] = "Mode farm"
 L["Extra scale"] = "Échelle supplémentaire"
 L["Bigger minimap with the surrounding clutter hidden."] = "Minicarte plus grande, sans les éléments qui l'entourent."
 L["Extra scale applied on top of the minimap scale."] = "Échelle supplémentaire appliquée en plus de l'échelle de la minicarte."
+
+-- ============================================================================
+-- MISSING STRINGS SYNCED FROM enUS
+-- ============================================================================
+
+L["Activates the modern world map frame. Requires /reload to take effect."] = "Active la carte du monde moderne. Nécessite un /reload pour prendre effet."
+L["Choose how DragonUI and SexyMap share the minimap."] = "Choisissez comment DragonUI et SexyMap se partagent la minicarte."
+L["Draw grey tint over undiscovered zones using account-wide exploration data. Each alt sees your main's exploration immediately."] = "Applique un voile gris sur les zones inexplorées à partir des données d'exploration du compte. Chaque reroll voit immédiatement l'exploration de votre personnage principal."
+L["Enable Fog Reveal"] = "Activer la révélation du brouillard"
+L["Enable Wheel Zoom"] = "Activer le zoom à la molette"
+L["Enter a name for this preset:"] = "Entrez un nom pour ce preset :"
+L["Hybrid"] = "Hybride"
+L["Minimap Mode"] = "Mode de la minicarte"
+L["Mouse wheel zooms and pans the map canvas."] = "La molette zoome et déplace le canevas de la carte."
+L["Retail-styled world map with breadcrumb navigation, drag-to-resize and quest log side panel. Requires a full /reload after toggling."] = "Carte du monde façon retail avec fil d'Ariane, redimensionnement par glisser et panneau latéral du journal de quêtes. Nécessite un /reload complet après l'activation."
+L["SexyMap"] = "SexyMap"
+L["SexyMap Compatibility"] = "Compatibilité SexyMap"
+L["SexyMap visuals with DragonUI editor and positioning."] = "L'apparence de SexyMap avec l'éditeur et le positionnement de DragonUI."
+L["Uses DragonUI for the minimap."] = "Utilise DragonUI pour la minicarte."
+L["Uses SexyMap for the minimap."] = "Utilise SexyMap pour la minicarte."

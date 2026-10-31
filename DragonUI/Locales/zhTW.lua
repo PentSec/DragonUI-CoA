@@ -1477,3 +1477,14 @@ L["Mail"] = "郵件"
 L["Retail-style mail window with Open All button"] = "附有全部開啟按鈕的正式服風格郵件視窗"
 L["Open All"] = "全部開啟"
 L["Opening..."] = "正在開啟..."
+
+-- ============================================================================
+-- MISSING STRINGS SYNCED FROM enUS
+-- ============================================================================
+
+L["Class Icons (click to print)"] = "職業圖示（點擊輸出）"
+L["Class icons grid opened for debugging."] = "已為偵錯開啟職業圖示格線。"
+L["ModuleRegistry: post-hook failed for"] = "ModuleRegistry：post-hook 失敗："
+L["ModuleRegistry: pre-hook failed for"] = "ModuleRegistry：pre-hook 失敗："
+L["Scale"] = "縮放"
+L["Transmog collection API is not available yet. Please try again in a few seconds."] = "幻化收藏 API 尚無法使用。請稍後再試。"

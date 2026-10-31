@@ -1477,3 +1477,14 @@ L["Mail"] = "Correio"
 L["Retail-style mail window with Open All button"] = "Janela de correio estilo Retail com botão Abrir tudo"
 L["Open All"] = "Abrir tudo"
 L["Opening..."] = "Abrindo..."
+
+-- ============================================================================
+-- MISSING STRINGS SYNCED FROM enUS
+-- ============================================================================
+
+L["Class Icons (click to print)"] = "Ícones de classe (clique para imprimir)"
+L["Class icons grid opened for debugging."] = "Grade de ícones de classe aberta para depuração."
+L["ModuleRegistry: post-hook failed for"] = "ModuleRegistry: pós-hook falhou para"
+L["ModuleRegistry: pre-hook failed for"] = "ModuleRegistry: pré-hook falhou para"
+L["Scale"] = "Escala"
+L["Transmog collection API is not available yet. Please try again in a few seconds."] = "A API de coleção de transmogrificação ainda não está disponível. Tente novamente em alguns segundos."

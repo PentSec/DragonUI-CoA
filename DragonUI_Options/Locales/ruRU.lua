@@ -2041,3 +2041,27 @@ L["Farm Mode"] = "Режим фарма"
 L["Extra scale"] = "Дополнительный масштаб"
 L["Bigger minimap with the surrounding clutter hidden."] = "Увеличенная миникарта без окружающих элементов."
 L["Extra scale applied on top of the minimap scale."] = "Дополнительный масштаб поверх масштаба миникарты."
+
+-- ============================================================================
+-- MISSING STRINGS SYNCED FROM enUS
+-- ============================================================================
+
+L["Bringing the retail WoW look to 3.3.5a, inspired by Dragonflight UI."] = "Внешний вид WoW retail для 3.3.5a, вдохновлённый интерфейсом Dragonflight."
+L["Center the unit name above the health bar."] = "Центрирует имя юнита над полосой здоровья."
+L["Choose how DragonUI and SexyMap share the minimap."] = "Выберите, как DragonUI и SexyMap делят миникарту."
+L["Class Color Name"] = "Имя в цвете класса"
+L["Enter a name for this preset:"] = "Введите имя для этого пресета:"
+L["Hybrid"] = "Гибрид"
+L["Minimap Mode"] = "Режим миникарты"
+L["SexyMap"] = "SexyMap"
+L["SexyMap Compatibility"] = "Совместимость с SexyMap"
+L["SexyMap visuals with DragonUI editor and positioning."] = "Вид SexyMap с редактором и позиционированием DragonUI."
+L["Show Group Indicator"] = "Показывать индикатор группы"
+L["Show buff icons on the focus frame."] = "Показывать значки баффов на рамке фокуса."
+L["Show buff icons on the target frame."] = "Показывать значки баффов на рамке цели."
+L["Show debuff icons on the focus frame."] = "Показывать значки дебаффов на рамке фокуса."
+L["Show debuff icons on the target frame."] = "Показывать значки дебаффов на рамке цели."
+L["Show the raid subgroup indicator (e.g. Group 2) above the player frame."] = "Показывает подгруппу рейда (например, «Группа 2») над рамкой игрока."
+L["Use the tabs on the left to configure modules, action bars, unit frames, minimap, and more."] = "Используйте вкладки слева, чтобы настроить модули, панели действий, рамки юнитов, миникарту и другое."
+L["Uses DragonUI for the minimap."] = "Использует DragonUI для миникарты."
+L["Uses SexyMap for the minimap."] = "Использует SexyMap для миникарты."

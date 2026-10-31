@@ -2474,3 +2474,23 @@ L["Farm Mode"] = "Modo farm"
 L["Extra scale"] = "Escala extra"
 L["Bigger minimap with the surrounding clutter hidden."] = "Minimapa maior, sem os elementos ao redor."
 L["Extra scale applied on top of the minimap scale."] = "Escala extra aplicada sobre a escala do minimapa."
+
+-- ============================================================================
+-- MISSING STRINGS SYNCED FROM enUS
+-- ============================================================================
+
+L["Activates the modern world map frame. Requires /reload to take effect."] = "Ativa o quadro moderno do mapa-múndi. Requer /reload para ter efeito."
+L["Choose how DragonUI and SexyMap share the minimap."] = "Escolha como o DragonUI e o SexyMap compartilham o minimapa."
+L["Draw grey tint over undiscovered zones using account-wide exploration data. Each alt sees your main's exploration immediately."] = "Desenha um tom cinza sobre as zonas não descobertas usando os dados de exploração da conta. Cada alt vê a exploração do seu principal na hora."
+L["Enable Fog Reveal"] = "Ativar revelação de névoa"
+L["Enable Wheel Zoom"] = "Ativar zoom com a roda"
+L["Enter a name for this preset:"] = "Digite um nome para este preset:"
+L["Hybrid"] = "Híbrido"
+L["Minimap Mode"] = "Modo do minimapa"
+L["Mouse wheel zooms and pans the map canvas."] = "A roda do mouse aproxima e desloca a tela do mapa."
+L["Retail-styled world map with breadcrumb navigation, drag-to-resize and quest log side panel. Requires a full /reload after toggling."] = "Mapa-múndi no estilo retail com navegação por migalhas, redimensionamento por arrasto e painel lateral do registro de missões. Requer um /reload completo após alternar."
+L["SexyMap"] = "SexyMap"
+L["SexyMap Compatibility"] = "Compatibilidade com SexyMap"
+L["SexyMap visuals with DragonUI editor and positioning."] = "Visual do SexyMap com o editor e o posicionamento do DragonUI."
+L["Uses DragonUI for the minimap."] = "Usa o DragonUI para o minimapa."
+L["Uses SexyMap for the minimap."] = "Usa o SexyMap para o minimapa."
