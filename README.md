@@ -17,7 +17,7 @@
 <a href="https://github.com/PentSec/DragonUI-CoA/releases"><img alt="Downloads" src="https://shieldcn.dev/github/downloads/PentSec/DragonUI-CoA.svg?label=Downloads&amp;logo=ri:GoDownload&amp;split=true&amp;color=a400ff&amp;labelColor=3f3f46&amp;logoColor=fff&amp;labelTextColor=fff&amp;valueTextColor=fff&amp;size=sm"></a>
 <a href="https://discord.gg/C9PDJEr2uh"><img alt="Discord" src="https://shieldcn.dev/discord/members/C9PDJEr2uh.svg?label=Discord&amp;logo=discord&amp;split=true&amp;color=5865F2&amp;labelColor=3f3f46&amp;logoColor=fff&amp;labelTextColor=fff&amp;valueTextColor=fff&amp;size=sm"></a>
 <a href="LICENSE"><img alt="License: MIT" src="https://shieldcn.dev/badge/License-MIT.svg?logo=ri:GoLaw&amp;split=true&amp;color=dfb317&amp;labelColor=3f3f46&amp;logoColor=fff&amp;labelTextColor=fff&amp;size=sm"></a>
-<a href="https://ko-fi.com/neticsoul"><img alt="Support on Ko-fi" src="https://shieldcn.dev/badge/Support-Ko--fi.svg?logo=kofi&amp;split=true&amp;color=ff5e5b&amp;labelColor=3f3f46&amp;logoColor=fff&amp;labelTextColor=fff&amp;valueTextColor=fff&amp;size=sm"></a>
+<a href="https://ko-fi.com/pentsec"><img alt="Support on Ko-fi" src="https://shieldcn.dev/badge/Support-Ko--fi.svg?logo=kofi&amp;split=true&amp;color=ff5e5b&amp;labelColor=3f3f46&amp;logoColor=fff&amp;labelTextColor=fff&amp;valueTextColor=fff&amp;size=sm"></a>
 
 
 <img width="1917" height="1042" alt="image" src="https://github.com/user-attachments/assets/bd79945d-6b50-40df-a5fa-f3662b42dcc4" />
