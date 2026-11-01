@@ -12,12 +12,12 @@
 
 <div align="center">
 
-<img alt="Conquest Of Azeroth" src="https://shieldcn.dev/badge/WoW-C.O.A.svg?logo=ri:GiCrossedSwords&amp;split=true&amp;color=fe7d37&amp;labelColor=3f3f46&amp;logoColor=fff&amp;labelTextColor=fff&amp;size=sm">
-<a href="https://github.com/PentSec/DragonUI-CoA/releases/latest"><img alt="Version" src="https://shieldcn.dev/github/release/PentSec/DragonUI-CoA.svg?label=Version&amp;logo=ri:GoTag&amp;split=true&amp;color=94d82d&amp;labelColor=3f3f46&amp;logoColor=fff&amp;labelTextColor=fff&amp;size=sm"></a>
-<a href="https://github.com/PentSec/DragonUI-CoA/releases"><img alt="Downloads" src="https://shieldcn.dev/github/downloads/PentSec/DragonUI-CoA.svg?label=Downloads&amp;logo=ri:GoDownload&amp;split=true&amp;color=a400ff&amp;labelColor=3f3f46&amp;logoColor=fff&amp;labelTextColor=fff&amp;valueTextColor=fff&amp;size=sm"></a>
-<a href="https://discord.gg/C9PDJEr2uh"><img alt="Discord" src="https://shieldcn.dev/discord/members/C9PDJEr2uh.svg?label=Discord&amp;logo=discord&amp;split=true&amp;color=5865F2&amp;labelColor=3f3f46&amp;logoColor=fff&amp;labelTextColor=fff&amp;valueTextColor=fff&amp;size=sm"></a>
-<a href="LICENSE"><img alt="License: MIT" src="https://shieldcn.dev/badge/License-MIT.svg?logo=ri:GoLaw&amp;split=true&amp;color=dfb317&amp;labelColor=3f3f46&amp;logoColor=fff&amp;labelTextColor=fff&amp;size=sm"></a>
-<a href="https://ko-fi.com/pentsec"><img alt="Support on Ko-fi" src="https://shieldcn.dev/badge/Support-Ko--fi.svg?logo=kofi&amp;split=true&amp;color=ff5e5b&amp;labelColor=3f3f46&amp;logoColor=fff&amp;labelTextColor=fff&amp;valueTextColor=fff&amp;size=sm"></a>
+<img alt="Conquest Of Azeroth" src="https://shieldcn.dev/badge/WoW-C.O.A.svg?logo=ri:GiCrossedSwords&amp;split=true&amp;color=fe7d37&amp;labelColor=3f3f46&amp;logoColor=fff&amp;labelTextColor=fff&amp;size=xs">
+<a href="https://github.com/PentSec/DragonUI-CoA/releases/latest"><img alt="Version" src="https://shieldcn.dev/github/release/PentSec/DragonUI-CoA.svg?label=Version&amp;logo=ri:GoTag&amp;split=true&amp;color=94d82d&amp;labelColor=3f3f46&amp;logoColor=fff&amp;labelTextColor=fff&amp;size=xs"></a>
+<a href="https://github.com/PentSec/DragonUI-CoA/releases"><img alt="Downloads" src="https://shieldcn.dev/github/downloads/PentSec/DragonUI-CoA.svg?label=Downloads&amp;logo=ri:GoDownload&amp;split=true&amp;color=a400ff&amp;labelColor=3f3f46&amp;logoColor=fff&amp;labelTextColor=fff&amp;valueTextColor=fff&amp;size=xs"></a>
+<a href="https://discord.gg/C9PDJEr2uh"><img alt="Discord" src="https://shieldcn.dev/discord/members/C9PDJEr2uh.svg?label=Discord&amp;logo=discord&amp;split=true&amp;color=5865F2&amp;labelColor=3f3f46&amp;logoColor=fff&amp;labelTextColor=fff&amp;valueTextColor=fff&amp;size=xs"></a>
+<a href="LICENSE"><img alt="License: MIT" src="https://shieldcn.dev/badge/License-MIT.svg?logo=ri:GoLaw&amp;split=true&amp;color=dfb317&amp;labelColor=3f3f46&amp;logoColor=fff&amp;labelTextColor=fff&amp;size=xs"></a>
+<a href="https://ko-fi.com/pentsec"><img alt="Support on Ko-fi" src="https://shieldcn.dev/badge/Support-Ko--fi.svg?logo=kofi&amp;split=true&amp;color=ff5e5b&amp;labelColor=3f3f46&amp;logoColor=fff&amp;labelTextColor=fff&amp;valueTextColor=fff&amp;size=xs"></a>
 
 
 <img width="1915" height="1018" alt="Captura de pantalla_20261031_141045" src="https://github.com/user-attachments/assets/41703dda-9d6b-4a33-8567-04fbf2ff8081" />
