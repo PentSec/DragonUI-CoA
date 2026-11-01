@@ -137,12 +137,6 @@ Join the Discord to get help, share your setup and follow development:
 
 The people who have opened the most issues and pull requests. Updated every day.
 
-<<<<<<< HEAD
-<picture>
-  <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/NeticSoul/DragonUI/hall-of-fame/hall-of-fame-dark.svg">
-  <img alt="Top issuers and top contributors" src="https://raw.githubusercontent.com/NeticSoul/DragonUI/hall-of-fame/hall-of-fame-light.svg">
-</picture>
-=======
 <!-- hall-of-fame:start -->
 <p>
 <picture><source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/NeticSoul/DragonUI/hall-of-fame/rows/issuers-head-dark.svg"><img width="49.9%" align="top" alt="Top 10 issuers" src="https://raw.githubusercontent.com/NeticSoul/DragonUI/hall-of-fame/rows/issuers-head-light.svg"></picture><picture><source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/NeticSoul/DragonUI/hall-of-fame/rows/contributors-head-dark.svg"><img width="49.9%" align="top" alt="Top 10 contributors" src="https://raw.githubusercontent.com/NeticSoul/DragonUI/hall-of-fame/rows/contributors-head-light.svg"></picture><br>
@@ -158,7 +152,6 @@ The people who have opened the most issues and pull requests. Updated every day.
 <a href="https://github.com/jimylima00-png"><picture><source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/NeticSoul/DragonUI/hall-of-fame/rows/issuers-10-dark.svg"><img width="49.9%" align="top" alt="jimylima00-png" src="https://raw.githubusercontent.com/NeticSoul/DragonUI/hall-of-fame/rows/issuers-10-light.svg"></picture></a><a href="https://github.com/Stefan2102"><picture><source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/NeticSoul/DragonUI/hall-of-fame/rows/contributors-10-dark.svg"><img width="49.9%" align="top" alt="Stefan2102" src="https://raw.githubusercontent.com/NeticSoul/DragonUI/hall-of-fame/rows/contributors-10-light.svg"></picture></a>
 </p>
 <!-- hall-of-fame:end -->
->>>>>>> 0198b0eb (docs(readme): hall of fame links follow the new ranking)
 
 ## 🙏 Credits and References
 
