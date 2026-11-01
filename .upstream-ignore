@@ -10,3 +10,16 @@ c949e12fe544efc6236c71c96654f36bafbc50c6
 # upstream's release CI (.github/update_download_link.py, .github/workflows/update-download-link.yml)
 # and README cosmetics (xs badges, download button pointing at NeticSoul's v3.0 ZIP).
 f154bd5cf4982359619896c354904da1e212ebd3
+
+# b9ce153 — feat(readme): hall of fame rows link to each profile.
+# Owner decision 2026-11-01: class B — touches .github/workflows/hall-of-fame.yml and
+# .github/hall_of_fame.py, which the sync can never apply. Its README delta (monthly
+# cadence blurb + rows markers) is already applied manually via this PR.
+b9ce1535f17dba353203987dc695594c7d22bef0
+
+# 0198b0e — docs(readme): hall of fame links follow the new ranking.
+# Content already in main: conflict resolution PR #236 was rebase-merged WITHOUT the
+# (cherry picked from …) trailer, so the SHA never registers as applied and every run
+# re-picks it as an empty cherry-pick (sync-upstream.sh logs "already applied (empty
+# cherry-pick)"). Owner decision 2026-11-01: skip permanently to stop the recurring re-pick.
+0198b0eb768aa47773d2e381b2ee27a13ec41006
