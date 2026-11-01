@@ -135,7 +135,7 @@ Join the Discord to get help, share your setup and follow development:
 
 ## 🏆 Hall of Fame
 
-The people who have opened the most issues and pull requests. Updated every day.
+The people who have opened the most issues and pull requests. Updated every month.
 
 <!-- hall-of-fame:start -->
 <p>
