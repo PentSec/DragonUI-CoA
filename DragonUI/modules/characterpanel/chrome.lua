@@ -155,6 +155,10 @@ local TINTS = {
     dark = { body = 0.45, paper = 0.8, streak = 0.35 },
 }
 
+function CP.BodyTint()
+    return CP:Config().dark_background and TINTS.dark or TINTS.stone
+end
+
 -- The rock and streaks every reskinned window draws tile the same art, so one tint drives them
 -- all: the stock CharacterFrame and the Conquest of Azeroth character/Inspect windows, which reuse the same
 -- chrome (conquest.lua stamps its own _duiRockBg/_duiStreaks on those frames). The Inspect frame
@@ -170,7 +174,7 @@ local function tintFrame(cf, tint)
 end
 
 function CP.ApplyBodyBackground()
-    local tint = CP:Config().dark_background and TINTS.dark or TINTS.stone
+    local tint = CP.BodyTint()
 
     tintFrame(_G.CharacterFrame, tint)
     tintFrame(_G.AscensionCharacterFrame, tint)
