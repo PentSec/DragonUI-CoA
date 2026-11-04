@@ -151,6 +151,7 @@
     <!-- <Include file="talents\talents.xml"/> -->
 
     <!-- Version Check module (cross-player version broadcast) -->
+    <Script file="versioncheck_signature.lua"/>
     <Script file="versioncheck.lua"/>
 
     <!-- Performance Warmup module (pre-loads panels to avoid first-use freezes) -->
