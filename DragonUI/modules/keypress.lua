@@ -138,10 +138,14 @@ local function CallQuietly(api, ...)
 end
 
 local function CurrentSlotButton(slot)
-    -- CoA divergence: the flash must land on the button the click actually drove,
-    -- so never BonusActionButtonN either; see ROUTE_SLOT.
+    -- CoA divergence: never BonusActionButtonN either; see ROUTE_SLOT. This is only the
+    -- flash: the click keeps firing ActionButtonN on the vehicle page (mainbars pages it),
+    -- while the button the player is looking at is our vehicle bar's.
     local vehicle = _G.VehicleMenuBar
-    if vehicle and vehicle:IsProtected() and vehicle:IsShown() and slot <= (VEHICLE_MAX_ACTIONBUTTONS or 6) then
+    local ourVehicle = _G.DragonUI_VehicleBar
+    local vehicleShown = (vehicle and vehicle:IsProtected() and vehicle:IsShown())
+        or (ourVehicle and ourVehicle:IsVisible())
+    if vehicleShown and slot <= (VEHICLE_MAX_ACTIONBUTTONS or 6) then
         return _G["VehicleMenuBarActionButton" .. slot]
     end
     return _G["ActionButton" .. slot]
