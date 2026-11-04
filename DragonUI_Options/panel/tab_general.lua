@@ -381,6 +381,12 @@ local function BuildGeneralTab(scroll)
     C:AddDescription(about, LO["Help me on GitHub (select and Ctrl+C to copy):"])
     C:AddCopyableText(about, "https://github.com/PentSec/DragonUI-CoA")
 
+    local update = addon.VersionCheck and addon.VersionCheck.GetUpdateVersion()
+    if update then
+        C:AddDescription(about, string.format(LO["New version available! (v%s)"], update))
+        C:AddCopyableText(about, addon.VersionCheck.DOWNLOAD_URL)
+    end
+
     C:AddSpacer(scroll)
 
     -- ====================================================================

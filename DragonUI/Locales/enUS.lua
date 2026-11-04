@@ -664,6 +664,10 @@ L["Level %d"] = true
 -- Version Check Module
 L["Version Check"] = true
 L["Broadcast and detect addon version updates across group members"] = true
+L["New version available! %s"] = true
+L["Download"] = true
+L["Restart the game to finish updating DragonUI. If this message keeps showing, reinstall it."] = true
+L["DragonUI and DragonUI_Options are from different versions. Install both from the same download."] = true
 
 -- Performance Warmup Module
 L["UI Warmup"] = true

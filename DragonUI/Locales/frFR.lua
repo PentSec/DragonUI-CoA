@@ -171,6 +171,10 @@ L["Retail-style skin for the Blizzard loot window"] = "Apparence Retail pour la 
 -- Version Check Module
 L["Version Check"] = "Vérification de version"
 L["Broadcast and detect addon version updates across group members"] = "Détecte les mises à jour de l'addon entre les membres du groupe en envoyant et recevant la version"
+L["New version available! %s"] = "Nouvelle version disponible ! %s"
+L["Download"] = "Télécharger"
+L["Restart the game to finish updating DragonUI. If this message keeps showing, reinstall it."] = "Redémarrez le jeu pour terminer la mise à jour de DragonUI. Si ce message persiste, réinstallez-le."
+L["DragonUI and DragonUI_Options are from different versions. Install both from the same download."] = "DragonUI et DragonUI_Options ne sont pas de la même version. Installez les deux depuis le même téléchargement."
 
 
 -- Aura labels

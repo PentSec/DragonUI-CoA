@@ -547,6 +547,10 @@ L["Level %d"] = "Level %d"
 -- Version Check Module
 L["Version Check"] = "版本检查"
 L["Broadcast and detect addon version updates across group members"] = "检测队伍成员间插件版本更新，通过广播和接收版本信息"
+L["New version available! %s"] = "有新版本可用！%s"
+L["Download"] = "下载"
+L["Restart the game to finish updating DragonUI. If this message keeps showing, reinstall it."] = "请重启游戏以完成 DragonUI 的更新。如果此消息仍然出现，请重新安装。"
+L["DragonUI and DragonUI_Options are from different versions. Install both from the same download."] = "DragonUI 和 DragonUI_Options 的版本不同。请从同一个下载包安装两者。"
 
 -- Performance Warmup Module
 L["UI Warmup"] = "界面预热"
