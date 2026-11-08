@@ -33,9 +33,9 @@ local ADDON_PREFIX = "DragonUI_Version"
 
 -- Written by scripts/versionsign/versionsign.py at release time; never edit by hand.
 -- Key 2 is the 1024-bit release key: a 2048-bit signature does not fit an addon message.
-local SIGNED_VERSION = "4.1.0"
+local SIGNED_VERSION = "4.1.1"
 local SIGNED_KEY = 2
-local SIGNED_SIGNATURE = "FE6Iqe6J8ThN6iF0pybbmvXgvE/3jigJBMD7uAGPVlgLN9hGsmAMQzwaKBqY+l4uzAYT79gGyolkwBAYWoBeiR+LJj3jJLDjxFtfmv6DV55qlnibvrdLR3aZLc6/a1qph/F9A4is97E2eMzelmaH8gUJ2FUKeNKXOprl7VcGPe8"
+local SIGNED_SIGNATURE = "QB5ODO+wS0N4Wk9r7/GKLJg7b8FGhJGFQh/E1WVSxRm+JP8vlPSXtybIeJB2nIactgwv7hQpBXdfs/F4y00MrDu5CsFB1q1lxOPiROVFDmZ5i81PLVaUpqKwrIBz4tCocGQmZHBmJZSkdZ6uHOdmITdfcjrq1iGTK/Jc/w2bsSM"
 
 local DOWNLOAD_URL = "https://github.com/PentSec/DragonUI-CoA/releases/latest"
 
