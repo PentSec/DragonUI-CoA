@@ -8,10 +8,16 @@ local floor = math.floor
 local byte, char, rep, concat = string.byte, string.char, string.rep, table.concat
 
 -- Public halves of the release keys; the private keys never enter this repository.
--- This fork trusts only its own key: a DragonUI-CoA client must never offer an update
+-- This fork trusts only its own keys: a DragonUI-CoA client must never offer an update
 -- that is not published on the fork's own release page.
+-- Index 1 is the retired 2048-bit key. Its 256-byte signature never fit an addon message
+-- (prefix + text is capped at 254), so it never carried a release; it stays in the table
+-- so a 4.1.0 client reading an S2 announce ignores it instead of rejecting the sender.
+-- Index 2 is the 1024-bit key every release signs with, the same size upstream uses: 128
+-- bytes of signature leave the whole S<N>:<version>:<sig> message inside one packet.
 local KEYS = {
     { modulus = "F5FE8442B0B38DD4C758FD94629C55058F42D6DE0903F3B1816F11A98820A63CD81F67C30AF7803A944B2CB2CB636429D23C2DCF67FDFA070A82480275AF788F94758CCD6F38E9B7235DCF64EE9CD1159963BA0401E9E1B06A947EFAFD3D20FC52563424FE3BA7B22AC986B65265E91E0921B6D52EF538D99C0849614FA89DC454BBE5558F33A1A1F81C46D17C9B9A4596475312986B4F39186CD5759620AD1AE62AD8D4C18F37FE7A5175AF9D5050A11389720DFF874452A0AF95FC7118A7DE469B8C4DC783F4489B8E744A51C4AC53E0269B7C8B4700E3E5225622CACFB410074CF5B6536B3A13A7185C9223B76E5E6C727B2D6988FE057CE3B1D7704F8285", exponent = 65537 },
+    { modulus = "C7AC503D9AA4DB26A49EB2DA609BA18257C4FA754E74BDB2E6F9B67548989AFEC8FE03D69D910B43B2F73BF87CE74C54D9655974461577200FCA29042712DCAE8FA54BDCB2B480CF6C8F9C154B929A9417B12A67DE7FA510D64F550E2EAC086116D53358C89A7D3AA446746766C48551D0BC71C793486446ECBCC1184439318B", exponent = 65537 },
 }
 
 -- The fork signs its own namespace: upstream's keys and a future rotation of them can never

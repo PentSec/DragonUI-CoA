@@ -32,9 +32,10 @@ end
 local ADDON_PREFIX = "DragonUI_Version"
 
 -- Written by scripts/versionsign/versionsign.py at release time; never edit by hand.
+-- Key 2 is the 1024-bit release key: a 2048-bit signature does not fit an addon message.
 local SIGNED_VERSION = "4.1.0"
-local SIGNED_KEY = 1
-local SIGNED_SIGNATURE = "0K7qK4KzoD2UV6rSyprJuuHjOI2sF1vEYu9DiE/7W6674mubq1lkKwFGQSZ6XfnlWiZ5RUeqA8S/ykcnS13c1EdwRF3tgGCrNHxBvnZ8KPUrwM0zgz2bfMjzYEcLFpm7clhZ77918dn9zF7f69awCbp6Izw93zItjooXZlgc3ZcpdsXSi/pPxtSmEywIpuQHcB7YtEoVcrKeTimsrrs+vj7XmrUbt+PuX+HtpJ+d4Rz6FUA6nNb8ZMmrCAh9WtraN5jcIaaihs6KulaCMJTpVLPgTv6CVahZ+Vxx9rhZRi4usjIBBeNzPfxxoOc6WoUcPjKXWHhOPP0H7w/jszeWJw"
+local SIGNED_KEY = 2
+local SIGNED_SIGNATURE = "FE6Iqe6J8ThN6iF0pybbmvXgvE/3jigJBMD7uAGPVlgLN9hGsmAMQzwaKBqY+l4uzAYT79gGyolkwBAYWoBeiR+LJj3jJLDjxFtfmv6DV55qlnibvrdLR3aZLc6/a1qph/F9A4is97E2eMzelmaH8gUJ2FUKeNKXOprl7VcGPe8"
 
 local DOWNLOAD_URL = "https://github.com/PentSec/DragonUI-CoA/releases/latest"
 
@@ -173,7 +174,15 @@ local function IsChannelUsable(channel)
     return channel == "WHISPER"
 end
 
+-- The client caps prefix + message at 254 bytes, and ChatThrottleLib errors (never truncates)
+-- past it, which would abort the announce after the plain version already went out.
+local MAX_TEXT = 254 - #ADDON_PREFIX
+
 local function SendRaw(text, channel, target)
+    if #text > MAX_TEXT then
+        addon:Debug("versioncheck: over-long addon message dropped")
+        return
+    end
     if ChatThrottleLib then
         ChatThrottleLib:SendAddonMessage("BULK", ADDON_PREFIX, text, channel, target)
     else
@@ -192,16 +201,18 @@ local function SendVersion(channel, target)
     if target then
         recentWhispers[target] = GetTime()
     end
-    SendRaw(myVersion, channel, target)
-    if mySignedMessage then
-        SendRaw(mySignedMessage, channel, target)
-    end
+    -- Before the sends: a failing send must not leave the channel throttle and the reply
+    -- cooldown unset, or every trigger announces again and the error repeats forever.
     lastSent[ChannelKey(channel, target)] = GetTime()
-
     local pending = not target and pendingReplies[channel]
     if pending then
         pendingReplies[channel] = nil
         MarkAnswered(pending)
+    end
+
+    SendRaw(myVersion, channel, target)
+    if mySignedMessage then
+        SendRaw(mySignedMessage, channel, target)
     end
 end
 
