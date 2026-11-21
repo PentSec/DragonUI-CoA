@@ -1444,7 +1444,7 @@ eventFrame:SetScript("OnEvent", function(self, event, arg1)
             end)
         elseif not IsModuleEnabled() then
             return
-        elseif arg1 == "Blizzard_InspectUI" or arg1 == "Ascension_InspectUI" then
+        elseif arg1 == "Blizzard_InspectUI" or arg1 == "Descension_InspectUI" or arg1 == "Ascension_InspectUI" then
             InstallInspectHooks()
         elseif arg1 == "Blizzard_GuildBankUI" then
             InstallGuildBankHooks()
