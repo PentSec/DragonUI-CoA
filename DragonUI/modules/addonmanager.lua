@@ -443,14 +443,25 @@ end
 -- LIST
 -- ============================================================================
 
+-- Internal client addons (shipped in the patch MPQs) are not the player's to toggle: the client
+-- hides them from its own addon panel and keeps them enabled. IsInternalAddon comes from the
+-- client's SharedXML; the name check covers clients without it.
+local function IsInternalClientAddon(name)
+    if not name then return false end
+    if IsInternalAddon then return IsInternalAddon(name) end
+    return name:find("^Descension") ~= nil or name:find("^Ascension") ~= nil
+end
+
 local function BuildHierarchy()
     wipe(hierarchy)
     local numAddons = GetNumAddOns()
     local indexByName = {}
+    local hidden = {}
 
     for i = 1, numAddons do
         local n = GetAddOnInfo(i)
         if n then indexByName[n:lower()] = i end
+        if IsInternalClientAddon(n) then hidden[i] = true end
     end
 
     local parents = {}
@@ -471,7 +482,10 @@ local function BuildHierarchy()
 
     for i = 1, numAddons do
         local root = GetUltimateParent(i)
-        if root == i then
+        if hidden[root] then root = i end -- a player addon depending on an internal one stands alone
+        if hidden[i] then
+            -- not listed
+        elseif root == i then
             table.insert(parents, i)
         else
             childrenMap[root] = childrenMap[root] or {}
