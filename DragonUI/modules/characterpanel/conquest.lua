@@ -1316,15 +1316,16 @@ if isCoA then
     end)
 end
 
--- Ascension_InspectUI is LoadOnDemand: the frame only exists after the player first inspects
--- someone, so no login-time pass can skin it. ADDON_LOADED fires the moment that addon loads --
+-- Descension_InspectUI (Ascension_InspectUI before the client renamed its addons; ADDON_LOADED
+-- reports the name the client has, so both are accepted) is LoadOnDemand: the frame only exists
+-- after the player first inspects someone, so no login-time pass can skin it. ADDON_LOADED fires the moment that addon loads --
 -- and the XML has already run by then, so the builders skin the window in place. The OnShow hook
 -- covers later opens, whose panels re-stamp their backdrops per inspect. Registered unconditionally:
 -- the addon name never matches on a non-Conquest of Azeroth client, so there is no wasted work.
 local inspectLoader = CreateFrame("Frame")
 inspectLoader:RegisterEvent("ADDON_LOADED")
 inspectLoader:SetScript("OnEvent", function(_, _, name)
-    if name ~= "Ascension_InspectUI" then return end
+    if name ~= "Descension_InspectUI" and name ~= "Ascension_InspectUI" then return end
     if not CP:Enabled() then return end
     -- Apply directly if the frame exists; otherwise the OnShow hook below catches it.
     CP.Apply()
