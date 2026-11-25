@@ -1463,6 +1463,17 @@ end
 -- Frame pool for delayed execution (C_Timer replacement for 3.3.5a)
 addon._timerPool = addon._timerPool or {}
 
+local function TimerOnUpdate(self, dt)
+    self._elapsed = self._elapsed + dt
+    if self._elapsed >= self._delay then
+        self:SetScript("OnUpdate", nil)
+        tinsert(addon._timerPool, self)
+        local cb = self._callback
+        self._callback = nil
+        cb()
+    end
+end
+
 -- Schedule a callback after a delay (seconds)
 -- @param delay: number — seconds to wait
 -- @param callback: function — called after delay
@@ -1480,16 +1491,8 @@ function addon:After(delay, callback)
     f._elapsed = 0
     f._delay = delay
     f._callback = callback
-    f:SetScript("OnUpdate", function(self, dt)
-        self._elapsed = self._elapsed + dt
-        if self._elapsed >= self._delay then
-            self:SetScript("OnUpdate", nil)
-            tinsert(addon._timerPool, self)
-            local cb = self._callback
-            self._callback = nil
-            cb()
-        end
-    end)
+    -- One shared handler: no new closure per call.
+    f:SetScript("OnUpdate", TimerOnUpdate)
 end
 
 -- ============================================================================
