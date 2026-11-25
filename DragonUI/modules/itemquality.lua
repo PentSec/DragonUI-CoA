@@ -664,11 +664,12 @@ eventFrame:SetScript("OnEvent", function(self, event, arg1)
         if not IsModuleEnabled() then return end
         -- One BAG_UPDATE per changed bag; without this a sweep is scheduled per event.
         if ItemQualityModule.bagSweepPending then return end
-        ItemQualityModule.bagSweepPending = true
         addon:After(0.2, function()
             ItemQualityModule.bagSweepPending = false
             UpdateAllBags()
         end)
+        -- Set after scheduling so a failed After() can't leave the flag stuck on.
+        ItemQualityModule.bagSweepPending = true
 
     elseif event == "BANKFRAME_OPENED" or event == "PLAYERBANKSLOTS_CHANGED" or event == "PLAYERBANKBAGSLOTS_CHANGED" then
         if not IsModuleEnabled() then return end
